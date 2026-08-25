@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>경력계산기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <dialog id="auth-dialog">
+    <form class="auth-card" id="auth-form">
+      <div class="modal-head"><p class="brand auth-brand">project<span>.</span>desk</p><button class="close" id="close-auth" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
+      <p class="auth-lead">등록한 프로젝트로 경력을 계산하려면 로그인하세요.</p>
+      <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
+      <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
+      <p class="auth-message" id="auth-message" hidden></p>
+      <div class="auth-actions"><button class="save" type="submit">로그인</button></div>
+    </form>
+  </dialog>
+
+  <div class="app" id="app">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-bar">
+          <p class="brand">project<span>.</span>desk</p>
+          <nav class="nav" aria-label="주요 메뉴">
+            <a class="nav-link" href="index.html"><span class="icon" aria-hidden="true">dashboard</span>프로젝트 관리</a>
+            <a class="nav-link active" href="career.html" aria-current="page"><span class="icon" aria-hidden="true">timeline</span>경력계산기</a>
+          </nav>
+          <div class="account"><p class="account-mail" id="account-mail"></p><button id="sign-in" type="button" hidden><span class="icon" aria-hidden="true">login</span>로그인</button><button id="sign-out" type="button" hidden><span class="icon" aria-hidden="true">logout</span>로그아웃</button></div>
+        </div>
+        <div class="topbar">
+          <div><p class="kicker">WORKSPACE / CAREER</p><h1>경력 계산기</h1><p class="subtext">등록한 프로젝트 기간을 합산해 총 경력을 계산합니다.</p></div>
+        </div>
+      </div>
+      <svg class="waves" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 96C180 40 300 30 480 62S780 126 960 112 1280 52 1440 34V150H0Z" fill="#fff" opacity=".2"/>
+        <path d="M-50 34C250 92 390 112 570 96S870 32 1050 28 1350 76 1490 106V150H-50Z" fill="#fff" opacity=".32"/>
+        <path d="M0 128C160 84 320 62 500 78S800 134 980 136 1300 102 1440 74V150H0Z" fill="#fff" opacity=".5"/>
+        <path d="M0 114C200 148 380 150 560 138S880 96 1060 102 1340 134 1440 146V150H0Z" fill="var(--canvas)"/>
+      </svg>
+    </header>
+
+    <main class="main">
+      <p class="notice error" id="error-notice" hidden></p>
+
+      <section class="result-card" aria-label="총 경력">
+        <p class="result-label">총 경력</p>
+        <p class="result-value" id="career-total">0년 0개월</p>
+        <p class="result-sub" id="career-days">0일</p>
+      </section>
+
+      <section class="overview" aria-label="경력 요약">
+        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">folder_open</span>계산에 포함된 기간</p><p class="stat-value" id="period-count">0</p></div>
+        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">layers</span>중복 제외된 기간</p><p class="stat-value" id="overlap-days">0일</p></div>
+        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">event_available</span>가장 이른 시작일</p><p class="stat-value small" id="first-date">-</p></div>
+      </section>
+
+      <section class="panel" aria-label="계산 옵션">
+        <div class="option-row">
+          <div><label for="base-date">기준일</label><input id="base-date" type="date"><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
+          <div><label for="round-mode">개월 환산</label><select id="round-mode"><option value="30">30일 = 1개월 (통상)</option><option value="calendar">달력 기준 (년/월 단위)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
+          <label class="switch"><input id="merge-overlap" type="checkbox" checked><span>겹치는 기간 중복 제외</span></label>
+        </div>
+      </section>
+
+      <section>
+        <div class="content-head"><h2>기간 목록</h2><span class="count" id="list-count">0 periods</span></div>
+        <div class="table-wrap" id="table-view">
+          <table>
+            <thead><tr><th>항목</th><th>기간</th><th>일수</th><th>환산</th><th></th></tr></thead>
+            <tbody id="period-list"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="empty-state">계산할 기간이 없습니다.<br>프로젝트를 등록하거나 아래에서 기간을 직접 추가하세요.</div>
+      </section>
+
+      <section class="panel" aria-label="기간 직접 추가">
+        <h2>기간 직접 추가</h2>
+        <p class="helper">프로젝트로 등록하지 않은 경력(재직 기간 등)을 더할 수 있습니다. 이 브라우저에만 저장됩니다.</p>
+        <form id="extra-form">
+          <div><label for="extra-name">항목명 *</label><input id="extra-name" name="name" type="text" placeholder="예: 주식회사 OO 재직" required></div>
+          <div class="field-row"><div><label for="extra-start">시작일 *</label><input id="extra-start" name="start" type="date" required></div><div><label for="extra-end">종료일 *</label><input id="extra-end" name="end" type="date" required></div></div>
+          <div class="form-actions"><button class="save" type="submit"><span class="icon" aria-hidden="true">add</span>기간 추가</button></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { supabase, mountAccountBar } from './supabase.js';
+
+    const extraKey = 'project-desk-extra-periods';
+    const DAY = 86400000;
+    const $ = id => document.getElementById(id);
+    let projects = [], extras = loadExtras();
+
+    const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+    const toDate = value => new Date(`${value}T00:00:00`);
+    const toISO = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    function formatDate(value) { return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(toDate(value)) }
+    function showError(message, error) { const box = $('error-notice'); box.textContent = error ? `${message} (${error.message})` : message; box.hidden = !message; if (error) console.error(error) }
+
+    /* ── 데이터 ─────────────────────────────── */
+    function loadExtras() { try { return JSON.parse(localStorage.getItem(extraKey) || '[]') } catch { return [] } }
+    function saveExtras() { localStorage.setItem(extraKey, JSON.stringify(extras)) }
+
+    $('base-date').value = toISO(new Date()); // 인증 콜백보다 먼저 기준일을 채워둔다.
+
+    mountAccountBar(async () => {
+      const { data, error } = await supabase.from('projects').select('*').order('start_date', { ascending: true });
+      if (error) { projects = []; showError('프로젝트를 불러오지 못했습니다.', error) } else { projects = data; showError('') }
+      render();
+    });
+
+    /* ── 경력 계산 ──────────────────────────── */
+    // 기준일을 넘는 종료일은 기준일로 자른다. 기간은 시작일과 종료일을 모두 포함(+1일).
+    function periods() {
+      const base = toDate($('base-date').value);
+      const rows = [
+        ...projects.map(project => ({ id: project.id, name: project.project_name, start: project.start_date, end: project.end_date, source: 'project' })),
+        ...extras.map(extra => ({ id: extra.id, name: extra.name, start: extra.start, end: extra.end, source: 'extra' })),
+      ];
+      return rows
+        .map(row => {
+          const start = toDate(row.start);
+          const end = new Date(Math.min(toDate(row.end).getTime(), base.getTime()));
+          return { ...row, from: start, to: end, days: end < start ? 0 : Math.round((end - start) / DAY) + 1 };
+        })
+        .filter(row => row.days > 0)
+        .sort((a, b) => a.from - b.from);
+    }
+
+    // 겹치는 구간을 하나로 합친다. 하루 붙어 있는 구간(예: 3/31 종료 · 4/1 시작)도 이어 붙인다.
+    function merge(list) {
+      const merged = [];
+      list.forEach(row => {
+        const last = merged[merged.length - 1];
+        if (last && row.from.getTime() <= last.to.getTime() + DAY) { if (row.to > last.to) last.to = row.to }
+        else merged.push({ from: new Date(row.from), to: new Date(row.to) });
+      });
+      return merged;
+    }
+
+    const daysOf = list => list.reduce((sum, range) => sum + Math.round((range.to - range.from) / DAY) + 1, 0);
+
+    // 30일 환산: 통상적인 경력증명 방식. 달력 기준: 실제 년/월 차이로 계산.
+    function toYearMonth(days, list) {
+      if ($('round-mode').value === '30') return { years: Math.floor(days / 365), months: Math.floor((days % 365) / 30) };
+      const months = list.reduce((sum, range) => {
+        const end = new Date(range.to.getTime() + DAY);
+        return sum + (end.getFullYear() - range.from.getFullYear()) * 12 + (end.getMonth() - range.from.getMonth()) - (end.getDate() < range.from.getDate() ? 1 : 0);
+      }, 0);
+      return { years: Math.floor(months / 12), months: months % 12 };
+    }
+
+    const label = days => { const years = Math.floor(days / 365), months = Math.floor((days % 365) / 30); return years ? `${years}년 ${months}개월` : `${months}개월` };
+
+    /* ── 렌더링 ─────────────────────────────── */
+    function render() {
+      const list = periods();
+      const merged = merge(list);
+      const rawDays = list.reduce((sum, row) => sum + row.days, 0);
+      const useMerge = $('merge-overlap').checked;
+      const totalDays = useMerge ? daysOf(merged) : rawDays;
+      const { years, months } = toYearMonth(totalDays, useMerge ? merged : list.map(row => ({ from: row.from, to: row.to })));
+
+      $('career-total').textContent = `${years}년 ${months}개월`;
+      $('career-days').textContent = `총 ${totalDays.toLocaleString('ko-KR')}일`;
+      $('period-count').textContent = list.length;
+      $('overlap-days').textContent = `${(rawDays - daysOf(merged)).toLocaleString('ko-KR')}일`;
+      $('first-date').textContent = list.length ? formatDate(toISO(list[0].from)) : '-';
+      $('list-count').textContent = `${list.length} periods`;
+      $('empty-state').hidden = list.length > 0;
+      $('table-view').hidden = list.length === 0;
+      $('period-list').innerHTML = list.map(row => `<tr>
+        <td class="project-name">${esc(row.name)}${row.source === 'extra' ? '<span class="tag">직접 추가</span>' : ''}</td>
+        <td class="period">${formatDate(toISO(row.from))}<br>~ ${formatDate(toISO(row.to))}</td>
+        <td>${row.days.toLocaleString('ko-KR')}일</td>
+        <td class="client">${label(row.days)}</td>
+        <td>${row.source === 'extra' ? `<div class="row-actions"><button class="row-button" type="button" data-delete="${row.id}" aria-label="${esc(row.name)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button></div>` : ''}</td>
+      </tr>`).join('');
+    }
+
+    /* ── 입력 ───────────────────────────────── */
+    ['base-date', 'round-mode', 'merge-overlap'].forEach(id => $(id).addEventListener('change', render));
+    $('extra-start').addEventListener('change', event => { $('extra-end').min = event.target.value });
+
+    $('extra-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      extras.push({ id: `extra-${Date.now()}`, name: data.get('name'), start: data.get('start'), end: data.get('end') });
+      saveExtras();
+      event.target.reset();
+      render();
+    });
+
+    $('period-list').addEventListener('click', event => {
+      const id = event.target.dataset.delete;
+      if (!id) return;
+      extras = extras.filter(extra => extra.id !== id);
+      saveExtras();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

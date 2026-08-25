@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Desk</title>
+  <title>Project</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <dialog id="auth-dialog">
     <form class="auth-card" id="auth-form">
-      <div class="modal-head"><p class="brand auth-brand">project<span>.</span>desk</p><button class="close" id="close-auth" type="button" aria-label="닫기">×</button></div>
+      <div class="modal-head"><p class="brand auth-brand">project<span>.</span>desk</p><button class="close" id="close-auth" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
       <p class="auth-lead">프로젝트를 추가하거나 삭제하려면 로그인하세요.</p>
       <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
       <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
@@ -19,23 +19,35 @@
   </dialog>
 
   <div class="app" id="app">
-    <aside class="sidebar">
-      <p class="brand">project<span>.</span>desk</p>
-      <p class="nav-label">WORKSPACE</p>
-      <div class="nav-item active"><span class="nav-icon">▦</span> 프로젝트</div>
-      <div class="account"><p class="account-mail" id="account-mail"></p><button id="sign-in" type="button" hidden>로그인</button><button id="sign-out" type="button" hidden>로그아웃</button></div>
-    </aside>
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-bar">
+          <p class="brand">project<span>.</span>desk</p>
+          <nav class="nav" aria-label="주요 메뉴">
+            <a class="nav-link active" href="index.html" aria-current="page"><span class="icon" aria-hidden="true">dashboard</span>프로젝트 관리</a>
+            <a class="nav-link" href="career.html"><span class="icon" aria-hidden="true">timeline</span>경력계산기</a>
+          </nav>
+          <div class="account"><p class="account-mail" id="account-mail"></p><button id="sign-in" type="button" hidden><span class="icon" aria-hidden="true">login</span>로그인</button><button id="sign-out" type="button" hidden><span class="icon" aria-hidden="true">logout</span>로그아웃</button></div>
+        </div>
+        <div class="topbar">
+          <div><p class="kicker">WORKSPACE / OVERVIEW</p><h1>프로젝트 관리</h1><p class="subtext">진행 중인 프로젝트와 주요 정보를 한눈에 관리하세요.</p></div>
+          <button class="add-button" id="open-modal" type="button" hidden><span class="icon" aria-hidden="true">add</span>프로젝트 추가</button>
+        </div>
+      </div>
+      <svg class="waves" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 96C180 40 300 30 480 62S780 126 960 112 1280 52 1440 34V150H0Z" fill="#fff" opacity=".2"/>
+        <path d="M-50 34C250 92 390 112 570 96S870 32 1050 28 1350 76 1490 106V150H-50Z" fill="#fff" opacity=".32"/>
+        <path d="M0 128C160 84 320 62 500 78S800 134 980 136 1300 102 1440 74V150H0Z" fill="#fff" opacity=".5"/>
+        <path d="M0 114C200 148 380 150 560 138S880 96 1060 102 1340 134 1440 146V150H0Z" fill="var(--canvas)"/>
+      </svg>
+    </header>
     <main class="main">
-      <header class="topbar">
-        <div><p class="kicker">WORKSPACE / OVERVIEW</p><h1>프로젝트 관리</h1><p class="subtext">진행 중인 프로젝트와 주요 정보를 한눈에 관리하세요.</p></div>
-        <button class="add-button" id="open-modal" type="button" hidden>＋ 프로젝트 추가</button>
-      </header>
       <div class="notice" id="migrate-notice" hidden>이 브라우저에 저장된 프로젝트 <b id="migrate-count">0</b>건이 있습니다. 계정으로 옮기시겠어요?<button id="migrate" type="button">옮기기</button><button id="migrate-skip" type="button">나중에</button></div>
       <p class="notice error" id="error-notice" hidden></p>
       <section class="overview" aria-label="프로젝트 요약">
-        <div class="stat"><p class="stat-title">전체 프로젝트</p><p class="stat-value" id="total-count">0</p></div>
-        <div class="stat"><p class="stat-title">진행 중</p><p class="stat-value" id="active-count">0</p></div>
-        <div class="stat"><p class="stat-title">등록된 스킬</p><p class="stat-value" id="skill-count">0</p></div>
+        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">folder_open</span>전체 프로젝트</p><p class="stat-value" id="total-count">0</p></div>
+        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">bolt</span>진행 중</p><p class="stat-value" id="active-count">0</p></div>
+        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">stars</span>등록된 스킬</p><p class="stat-value" id="skill-count">0</p></div>
       </section>
       <section>
         <div class="content-head"><h2>프로젝트 목록</h2><div class="view-tools"><span class="count" id="list-count">0 projects</span><div class="view-tabs" role="tablist" aria-label="프로젝트 보기 방식"><button class="view-tab active" data-view="card" type="button" role="tab" aria-selected="true">카드형</button><button class="view-tab" data-view="list" type="button" role="tab" aria-selected="false">리스트형</button></div></div></div>
@@ -47,12 +59,12 @@
   </div>
 
   <dialog id="project-dialog">
-    <div class="modal"><div class="modal-head"><h2>새 프로젝트 추가</h2><button class="close" id="close-modal" type="button" aria-label="닫기">×</button></div>
+    <div class="modal"><div class="modal-head"><h2 id="modal-title">새 프로젝트 추가</h2><button class="close" id="close-modal" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
       <form id="project-form">
         <div><label for="project-name">프로젝트명 *</label><input id="project-name" name="projectName" type="text" placeholder="예: 브랜드 웹사이트 리뉴얼" required></div>
         <div class="field-row"><div><label for="start-date">시작일 *</label><input id="start-date" name="startDate" type="date" required></div><div><label for="end-date">종료일 *</label><input id="end-date" name="endDate" type="date" required></div></div>
         <div><label for="client">발주처 *</label><input id="client" name="client" type="text" placeholder="예: 주식회사 클라이언트" required></div>
-        <div><label for="skill-input">스킬 *</label><div class="skills-input"><input id="skill-input" type="text" placeholder="스킬을 입력하고 추가하세요"><button class="skill-add" id="add-skill" type="button">추가</button></div><p class="helper">예: HTML, CSS, JavaScript</p><div class="selected-skills" id="selected-skills"></div></div>
+        <div><label for="skill-input">스킬 *</label><div class="skills-input"><input id="skill-input" type="text" placeholder="스킬을 입력하고 추가하세요"><button class="skill-add" id="add-skill" type="button"><span class="icon" aria-hidden="true">add</span>추가</button></div><p class="helper">예: HTML, CSS, JavaScript</p><div class="selected-skills" id="selected-skills"></div></div>
         <div><label for="notes">기타</label><textarea id="notes" name="notes" rows="3" placeholder="예: 담당 역할, 성과, 참고 링크 등"></textarea><p class="helper">선택 항목입니다. 비워두어도 저장됩니다.</p></div>
         <div class="form-actions"><button id="cancel-modal" type="button">취소</button><button class="save" id="submit-project" type="submit">프로젝트 저장</button></div>
       </form>
@@ -60,43 +72,24 @@
   </dialog>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { supabase, mountAccountBar } from './supabase.js';
 
-    // Supabase 프로젝트의 Project URL / anon public key 를 넣으세요.
-    const SUPABASE_URL = 'https://gdeuokvcwdreewtiyhhg.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_Ek_moT1UBmHifufv4MwoWA_mSozuQrg';
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const storageKey = 'project-desk-projects';
     const $ = id => document.getElementById(id);
-    const dialog = $('project-dialog'), authDialog = $('auth-dialog'), form = $('project-form'), skillInput = $('skill-input');
-    let projects = [], skills = [], viewMode = 'card', signedIn = false;
+    const dialog = $('project-dialog'), form = $('project-form'), skillInput = $('skill-input');
+    let projects = [], skills = [], viewMode = 'card', signedIn = false, editingId = null;
 
     const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
     function formatDate(date) { return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(`${date}T00:00:00`)) }
     function showError(message, error) { const box = $('error-notice'); box.textContent = error ? `${message} (${error.message})` : message; box.hidden = !message; if (error) console.error(error) }
 
     /* ── 화면 전환 / 인증 ───────────────────── */
-    supabase.auth.onAuthStateChange((event, session) => {
+    mountAccountBar(session => {
       signedIn = !!session;
-      $('account-mail').textContent = session ? session.user.email : '';
-      $('sign-in').hidden = signedIn;
-      $('sign-out').hidden = !signedIn;
       $('open-modal').hidden = !signedIn;
-      if (signedIn) { authDialog.close(); checkLocalBackup() } else { $('migrate-notice').hidden = true }
+      if (signedIn) checkLocalBackup(); else $('migrate-notice').hidden = true;
       loadProjects();
     });
-
-    $('auth-form').addEventListener('submit', async event => {
-      event.preventDefault();
-      const { error } = await supabase.auth.signInWithPassword({ email: $('auth-email').value, password: $('auth-password').value });
-      if (error) authMessage('로그인에 실패했습니다. 이메일과 비밀번호를 확인하세요.');
-    });
-
-    function authMessage(message) { const box = $('auth-message'); box.textContent = message; box.hidden = false }
-    $('sign-in').addEventListener('click', () => authDialog.showModal());
-    $('close-auth').addEventListener('click', () => authDialog.close());
-    $('sign-out').addEventListener('click', () => supabase.auth.signOut());
 
     /* ── 데이터 ─────────────────────────────── */
     async function loadProjects() {
@@ -110,6 +103,13 @@
     async function addProjects(rows) {
       const { error } = await supabase.from('projects').insert(rows);
       if (error) { showError('저장하지 못했습니다.', error); return false }
+      await loadProjects();
+      return true;
+    }
+
+    async function updateProject(id, row) {
+      const { error } = await supabase.from('projects').update(row).eq('id', id);
+      if (error) { showError('수정하지 못했습니다.', error); return false }
       await loadProjects();
       return true;
     }
@@ -138,7 +138,7 @@
     $('migrate-skip').addEventListener('click', () => { $('migrate-notice').hidden = true });
 
     /* ── 렌더링 ─────────────────────────────── */
-    function renderSkills() { $('selected-skills').innerHTML = skills.map((skill, index) => `<button type="button" data-index="${index}">${esc(skill)} ×</button>`).join('') }
+    function renderSkills() { $('selected-skills').innerHTML = skills.map((skill, index) => `<button type="button" data-index="${index}">${esc(skill)}<span class="icon" aria-hidden="true">close</span></button>`).join('') }
 
     function render() {
       $('total-count').textContent = projects.length;
@@ -150,9 +150,9 @@
       $('card-list').hidden = viewMode !== 'card';
       const chips = project => project.skills.map(skill => `<span class="skill">${esc(skill)}</span>`).join('');
       const notes = project => project.notes ? esc(project.notes).replace(/\n/g, '<br>') : '';
-      const removeButton = (project, className) => signedIn ? `<button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제">삭제</button>` : '';
-      $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${formatDate(project.start_date)}<br>~ ${formatDate(project.end_date)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${removeButton(project, 'delete-button')}</td></tr>`).join('');
-      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${removeButton(project, 'card-delete')}</div><p class="card-client">${esc(project.client)}</p><div class="card-period">${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}</div><div class="skill-list card-skills">${chips(project)}</div>${project.notes ? `<p class="card-notes">${notes(project)}</p>` : ''}</article>`).join('');
+      const rowButtons = (project, className) => signedIn ? `<div class="row-actions"><button class="${className}" type="button" data-edit="${project.id}" aria-label="${esc(project.project_name)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button><button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button></div>` : '';
+      $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${formatDate(project.start_date)}<br>~ ${formatDate(project.end_date)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${rowButtons(project, 'row-button')}</td></tr>`).join('');
+      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${rowButtons(project, 'card-button')}</div><p class="card-client">${esc(project.client)}</p><div class="card-period">${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}</div><div class="skill-list card-skills">${chips(project)}</div>${project.notes ? `<p class="card-notes">${notes(project)}</p>` : ''}</article>`).join('');
     }
 
     /* ── 입력 ───────────────────────────────── */
@@ -163,24 +163,52 @@
     }));
     $('start-date').addEventListener('change', event => { $('end-date').min = event.target.value });
     function addSkill() { const value = skillInput.value.trim(); if (value && !skills.includes(value)) { skills.push(value); skillInput.value = ''; renderSkills() } }
-    $('open-modal').addEventListener('click', () => dialog.showModal());
+
+    function openModal(project) {
+      editingId = project ? project.id : null;
+      $('modal-title').textContent = project ? '프로젝트 수정' : '새 프로젝트 추가';
+      $('submit-project').textContent = project ? '수정 내용 저장' : '프로젝트 저장';
+      form.reset();
+      skills = project ? [...project.skills] : [];
+      if (project) {
+        $('project-name').value = project.project_name;
+        $('start-date').value = project.start_date;
+        $('end-date').value = project.end_date;
+        $('end-date').min = project.start_date;
+        $('client').value = project.client;
+        $('notes').value = project.notes || '';
+      }
+      renderSkills();
+      dialog.showModal();
+    }
+
+    function listClick(event) {
+      const id = event.target.dataset.edit;
+      if (!id) return removeProject(event);
+      const project = projects.find(item => item.id === id);
+      if (project) openModal(project);
+    }
+
+    dialog.addEventListener('close', () => { form.reset(); skills = []; editingId = null; renderSkills() });
+    $('open-modal').addEventListener('click', () => openModal(null));
     $('close-modal').addEventListener('click', () => dialog.close());
     $('cancel-modal').addEventListener('click', () => dialog.close());
     $('add-skill').addEventListener('click', addSkill);
     skillInput.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); addSkill() } });
     $('selected-skills').addEventListener('click', event => { if (event.target.dataset.index !== undefined) { skills.splice(Number(event.target.dataset.index), 1); renderSkills() } });
-    $('project-list').addEventListener('click', removeProject);
-    $('card-list').addEventListener('click', removeProject);
+    $('project-list').addEventListener('click', listClick);
+    $('card-list').addEventListener('click', listClick);
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
       if (!skills.length) return skillInput.focus();
       const data = new FormData(form), button = $('submit-project');
+      const row = { project_name: data.get('projectName'), start_date: data.get('startDate'), end_date: data.get('endDate'), client: data.get('client'), skills: [...skills], notes: data.get('notes').trim() || null };
       button.disabled = true;
-      const saved = await addProjects([{ project_name: data.get('projectName'), start_date: data.get('startDate'), end_date: data.get('endDate'), client: data.get('client'), skills: [...skills], notes: data.get('notes').trim() || null }]);
+      const saved = editingId ? await updateProject(editingId, row) : await addProjects([row]);
       button.disabled = false;
       if (!saved) return;
-      form.reset(); skills = []; renderSkills(); dialog.close();
+      dialog.close();
     });
   </script>
 </body>

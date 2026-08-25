@@ -31,6 +31,7 @@ alter table projects enable row level security;
 
 create policy "누구나 조회" on projects for select using (true);
 create policy "본인 데이터 추가" on projects for insert with check (auth.uid() = user_id);
+create policy "본인 데이터 수정" on projects for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "본인 데이터 삭제" on projects for delete using (auth.uid() = user_id);
 ```
 
@@ -38,11 +39,14 @@ create policy "본인 데이터 삭제" on projects for delete using (auth.uid()
 보여주기 위함), 추가와 삭제는 로그인한 본인만 가능합니다. 화면에서 버튼을 숨기는 것과
 별개로 DB가 직접 막아주는 부분이라 지우지 마세요.
 
-> **이미 테이블을 만들어 둔 경우**: `notes`(기타) 칸이 나중에 추가됐습니다.
-> SQL Editor에서 아래 한 줄만 실행하면 기존 데이터 그대로 반영됩니다.
+> **이미 테이블을 만들어 둔 경우**: `notes`(기타) 칸과 수정 기능이 나중에 추가됐습니다.
+> SQL Editor에서 아래를 실행하면 기존 데이터 그대로 반영됩니다.
 >
 > ```sql
 > alter table projects add column if not exists notes text;
+>
+> create policy "본인 데이터 수정" on projects
+>   for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 > ```
 
 ## 3. 내 계정 만들기
