@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이력서</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 헤더와 로그인 모달은 layout.js 가 여기에 만들어 넣습니다. -->
+  <div class="app" id="app">
+    <main class="main">
+      <p class="notice error" id="error-notice" hidden></p>
+
+      <section class="panel" aria-label="개인이력카드">
+        <h2>개인이력카드</h2>
+        <dl class="info-grid" id="profile"></dl>
+      </section>
+
+      <section>
+        <div class="content-head"><h2>학력사항</h2></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>졸업년월</th><th>학교명 및 전공</th></tr></thead>
+            <tbody id="school-list"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="career-section">
+        <div class="content-head"><h2>경력사항</h2><span class="count" id="career-summary">전체경력 계산 중</span></div>
+        <div class="table-wrap" id="table-view">
+          <table>
+            <thead><tr><th>근무기간</th><th>회사명</th><th>담당 업무</th><th>기간</th><th></th></tr></thead>
+            <tbody id="career-list"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="empty-state">등록된 경력이 없습니다.<br>상단의 경력 추가 버튼을 눌러 등록하세요.</div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="career-dialog">
+    <div class="modal"><div class="modal-head"><h2 id="modal-title">경력 추가</h2><button class="close" id="close-modal" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
+      <form id="career-form">
+        <div><label for="company">회사명 *</label><input id="company" name="company" type="text" placeholder="예: ㈜인스웨이브시스템즈" required></div>
+        <div><label for="role">담당 업무 *</label><input id="role" name="role" type="text" placeholder="예: 디자인/퍼블리싱" required></div>
+        <div class="field-row">
+          <div><label for="start-date">입사일 *</label><input id="start-date" name="start" type="date" required></div>
+          <div><label for="end-date">퇴사일</label><input id="end-date" name="end" type="date"><p class="helper">비워두면 재직중으로 표시됩니다.</p></div>
+        </div>
+        <div class="field-row">
+          <div><label for="leave-months">휴직 개월수</label><input id="leave-months" name="leave" type="number" min="0" step="1" value="0"><p class="helper">경력에서 차감됩니다.</p></div>
+          <div><label for="leave-reason">휴직 사유</label><input id="leave-reason" name="reason" type="text" placeholder="예: 육아휴직"></div>
+        </div>
+        <div class="form-actions"><button id="cancel-modal" type="button">취소</button><button class="save" id="submit-career" type="submit">경력 저장</button></div>
+      </form>
+    </div>
+  </dialog>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+    import { mountLayout, confirmAsk } from './layout.js';
+
+    /* ────────────────────────────────────────────────────────────────
+       개인이력카드와 학력사항은 바뀔 일이 드물어 여기에 직접 적어둡니다.
+       경력사항은 Supabase(resume_careers)에 저장되고 화면에서 관리합니다.
+       ──────────────────────────────────────────────────────────────── */
+    const PROFILE = [
+      { label: '이름',        value: '정은미' },
+      { label: '생년월일',    value: '1987년 4월 6일' },
+      { label: '소속회사',    value: '㈜인스웨이브시스템즈' },
+      { label: '입사일',      value: '2021년 10월 5일' },
+      { label: '부서 / 직위', value: 'UX지원팀 / 선임' },
+      { label: '기술등급',    value: '고급' },
+      { label: 'IT 근무경력', value: 'auto' }, // 경력사항 합계로 자동 계산
+      { label: '전문기술',    value: 'Html / CSS' },
+      { label: '주소',        value: '인천 미추홀구 학익동', wide: true },
+    ];
+
+    const SCHOOLS = [
+      { date: '2008.02', name: '동양전문대학교 시각디자인전공' },
+      { date: '2006.02', name: '인천여자고등학교' },
+    ];
+
+    /* ──────────────────────────────────────────────────────────────── */
+
+    const $ = id => document.getElementById(id);
+    const dialog = $('career-dialog'), form = $('career-form');
+    let careers = [], signedIn = false, editingId = null;
+
+    const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+    const DAY = 86400000;
+    const toDate = value => new Date(`${value}T00:00:00`);
+    const dot = value => value.replace(/-/g, '.');
+    function showError(message, error) { const box = $('error-notice'); box.textContent = error ? `${message} (${error.message})` : message; box.hidden = !message; if (error) console.error(error) }
+
+    // 근무 개월 수를 입사일·퇴사일로 정확히 센다. 퇴사일 다음 날까지를 근무한 것으로 보고
+    // 달력상 꽉 채운 개월만 셈한다. (2018.05.01 ~ 2019.05.31 → 13개월, 재직중은 오늘까지)
+    function months(row) {
+      const from = toDate(row.start_date);
+      const next = new Date((row.end_date ? toDate(row.end_date).getTime() : Date.now()) + DAY);
+      const diff = (next.getFullYear() - from.getFullYear()) * 12 + (next.getMonth() - from.getMonth());
+      return Math.max(0, diff - (next.getDate() < from.getDate() ? 1 : 0));
+    }
+
+    // 표에 보여줄 근무 일수 (시작일과 종료일 모두 포함)
+    function days(row) {
+      const from = toDate(row.start_date);
+      const to = row.end_date ? toDate(row.end_date) : new Date();
+      return Math.max(0, Math.round((to - from) / DAY) + 1);
+    }
+
+    // 휴직이 있으면 그만큼 뺀 값이 실제 경력이다. 전체경력도 이 값으로 합산한다.
+    const netMonths = row => Math.max(0, months(row) - (row.leave_months || 0));
+    const label = total => { const years = Math.floor(total / 12), rest = total % 12; return years ? `${years}년 ${rest}개월` : `${rest}개월` };
+
+    /* ── 데이터 ─────────────────────────────── */
+    async function loadCareers() {
+      const { data, error } = await supabase.from('resume_careers').select('*').order('start_date', { ascending: false });
+      if (error) { careers = []; showError('경력사항을 불러오지 못했습니다. resume-careers.sql 과 resume-careers-to-daily.sql 을 실행했는지 확인하세요.', error) }
+      else { careers = data; showError('') }
+      render();
+    }
+
+    async function save(row, id) {
+      const query = id ? supabase.from('resume_careers').update(row).eq('id', id) : supabase.from('resume_careers').insert([row]);
+      const { error } = await query;
+      if (error) { showError(id ? '수정하지 못했습니다.' : '저장하지 못했습니다.', error); return false }
+      await loadCareers();
+      return true;
+    }
+
+    async function remove(id) {
+      const { error } = await supabase.from('resume_careers').delete().eq('id', id);
+      if (error) return showError('삭제하지 못했습니다.', error);
+      await loadCareers();
+    }
+
+    /* ── 렌더링 ─────────────────────────────── */
+    function periodCell(row) {
+      const gross = months(row), net = netMonths(row);
+      if (!row.leave_months) return label(gross);
+      const reason = row.leave_reason || '휴직';
+      return `<span class="strike">${label(gross)}</span> ${label(net)}<span class="note">(${esc(reason)} ${row.leave_months}개월)</span>`;
+    }
+
+    function rowButtons(row) {
+      if (!signedIn) return '';
+      return `<div class="row-actions">
+        <button class="row-button" type="button" data-edit="${row.id}" aria-label="${esc(row.company)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button>
+        <button class="row-button" type="button" data-delete="${row.id}" aria-label="${esc(row.company)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+      </div>`;
+    }
+
+    function render() {
+      const totalLabel = label(careers.reduce((sum, row) => sum + netMonths(row), 0));
+
+      $('profile').innerHTML = PROFILE.map(item =>
+        `<div${item.wide ? ' class="wide"' : ''}><dt>${esc(item.label)}</dt><dd>${esc(item.value === 'auto' ? totalLabel : item.value)}</dd></div>`
+      ).join('');
+
+      $('school-list').innerHTML = SCHOOLS.map(school =>
+        `<tr><td class="period">${esc(school.date)}</td><td class="project-name">${esc(school.name)}</td></tr>`
+      ).join('');
+
+      $('career-summary').textContent = `전체경력 ${totalLabel}`;
+      $('empty-state').hidden = careers.length > 0;
+      $('table-view').hidden = careers.length === 0;
+      $('career-list').innerHTML = careers.map(row => `<tr>
+        <td class="period">${dot(row.start_date)} ~ ${row.end_date ? dot(row.end_date) : '<span class="tag">재직중</span>'}<span class="note">${days(row).toLocaleString('ko-KR')}일</span></td>
+        <td class="project-name">${esc(row.company)}</td>
+        <td class="client">${esc(row.role)}</td>
+        <td>${periodCell(row)}</td>
+        <td>${rowButtons(row)}</td>
+      </tr>`).join('');
+    }
+
+    /* ── 입력 ───────────────────────────────── */
+    function openModal(row) {
+      editingId = row ? row.id : null;
+      $('modal-title').textContent = row ? '경력 수정' : '경력 추가';
+      $('submit-career').textContent = row ? '수정 내용 저장' : '경력 저장';
+      form.reset();
+      $('leave-months').value = row ? (row.leave_months || 0) : 0;
+      if (row) {
+        $('company').value = row.company;
+        $('role').value = row.role;
+        $('start-date').value = row.start_date;
+        $('end-date').value = row.end_date || '';
+        $('end-date').min = row.start_date;
+        $('leave-reason').value = row.leave_reason || '';
+      }
+      dialog.showModal();
+    }
+
+    $('career-list').addEventListener('click', async event => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const id = button.dataset.edit || button.dataset.delete;
+      const row = careers.find(item => item.id === id);
+      if (!row) return;
+      if (button.dataset.edit) return openModal(row);
+      const ok = await confirmAsk({
+        title: '경력을 삭제할까요?',
+        message: `${row.company}\n삭제하면 되돌릴 수 없습니다.`,
+      });
+      if (ok) remove(id);
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(form), button = $('submit-career');
+      const leave = Number(data.get('leave')) || 0;
+      const row = {
+        company: data.get('company'),
+        role: data.get('role'),
+        start_date: data.get('start'),
+        end_date: data.get('end') || null,
+        leave_months: leave,
+        leave_reason: leave ? (data.get('reason').trim() || '휴직') : null,
+      };
+      button.disabled = true;
+      const saved = await save(row, editingId);
+      button.disabled = false;
+      if (saved) dialog.close();
+    });
+
+    $('start-date').addEventListener('change', event => { $('end-date').min = event.target.value });
+    dialog.addEventListener('close', () => { form.reset(); editingId = null });
+    $('close-modal').addEventListener('click', () => dialog.close());
+    $('cancel-modal').addEventListener('click', () => dialog.close());
+
+    mountLayout({
+      page: 'resume',
+      kicker: 'RESUME',
+      title: '이력서',
+      subtext: '개인이력카드와 학력·경력사항입니다. 전체경력은 경력사항에서 자동으로 계산됩니다.',
+      action: '경력 추가',
+      authLead: '경력사항을 추가하거나 수정하려면 로그인하세요.',
+    }, session => {
+      signedIn = !!session;
+      $('open-modal').hidden = !signedIn;
+      loadCareers();
+    });
+
+    $('open-modal').addEventListener('click', () => openModal(null));
+    render();
+  </script>
+</body>
+</html>

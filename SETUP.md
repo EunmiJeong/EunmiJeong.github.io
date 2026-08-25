@@ -49,6 +49,13 @@ create policy "본인 데이터 삭제" on projects for delete using (auth.uid()
 >   for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 > ```
 
+### 이력서 경력사항 테이블
+
+이력서 페이지의 경력사항은 화면에서 추가·수정·삭제할 수 있고 별도 테이블에 저장됩니다.
+[resume-careers.sql](resume-careers.sql) 을 SQL Editor에서 실행하세요.
+테이블 생성과 함께 기존 경력 11건이 같이 들어갑니다.
+개인이력카드와 학력사항은 `resume.html` 안의 `PROFILE` / `SCHOOLS` 배열을 직접 고칩니다.
+
 ## 3. 내 계정 만들기
 
 **Authentication → Users → Add user → Create new user**
