@@ -1,9 +1,15 @@
 :root {
-  --ink: #2e2740; 
-  --muted: #948da8; 
-  --line: #ece7f3; 
-  --paper: #fff; 
-  --canvas: #fff1f7;
+  --ink: #2e2740;
+  --muted: #8b8d96;
+  --line: #e9eaee;
+  --paper: #fff;
+  /* 중립 회색. 인풋·보조 버튼·표 머리글처럼 브랜드색이 필요 없는 면은 전부 아래 세 개를 쓴다.
+     보라색은 히어로·그라데이션 버튼·스킬칩 같은 강조 요소에만 남긴다. */
+  --field: #f2f3f5;        /* 인풋 · 보조 버튼 배경 */
+  --field-hover: #e6e8ec;  /* 위의 hover 상태 */
+  --surface: #f7f8fa;      /* 표 머리글 · 카드 안쪽 블록 */
+  --ink-soft: #5f6270;     /* 본문보다 한 톤 옅은 글자 */
+  --canvas: #f5f1f9; /*#fff1f7;*/
   --pink: #f89dc8; 
   --violet: #a6a3e8; 
   --brand: #c08cd8; 
@@ -19,8 +25,8 @@
   --r-md: 15px; 
   --r-sm: 8px; 
   --r-pill: 999px;
-  --shadow: 0 18px 40px -22px #9b7ab866, 0 2px 6px -2px #9b7ab822;
-  --shadow-lift: 0 26px 55px -24px #9b7ab880, 0 3px 10px -3px #9b7ab830;
+  --shadow: 0 18px 40px -22px #8b8d9666, 0 2px 6px -2px #8b8d9622;
+  --shadow-lift: 0 26px 55px -24px #8b8d9680, 0 3px 10px -3px #8b8d9630;
   --shadow-brand: 0 14px 30px -12px #c08cd899;
 }
 
@@ -59,7 +65,8 @@
 * { box-sizing: border-box; }
 /* 화면에 고정된 배경. 헤더 물결이 끝나는 420px 까지는 --canvas 를 유지해 물결 마지막
    레이어와 색을 맞추고, 그 아래부터 화면 하단으로 가며 흰색이 된다. 스크롤해도 안 움직인다. */
-body { margin: 0; min-height: 100vh; font-family:var(--font); color: var(--ink); background: linear-gradient(180deg,#fff 0 420px,  var(--canvas)100%) fixed}
+body { margin: 0; min-height: 100vh; font-family:var(--font); color: var(--ink); background: var(--canvas); letter-spacing:-.5px;}
+/* linear-gradient(180deg,#fff 0 420px,  var(--canvas)100%) fixed */
 .app { min-height: 100vh; }
 [hidden] { display: none !important; }
 
@@ -156,34 +163,37 @@ h2, h3 { margin: 0; font-family: var(--font-head); font-size: 1.05rem; font-weig
 .table-wrap { overflow: auto; border-radius: var(--r-lg); background: var(--paper); box-shadow: var(--shadow); }
 .card-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .card-list[hidden], .table-wrap[hidden] { display: none !important; }
-table { width: 100%; min-width: 680px; border-collapse: collapse; text-align: left; }
-th { padding: 18px 22px; color: var(--muted); background: #faf6fc; font-size: .72rem; font-weight: 700; }
+table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; }
+th { padding: 18px 22px; color: var(--muted); background: var(--surface); font-size: .72rem; font-weight: 700; }
 th:first-child { border-radius: var(--r-lg) 0 0 0; }
 th:last-child { border-radius: 0 var(--r-lg) 0 0; }
 td { padding: 18px 22px; border-top: 1px solid var(--line); font-size: .86rem; vertical-align: middle; }
 .project-name { font-weight: 700; }
 .client { color: var(--muted); }
-.period { color: #6b6280; white-space: nowrap; font-size: .8rem; }
+.period { width: 1%; color: var(--ink-soft); white-space: nowrap; font-size: .8rem; }
+/* 기준일로 잘린 실제 기간을 일수·개월로 나눠 보여 주는 칸. 숫자를 비교하기 쉽게 폭을 좁게 잡는다. */
+.span-days, .span-months { width: 1%; color: var(--ink-soft); white-space: nowrap; font-size: .8rem; font-weight: 700; }
+.span-months { color: var(--deep); }
 .skill-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .skill { padding: 5px 12px; border-radius: var(--r-pill); color: var(--deep); background: var(--soft); font-size: .7rem; font-weight: 700; }
 .notes { max-width: 260px; color: var(--muted); font-size: .8rem; }
 .row-actions { display: flex; gap: 4px; align-items: center; justify-content: flex-end; }
-.row-button, .card-button { display: grid; place-items: center; width: 34px; height: 34px; border: 0; padding: 0; border-radius: 50%; color: #a79fba; background: #f5f1f9; font: inherit; cursor: pointer; transition: .2s; }
+.row-button, .card-button { display: grid; place-items: center; width: 34px; height: 34px; border: 0; padding: 0; border-radius: 50%; color: #9296a1; background: var(--field); font: inherit; cursor: pointer; transition: .2s; }
 .row-button .icon, .card-button .icon { font-size: 19px; pointer-events: none; }
 .row-button:hover, .card-button:hover { color: var(--deep); background: var(--soft); }
 .row-button[data-delete]:hover, .card-button[data-delete]:hover { color: var(--red); background: #fdeef4; }
 .empty { padding: 60px 20px; border-radius: var(--r-lg); background: var(--paper); box-shadow: var(--shadow); color: var(--muted); text-align: center; line-height: 1.7; }
 
 /* ── 카드 뷰 ───────────────────────────── */
-.project-card { padding: 26px; border-radius: var(--r-lg); background: var(--paper); box-shadow: var(--shadow); transition: .25s; }
+.project-card { padding: 26px; border-radius: var(--r-lg); background: var(--paper); border:1px solid var(--line); box-shadow: var(--shadow); transition: .25s; }
 .project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
 .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
 .card-title { margin: 0; font-family: var(--font-head); font-size: 1.05rem; font-weight: 800; }
 .card-client { margin: 6px 0 18px; color: var(--muted); font-size: .8rem; }
 .card-span { display: block; margin-top: 5px; color: var(--muted); font-size: .74rem; font-weight: 700; }
-.card-period { padding: 12px 16px; border-radius: var(--r-sm); background: #faf6fc; color: #6b6280; font-size: .8rem; }
+.card-period { padding: 12px 16px; border-radius: var(--r-sm); background: var(--surface); color: var(--ink-soft); font-size: .8rem; }
 .card-skills { margin-top: 16px; }
-.card-notes { margin: 16px 0 0; padding: 14px 16px; border-radius: var(--r-sm); background: #faf6fc; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+.card-notes { margin: 16px 0 0; padding: 14px 16px; border-radius: var(--r-sm); background: var(--surface); color: var(--muted); font-size: .8rem; line-height: 1.6; }
 
 /* ── 모달 ──────────────────────────────── */
 dialog { width: min(560px, calc(100% - 24px)); padding: 0; border: 0; border-radius: var(--r-lg); box-shadow: 0 40px 90px -30px #8e6fc459; }
@@ -191,9 +201,9 @@ dialog::backdrop { background: #8e6fc459; backdrop-filter: blur(3px); }
 .modal { padding: 34px; }
 .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .modal h2 { font: 800 1.5rem var(--font-head); }
-.close { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; color: var(--muted); background: #f5f1f9; line-height: 1; cursor: pointer; }
+.close { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; color: var(--muted); background: var(--field); line-height: 1; cursor: pointer; }
 .close .icon { font-size: 21px; }
-.close:hover { color: var(--ink); background: var(--line); }
+.close:hover { color: var(--ink); background: var(--field-hover); }
 
 /* ── 확인 모달 ─────────────────────────── */
 #confirm-dialog { width: min(420px, calc(100% - 24px)); }
@@ -207,7 +217,7 @@ dialog::backdrop { background: #8e6fc459; backdrop-filter: blur(3px); }
 form { display: grid; gap: 18px; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 label { display: block; margin-bottom: 7px; font-size: .78rem; font-weight: 700; }
-input, textarea, select { width: 100%; border: 1px solid transparent; padding: 13px 16px; border-radius: var(--r-sm); color: var(--ink); background: #f5f1f9; font: inherit; outline: 0; transition: .2s; }
+input, textarea, select { width: 100%; border: 1px solid transparent; padding: 13px 16px; border-radius: var(--r-sm); color: var(--ink); background: var(--field); font: inherit; outline: 0; transition: .2s; }
 input:focus, textarea:focus, select:focus { border-color: var(--brand); background-color: #fff; box-shadow: 0 0 0 4px #c08cd82e; }
 select { appearance: none; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 20px) 55%, calc(100% - 14px) 55%; background-size: 6px 6px; background-repeat: no-repeat; }
 input[type="checkbox"] { width: auto; }
@@ -223,8 +233,10 @@ textarea { min-height: 82px; border-radius: var(--r-sm); resize: vertical; }
 .selected-skills .icon { font-size: 16px; pointer-events: none; }
 .selected-skills button:hover { background: #eddcf7; }
 .form-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 5px; }
-.form-actions button { display: inline-flex; gap: 6px; align-items: center; border: 0; padding: 13px 22px; border-radius: var(--r-pill); background: #f5f1f9; font: inherit; cursor: pointer; transition: .2s; }
-.form-actions button:hover { background: var(--line); }
+.form-actions button { display: inline-flex; gap: 6px; align-items: center; border: 0; padding: 13px 22px; border-radius: var(--r-pill); background: var(--field); font: inherit; cursor: pointer; transition: .2s; }
+/* .save 는 제외한다. 그러지 않으면 이 규칙이 .form-actions .save 보다 특이도가 높아
+   그라데이션 배경을 회색으로 덮어써서 흰 글자가 안 보인다. */
+.form-actions button:not(.save):hover { background: var(--field-hover); }
 .form-actions .save { color: #fff; background: var(--grad); font-weight: 700; box-shadow: var(--shadow-brand); }
 .form-actions .save:hover { filter: brightness(1.05); }
 
@@ -234,7 +246,9 @@ textarea { min-height: 82px; border-radius: var(--r-sm); resize: vertical; }
 }
 
 @media (max-width: 760px) {
-  body { background-image: linear-gradient(180deg, var(--canvas) 0 320px, #fff 100%); }
+  /* 모바일은 물결이 끝나는 위치가 더 위(약 280px)라 흰색 구간만 줄인다.
+     데스크톱과 색 순서(흰색 → --canvas)는 반드시 같아야 물결 아래 경계가 안 보인다. */
+  body { background-image: linear-gradient(180deg, #fff 0 280px, var(--canvas) 100%); }
   .hero { padding: 22px 0 100px; }
   .hero-inner { padding: 0 18px; }
   .hero-bar { gap: 10px; margin-bottom: 30px; }
