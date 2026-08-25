@@ -23,18 +23,27 @@ create table projects (
   end_date     date not null,
   client       text not null,
   skills       text[] not null default '{}',
+  notes        text,
   created_at   timestamptz not null default now()
 );
 
 alter table projects enable row level security;
 
-create policy "본인 데이터 조회" on projects for select using (auth.uid() = user_id);
+create policy "누구나 조회" on projects for select using (true);
 create policy "본인 데이터 추가" on projects for insert with check (auth.uid() = user_id);
 create policy "본인 데이터 삭제" on projects for delete using (auth.uid() = user_id);
 ```
 
-마지막 세 줄(RLS 정책)이 **핵심**입니다. 이게 있어야 로그인한 본인 외에는
-DB에 직접 요청을 보내도 데이터를 읽거나 지울 수 없습니다. 지우지 마세요.
+마지막 세 줄(RLS 정책)이 **핵심**입니다. 조회는 누구에게나 열려 있고(포트폴리오로
+보여주기 위함), 추가와 삭제는 로그인한 본인만 가능합니다. 화면에서 버튼을 숨기는 것과
+별개로 DB가 직접 막아주는 부분이라 지우지 마세요.
+
+> **이미 테이블을 만들어 둔 경우**: `notes`(기타) 칸이 나중에 추가됐습니다.
+> SQL Editor에서 아래 한 줄만 실행하면 기존 데이터 그대로 반영됩니다.
+>
+> ```sql
+> alter table projects add column if not exists notes text;
+> ```
 
 ## 3. 내 계정 만들기
 

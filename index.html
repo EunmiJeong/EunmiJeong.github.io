@@ -7,28 +7,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="auth" id="auth-screen" hidden>
+  <dialog id="auth-dialog">
     <form class="auth-card" id="auth-form">
-      <p class="brand auth-brand">project<span>.</span>desk</p>
-      <p class="auth-lead">프로젝트를 확인하려면 로그인하세요.</p>
+      <div class="modal-head"><p class="brand auth-brand">project<span>.</span>desk</p><button class="close" id="close-auth" type="button" aria-label="닫기">×</button></div>
+      <p class="auth-lead">프로젝트를 추가하거나 삭제하려면 로그인하세요.</p>
       <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
       <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
       <p class="auth-message" id="auth-message" hidden></p>
-      <div class="auth-actions"><button class="save" type="submit">로그인</button><button id="signup" type="button">계정 만들기</button></div>
+      <div class="auth-actions"><button class="save" type="submit">로그인</button></div>
     </form>
-  </div>
+  </dialog>
 
-  <div class="app" id="app" hidden>
+  <div class="app" id="app">
     <aside class="sidebar">
       <p class="brand">project<span>.</span>desk</p>
       <p class="nav-label">WORKSPACE</p>
       <div class="nav-item active"><span class="nav-icon">▦</span> 프로젝트</div>
-      <div class="account"><p class="account-mail" id="account-mail"></p><button id="sign-out" type="button">로그아웃</button></div>
+      <div class="account"><p class="account-mail" id="account-mail"></p><button id="sign-in" type="button" hidden>로그인</button><button id="sign-out" type="button" hidden>로그아웃</button></div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div><p class="kicker">WORKSPACE / OVERVIEW</p><h1>프로젝트 관리</h1><p class="subtext">진행 중인 프로젝트와 주요 정보를 한눈에 관리하세요.</p></div>
-        <button class="add-button" id="open-modal" type="button">＋ 프로젝트 추가</button>
+        <button class="add-button" id="open-modal" type="button" hidden>＋ 프로젝트 추가</button>
       </header>
       <div class="notice" id="migrate-notice" hidden>이 브라우저에 저장된 프로젝트 <b id="migrate-count">0</b>건이 있습니다. 계정으로 옮기시겠어요?<button id="migrate" type="button">옮기기</button><button id="migrate-skip" type="button">나중에</button></div>
       <p class="notice error" id="error-notice" hidden></p>
@@ -40,7 +40,7 @@
       <section>
         <div class="content-head"><h2>프로젝트 목록</h2><div class="view-tools"><span class="count" id="list-count">0 projects</span><div class="view-tabs" role="tablist" aria-label="프로젝트 보기 방식"><button class="view-tab active" data-view="card" type="button" role="tab" aria-selected="true">카드형</button><button class="view-tab" data-view="list" type="button" role="tab" aria-selected="false">리스트형</button></div></div></div>
         <div class="card-list" id="card-list"></div>
-        <div class="table-wrap" id="table-view"><table><thead><tr><th>프로젝트명</th><th>기간</th><th>발주처</th><th>스킬</th><th></th></tr></thead><tbody id="project-list"></tbody></table></div>
+        <div class="table-wrap" id="table-view"><table><thead><tr><th>프로젝트명</th><th>기간</th><th>발주처</th><th>스킬</th><th>기타</th><th></th></tr></thead><tbody id="project-list"></tbody></table></div>
         <div class="empty" id="empty-state">아직 등록된 프로젝트가 없습니다.<br>새 프로젝트를 추가해보세요.</div>
       </section>
     </main>
@@ -53,6 +53,7 @@
         <div class="field-row"><div><label for="start-date">시작일 *</label><input id="start-date" name="startDate" type="date" required></div><div><label for="end-date">종료일 *</label><input id="end-date" name="endDate" type="date" required></div></div>
         <div><label for="client">발주처 *</label><input id="client" name="client" type="text" placeholder="예: 주식회사 클라이언트" required></div>
         <div><label for="skill-input">스킬 *</label><div class="skills-input"><input id="skill-input" type="text" placeholder="스킬을 입력하고 추가하세요"><button class="skill-add" id="add-skill" type="button">추가</button></div><p class="helper">예: HTML, CSS, JavaScript</p><div class="selected-skills" id="selected-skills"></div></div>
+        <div><label for="notes">기타</label><textarea id="notes" name="notes" rows="3" placeholder="예: 담당 역할, 성과, 참고 링크 등"></textarea><p class="helper">선택 항목입니다. 비워두어도 저장됩니다.</p></div>
         <div class="form-actions"><button id="cancel-modal" type="button">취소</button><button class="save" id="submit-project" type="submit">프로젝트 저장</button></div>
       </form>
     </div>
@@ -68,8 +69,8 @@
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const storageKey = 'project-desk-projects';
     const $ = id => document.getElementById(id);
-    const dialog = $('project-dialog'), form = $('project-form'), skillInput = $('skill-input');
-    let projects = [], skills = [], viewMode = 'card';
+    const dialog = $('project-dialog'), authDialog = $('auth-dialog'), form = $('project-form'), skillInput = $('skill-input');
+    let projects = [], skills = [], viewMode = 'card', signedIn = false;
 
     const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
     function formatDate(date) { return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(`${date}T00:00:00`)) }
@@ -77,11 +78,12 @@
 
     /* ── 화면 전환 / 인증 ───────────────────── */
     supabase.auth.onAuthStateChange((event, session) => {
-      $('app').hidden = !session;
-      $('auth-screen').hidden = !!session;
-      if (!session) { projects = []; return }
-      $('account-mail').textContent = session.user.email;
-      checkLocalBackup();
+      signedIn = !!session;
+      $('account-mail').textContent = session ? session.user.email : '';
+      $('sign-in').hidden = signedIn;
+      $('sign-out').hidden = !signedIn;
+      $('open-modal').hidden = !signedIn;
+      if (signedIn) { authDialog.close(); checkLocalBackup() } else { $('migrate-notice').hidden = true }
       loadProjects();
     });
 
@@ -91,14 +93,9 @@
       if (error) authMessage('로그인에 실패했습니다. 이메일과 비밀번호를 확인하세요.');
     });
 
-    $('signup').addEventListener('click', async () => {
-      const email = $('auth-email').value, password = $('auth-password').value;
-      if (!email || password.length < 6) return authMessage('이메일과 6자 이상의 비밀번호를 입력하세요.');
-      const { error } = await supabase.auth.signUp({ email, password });
-      authMessage(error ? '계정을 만들지 못했습니다. 이미 가입된 이메일일 수 있습니다.' : '계정이 생성되었습니다. 이제 로그인하세요.');
-    });
-
     function authMessage(message) { const box = $('auth-message'); box.textContent = message; box.hidden = false }
+    $('sign-in').addEventListener('click', () => authDialog.showModal());
+    $('close-auth').addEventListener('click', () => authDialog.close());
     $('sign-out').addEventListener('click', () => supabase.auth.signOut());
 
     /* ── 데이터 ─────────────────────────────── */
@@ -133,7 +130,7 @@
       $('migrate-notice').hidden = saved.length === 0;
     }
     $('migrate').addEventListener('click', async () => {
-      const rows = localBackup().map(project => ({ project_name: project.projectName, start_date: project.startDate, end_date: project.endDate, client: project.client, skills: project.skills }));
+      const rows = localBackup().map(project => ({ project_name: project.projectName, start_date: project.startDate, end_date: project.endDate, client: project.client, skills: project.skills, notes: project.notes || null }));
       if (!rows.length || !await addProjects(rows)) return;
       localStorage.removeItem(storageKey);
       $('migrate-notice').hidden = true;
@@ -152,8 +149,10 @@
       $('table-view').hidden = viewMode !== 'list';
       $('card-list').hidden = viewMode !== 'card';
       const chips = project => project.skills.map(skill => `<span class="skill">${esc(skill)}</span>`).join('');
-      $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${formatDate(project.start_date)}<br>~ ${formatDate(project.end_date)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td><button class="delete-button" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제">삭제</button></td></tr>`).join('');
-      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3><button class="card-delete" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제">삭제</button></div><p class="card-client">${esc(project.client)}</p><div class="card-period">${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}</div><div class="skill-list card-skills">${chips(project)}</div></article>`).join('');
+      const notes = project => project.notes ? esc(project.notes).replace(/\n/g, '<br>') : '';
+      const removeButton = (project, className) => signedIn ? `<button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제">삭제</button>` : '';
+      $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${formatDate(project.start_date)}<br>~ ${formatDate(project.end_date)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${removeButton(project, 'delete-button')}</td></tr>`).join('');
+      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${removeButton(project, 'card-delete')}</div><p class="card-client">${esc(project.client)}</p><div class="card-period">${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}</div><div class="skill-list card-skills">${chips(project)}</div>${project.notes ? `<p class="card-notes">${notes(project)}</p>` : ''}</article>`).join('');
     }
 
     /* ── 입력 ───────────────────────────────── */
@@ -178,7 +177,7 @@
       if (!skills.length) return skillInput.focus();
       const data = new FormData(form), button = $('submit-project');
       button.disabled = true;
-      const saved = await addProjects([{ project_name: data.get('projectName'), start_date: data.get('startDate'), end_date: data.get('endDate'), client: data.get('client'), skills: [...skills] }]);
+      const saved = await addProjects([{ project_name: data.get('projectName'), start_date: data.get('startDate'), end_date: data.get('endDate'), client: data.get('client'), skills: [...skills], notes: data.get('notes').trim() || null }]);
       button.disabled = false;
       if (!saved) return;
       form.reset(); skills = []; renderSkills(); dialog.close();
