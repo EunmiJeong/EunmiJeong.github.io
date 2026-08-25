@@ -52,8 +52,30 @@ create policy "본인 데이터 삭제" on projects for delete using (auth.uid()
 ### 이력서 경력사항 테이블
 
 이력서 페이지의 경력사항은 화면에서 추가·수정·삭제할 수 있고 별도 테이블에 저장됩니다.
-[resume-careers.sql](resume-careers.sql) 을 SQL Editor에서 실행하세요.
-테이블 생성과 함께 기존 경력 11건이 같이 들어갑니다.
+SQL Editor에서 아래를 실행하세요.
+
+```sql
+create table resume_careers (
+  id           uuid primary key default gen_random_uuid(),
+  user_id      uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  company      text not null,
+  role         text not null,
+  start_date   date not null,
+  end_date     date,                     -- 비어 있으면 재직중 (오늘까지 계산)
+  leave_months int  not null default 0,  -- 휴직 개월수 (경력에서 차감)
+  leave_reason text,                     -- 예: 육아휴직
+  created_at   timestamptz not null default now()
+);
+
+alter table resume_careers enable row level security;
+
+create policy "누구나 조회" on resume_careers for select using (true);
+create policy "본인 데이터 추가" on resume_careers for insert with check (auth.uid() = user_id);
+create policy "본인 데이터 수정" on resume_careers for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "본인 데이터 삭제" on resume_careers for delete using (auth.uid() = user_id);
+```
+
+경력은 테이블을 만든 뒤 이력서 화면의 **＋ 경력 추가** 버튼으로 등록하면 됩니다.
 개인이력카드와 학력사항은 `resume.html` 안의 `PROFILE` / `SCHOOLS` 배열을 직접 고칩니다.
 
 ## 3. 내 계정 만들기

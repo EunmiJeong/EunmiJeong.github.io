@@ -118,7 +118,7 @@
     /* ── 데이터 ─────────────────────────────── */
     async function loadCareers() {
       const { data, error } = await supabase.from('resume_careers').select('*').order('start_date', { ascending: false });
-      if (error) { careers = []; showError('경력사항을 불러오지 못했습니다. resume-careers.sql 과 resume-careers-to-daily.sql 을 실행했는지 확인하세요.', error) }
+      if (error) { careers = []; showError('경력사항을 불러오지 못했습니다. SETUP.md 의 resume_careers 테이블을 만들었는지 확인하세요.', error) }
       else { careers = data; showError('') }
       render();
     }
