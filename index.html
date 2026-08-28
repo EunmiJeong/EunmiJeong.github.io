@@ -30,10 +30,10 @@
       <div class="view" data-view="projects">
       <div class="notice" id="migrate-notice" hidden>이 브라우저에 저장된 프로젝트 <b id="migrate-count">0</b>건이 있습니다. 계정으로 옮기시겠어요?<button id="migrate" type="button">옮기기</button><button id="migrate-skip" type="button">나중에</button></div>
       <section class="overview" aria-label="프로젝트 요약">
-        <div class="stat primary"><p class="stat-title"><span class="icon" aria-hidden="true">workspace_premium</span>총 경력</p><p class="stat-value" id="career-total">0년 0개월</p><p class="stat-sub" id="career-days">0일</p></div>
-        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">folder_open</span>전체 프로젝트</p><p class="stat-value" id="total-count">0</p></div>
-        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">layers</span>중복 제외된 기간</p><p class="stat-value" id="overlap-days">0일</p></div>
-        <div class="stat"><p class="stat-title"><span class="icon" aria-hidden="true">bolt</span>진행 중</p><p class="stat-value" id="active-count">0</p></div>
+        <div class="stat primary"><span class="icon stat-icon" aria-hidden="true">workspace_premium</span><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value" id="career-total">0년 0개월</p><p class="stat-sub" id="career-days">0일</p></div></div>
+        <div class="stat"><span class="icon stat-icon" aria-hidden="true">folder_open</span><p class="stat-title">전체 프로젝트</p><p class="stat-value" id="total-count">0</p></div>
+        <div class="stat"><span class="icon stat-icon" aria-hidden="true">layers</span><p class="stat-title">중복 제외된 기간</p><p class="stat-value" id="overlap-days">0일</p></div>
+        <div class="stat"><span class="icon stat-icon" aria-hidden="true">bolt</span><p class="stat-title">진행 중</p><p class="stat-value" id="active-count">0</p></div>
       </section>
 
       <section class="panel" aria-label="계산 옵션">
@@ -307,7 +307,7 @@
       const notes = project => project.notes ? esc(project.notes).replace(/\n/g, '<br>') : '';
       const rowButtons = (project, className) => signedIn ? `<div class="row-actions"><button class="${className}" type="button" data-edit="${project.id}" aria-label="${esc(project.project_name)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button><button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button></div>` : '';
       $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${shortDate(project.start_date)} ~ ${shortDate(project.end_date)}</td><td class="span-days">${dayCell(project)}</td><td class="span-months">${monthCell(project)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${rowButtons(project, 'row-button')}</td></tr>`).join('');
-      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${rowButtons(project, 'card-button')}</div><p class="card-period"><span class="icon" aria-hidden="true">calendar_month</span>${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}${span(project)}</p><p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>${esc(project.client)}</p><div class="card-skills"><span class="icon" aria-hidden="true">history_edu</span><div class="skill-list">${chips(project)}</div></div>${project.notes ? `<div class="card-notes">${notes(project)}</div>` : ''}</article>`).join('');
+      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${rowButtons(project, 'card-button')}</div><p class="card-period"><span class="icon" aria-hidden="true">date_range</span>${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}${span(project)}</p><p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>${esc(project.client)}</p><div class="card-skills"><span class="icon" aria-hidden="true">interests</span><div class="skill-list">${chips(project)}</div></div>${project.notes ? `<div class="card-notes">${notes(project)}</div>` : ''}</article>`).join('');
     }
 
     /* ── 입력 ───────────────────────────────── */
