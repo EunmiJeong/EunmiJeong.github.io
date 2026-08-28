@@ -446,9 +446,19 @@ export function mountLayout(options) {
     if (error) box.textContent = '로그인에 실패했습니다. 이메일과 비밀번호를 확인하세요.';
   });
 
-  $('sign-in').addEventListener('click', () => authDialog.showModal());
+  $('sign-in').addEventListener('click', openAuth);
   $('close-auth').addEventListener('click', () => authDialog.close());
   $('sign-out').addEventListener('click', async () => (await client()).auth.signOut());
+}
+
+/**
+ * 로그인 모달을 연다. 헤더의 로그인 버튼 말고도, 로그인해야 할 수 있는 일을
+ * 눌렀을 때(카드의 수정·삭제 등) 그 자리에서 부르라고 내보낸다.
+ * mountLayout() 전에 부르면 모달이 아직 없으므로 아무 일도 하지 않는다.
+ */
+export function openAuth() {
+  const dialog = document.getElementById('auth-dialog');
+  if (dialog && !dialog.open) dialog.showModal();
 }
 
 const openedAt = performance.now();

@@ -119,7 +119,7 @@
 
   <script type="module">
     import { supabase } from './supabase.js';
-    import { onAuthChange, confirmAsk, pageReady } from './layout.js';
+    import { onAuthChange, confirmAsk, pageReady, openAuth } from './layout.js';
 
     /* 프로젝트 관리(#projects)와 이력서(#resume) 두 뷰가 이 파일 하나를 같이 쓴다.
        공용은 $ · esc · toDate · DAY · showError · signedIn 뿐이고, 나머지는 뷰별로 이름을 나눠 뒀다. */
@@ -133,9 +133,11 @@
     const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
     const toDate = value => new Date(`${value}T00:00:00`);
     const toISO = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    function formatDate(date) { return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(`${date}T00:00:00`)) }
-    // 리스트형 전용 짧은 표기(26.03.22). 저장 값이 YYYY-MM-DD 라 문자열만 잘라 쓴다 — 시간대 영향이 없다.
+    /* 아래 둘은 저장 값이 YYYY-MM-DD 라 문자열만 잘라 쓴다 — Date 를 거치지 않으니 시간대 영향이 없다.
+       리스트형은 좁은 칸에 여덟 열이 들어차므로 연도를 두 자리로 줄이고(26.03.22),
+       카드형은 자리가 넉넉하고 카드가 저마다 독립된 덩어리라 연도를 다 적는다(2026.03.22). */
     const shortDate = date => String(date).slice(2).replace(/-/g, '.');
+    const dotDate = date => String(date).replace(/-/g, '.');
     /* 알림 줄은 두 뷰가 함께 쓰므로 어디서 난 오류인지 key 로 나눠 담는다.
        그러지 않으면 한쪽이 성공할 때 다른 쪽 오류 메시지를 지워 버린다. */
     const errors = {};
@@ -189,8 +191,8 @@
       return true;
     }
 
-    async function removeProject(event) {
-      const id = event.target.dataset.delete;
+    async function removeProject(button) {
+      const id = button.dataset.delete;
       if (!id) return;
       const project = projects.find(item => item.id === id);
       const ok = await confirmAsk({
@@ -305,9 +307,12 @@
       const monthCell = project => { const days = spanDays.get(project.id); return days ? spanLabel(days) : '' };
       const chips = project => project.skills.map(skill => `<span class="skill">${esc(skill)}</span>`).join('');
       const notes = project => project.notes ? esc(project.notes).replace(/\n/g, '<br>') : '';
-      const rowButtons = (project, className) => signedIn ? `<div class="row-actions"><button class="${className}" type="button" data-edit="${project.id}" aria-label="${esc(project.project_name)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button><button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button></div>` : '';
+      // 버튼은 로그인 여부와 상관없이 항상 그린다. 로그인 전에 감춰 두면 카드의 오른쪽
+      // 위가 로그인 전후로 달라져 화면이 흔들리고, 무엇보다 "고칠 수 있는 화면"이라는
+      // 걸 알 방법이 없다. 로그인이 필요한 건 누른 다음에 listClick 이 알려 준다.
+      const rowButtons = (project, className) => `<div class="row-actions"><button class="${className}" type="button" data-edit="${project.id}" aria-label="${esc(project.project_name)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button><button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button></div>`;
       $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${shortDate(project.start_date)} ~ ${shortDate(project.end_date)}</td><td class="span-days">${dayCell(project)}</td><td class="span-months">${monthCell(project)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${rowButtons(project, 'row-button')}</td></tr>`).join('');
-      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${rowButtons(project, 'card-button')}</div><p class="card-period"><span class="icon" aria-hidden="true">date_range</span>${formatDate(project.start_date)} ~ ${formatDate(project.end_date)}${span(project)}</p><p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>${esc(project.client)}</p><div class="card-skills"><span class="icon" aria-hidden="true">interests</span><div class="skill-list">${chips(project)}</div></div>${project.notes ? `<div class="card-notes">${notes(project)}</div>` : ''}</article>`).join('');
+      $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${rowButtons(project, 'card-button')}</div><p class="card-period">${dotDate(project.start_date)} ~ ${dotDate(project.end_date)}${span(project)}</p><p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>${esc(project.client)}</p><div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list">${chips(project)}</div></div>${project.notes ? `<div class="card-notes">${notes(project)}</div>` : ''}</article>`).join('');
     }
 
     /* ── 입력 ───────────────────────────────── */
@@ -348,8 +353,13 @@
     }
 
     function listClick(event) {
-      const id = event.target.dataset.edit;
-      if (!id) return removeProject(event);
+      const button = event.target.closest('button');
+      if (!button) return;
+      // 로그인 전이면 수정도 삭제도 하지 않고 로그인 모달만 띄운다. 로그인에 성공하면
+      // onAuthChange 가 목록을 다시 그리므로, 이어서 같은 버튼을 누르면 그대로 열린다.
+      if (!signedIn) return openAuth();
+      const id = button.dataset.edit;
+      if (!id) return removeProject(button);
       const project = projects.find(item => item.id === id);
       if (project) openProjectModal(project);
     }
@@ -457,8 +467,8 @@
       return `<span class="strike">${careerLabel(gross)}</span> ${careerLabel(net)}<span class="note">(${esc(reason)} ${row.leave_months}개월)</span>`;
     }
 
+    // 프로젝트 쪽과 같은 이유로 로그인 전에도 그대로 그린다.
     function careerRowButtons(row) {
-      if (!signedIn) return '';
       return `<div class="row-actions">
         <button class="row-button" type="button" data-edit="${row.id}" aria-label="${esc(row.company)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button>
         <button class="row-button" type="button" data-delete="${row.id}" aria-label="${esc(row.company)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button>
@@ -520,6 +530,7 @@
     $('career-list').addEventListener('click', async event => {
       const button = event.target.closest('button');
       if (!button) return;
+      if (!signedIn) return openAuth();
       const id = button.dataset.edit || button.dataset.delete;
       const row = careers.find(item => item.id === id);
       if (!row) return;

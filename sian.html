@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시안</title>
+  <!-- 앱의 토큰·폰트를 그대로 물려받는다. 미리보기 카드가 실제 화면과 같은 색·같은
+       글꼴로 그려져야 비교가 의미가 있다. 이 파일은 앱 화면이 아니라 시안 보드라
+       페이지 자체의 꾸밈만 아래 <style> 에서 따로 얹는다. -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── 시안 보드 ─────────────────────────────
+     style.css 다음에 오므로 같은 특이도면 이쪽이 이긴다. 앱 클래스를 건드릴 때는
+     반드시 .sian 안쪽으로 한정해 실제 화면에 새어 나가지 않게 한다. */
+  body{padding:0;background:#e9eaf3;}
+  .sian{
+    max-width:1060px;margin:0 auto;
+    padding:clamp(30px,5vw,72px) 20px 110px;
+    display:flex;flex-direction:column;gap:clamp(44px,5.5vw,72px);
+    color:var(--ink);font-size:.95rem;line-height:1.75;letter-spacing:-.01em;
+  }
+
+  /* 머리 */
+  .sian-head{display:flex;flex-direction:column;gap:12px;max-width:620px;}
+  .sian-eyebrow{margin:0;color:var(--deep);font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;}
+  /* style.css 의 h1 은 그라데이션 밴드 위에 놓이는 흰 글자다. 여기는 밝은 바탕이라
+     색을 반드시 되돌려야 한다 — 안 그러면 흰 글자가 흰 바탕에 묻힌다. */
+  .sian h1{margin:0;color:var(--ink);font:800 clamp(1.8rem,4vw,2.5rem)/1.3 var(--font-head);letter-spacing:-.04em;text-wrap:balance;}
+  .sian-lede{margin:0;color:var(--ink-soft);line-height:1.8;}
+  .sian hr{height:1px;margin:0;border:0;background:var(--line);}
+
+  /* 섹션 */
+  /* style.css 의 section 은 아래 여백 34px 을 갖는다. 여기서는 .sian 의 gap 이
+     간격을 맡으므로 그 여백을 지워야 두 번 벌어지지 않는다. */
+  .sian section{display:flex;flex-direction:column;gap:22px;margin:0;}
+  .sian-title{display:flex;flex-direction:column;gap:6px;max-width:660px;}
+  .sian-title h2{font:800 clamp(1.25rem,2.4vw,1.5rem)/1.4 var(--font-head);letter-spacing:-.03em;}
+  .sian-title p{margin:0;color:var(--muted);font-size:.9rem;}
+
+  /* 한 안(案)을 담는 판 — 왼쪽 미리보기, 오른쪽 근거 */
+  .case{
+    display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);
+    gap:clamp(22px,3.5vw,44px);align-items:start;
+    padding:clamp(20px,2.6vw,30px);
+    border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);
+  }
+  @media (max-width:860px){ .case{grid-template-columns:1fr;} }
+
+  .case-copy{display:flex;flex-direction:column;gap:15px;min-width:0;}
+  .case-name{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap;margin:0;font:800 1.15rem var(--font-head);letter-spacing:-.02em;}
+  .case-copy > p{margin:0;color:var(--ink-soft);font-size:.9rem;line-height:1.8;}
+  .flag{flex:none;padding:3px 10px;border-radius:var(--r-pill);font-size:.67rem;font-weight:600;letter-spacing:.03em;}
+  .flag.live{color:#35876a;background:#e6f5ed;}
+  .flag.old{color:var(--red-deep);background:var(--red-soft);}
+
+  /* 근거 목록 */
+  .why{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .why li{position:relative;padding-left:19px;color:var(--ink-soft);font-size:.88rem;line-height:1.75;}
+  .why li::before{content:"";position:absolute;left:0;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--brand);}
+  .why b{color:var(--ink);font-weight:600;}
+  .why code, .sian-title code, .sian-lede code{padding:1px 5px;border-radius:4px;background:var(--field);font-family:var(--font);font-size:.9em;}
+
+  .when{margin:0;padding:11px 15px;border-radius:var(--r-sm);background:var(--soft);color:var(--ink-soft);font-size:.84rem;line-height:1.7;}
+  .when b{color:var(--deep);font-weight:600;}
+
+  /* 미리보기 무대 — 앱의 본문 바탕색을 그대로 깐다 */
+  .stage{display:flex;justify-content:center;padding:26px 20px;border-radius:var(--r-md);background:#f5f6fe;}
+  .stage > .project-card{max-width:340px;padding:26px;}
+  .stage-note{margin:9px 0 0;color:var(--muted);font-size:.74rem;text-align:center;}
+
+  /* ── 지난 시안들 ──────────────────────────
+     앱에서 이미 걷어낸 모양이라 여기에만 남겨 둔다. 실제 화면에는 없는 클래스다. */
+  /* 구안: 원 배지 + 라벨 + 알약 */
+  .v-old .card-period{display:flex;gap:7px;align-items:center;margin:10px 0 0;padding:7px 14px;border:1px solid var(--line);border-radius:var(--r-pill);color:var(--ink-soft);background:#fafbfe;}
+  .v-old .card-period .icon{width:auto;margin-top:-1px;font-size:17px;color:var(--muted);}
+  .v-old .card-client{margin-top:20px;color:var(--muted);}
+  .v-old .card-skills{margin-top:8px;}
+  .v-old .card-client .icon, .v-old .card-skills .icon{display:grid;place-items:center;width:32px;height:32px;margin:0;border-radius:50%;color:var(--muted);background:var(--field);font-size:20px;}
+  .v-old .lbl{flex:none;width:46px;color:var(--muted);font-size:.72rem;font-weight:600;}
+  .v-old .card-skills .lbl{padding-top:8px;}
+
+  /* A 정렬형 */
+  .v-a .meta{display:grid;grid-template-columns:52px minmax(0,1fr);gap:11px 12px;margin:18px 0 0;align-items:baseline;}
+  .v-a dt{margin:0;color:var(--placeholder);font-size:.72rem;font-weight:600;letter-spacing:.04em;}
+  .v-a dd{margin:0;color:var(--ink-soft);font-size:.84rem;font-variant-numeric:tabular-nums;}
+  .v-a dd.chips{align-self:center;}
+
+  /* B 여백형 */
+  .v-b .client{margin:6px 0 0;color:var(--ink-soft);font-size:.85rem;}
+  .v-b .date{margin:3px 0 0;color:var(--muted);font-size:.77rem;font-variant-numeric:tabular-nums;}
+  .v-b .skill-list{margin-top:20px;}
+
+  /* C 아이콘 레일형 — 기간까지 레일에 세운 형태 */
+  .v-c .rail{display:grid;grid-template-columns:22px minmax(0,1fr);gap:13px 10px;margin-top:18px;align-items:center;}
+  .v-c .rail > .icon{justify-self:center;width:auto;margin:0;font-size:19px;color:var(--placeholder);}
+  .v-c .val{color:var(--ink-soft);font-size:.85rem;}
+
+  /* D 머리글형 */
+  .v-d .over{display:block;margin:0 0 7px;color:var(--placeholder);font-size:.7rem;font-weight:600;letter-spacing:.06em;font-variant-numeric:tabular-nums;}
+  .v-d .client{margin:9px 0 0;color:var(--ink-soft);font-size:.85rem;}
+  .v-d .skill-list{margin-top:18px;}
+
+  /* ── 카드 버튼 시안 ───────────────────────
+     .card-button 은 앱의 실제 클래스다. 아래는 전부 .b-* 안쪽으로만 덮어쓴다. */
+
+  /* 구안: 테두리를 가진 34px 상자 둘. 앱에서는 걷어냈으므로 여기에만 남겨 둔다. */
+  .b-old .card-top .row-actions{gap:4px;margin-right:0;}
+  .b-old .card-button{width:34px;height:34px;border:1px solid var(--field);border-radius:var(--r-sm);background:#fff;color:var(--muted);}
+  .b-old .card-button:hover{color:var(--deep);background:var(--soft);border-color:transparent;}
+  .b-old .card-button[data-delete]:hover{color:var(--red);background:var(--red-soft);border-color:transparent;}
+
+  /* A 유령형 — 면을 아예 주지 않고 글리프만. 면이 없으니 오른쪽을 되밀어야 한다. */
+  .b-a .card-top .row-actions{gap:2px;margin-right:-6px;}
+  .b-a .card-button{background:transparent;color:var(--placeholder);}
+
+  /* A′ 회색 원형 — 지금 적용된 모양이라 덮어쓸 것이 없다. style.css 의 .card-button 그대로다. */
+
+  /* B 세그먼트형 — 두 버튼을 한 테두리 안에 붙인다 */
+  .b-b .card-top .row-actions{gap:0;margin-right:0;border:1px solid var(--field-line);border-radius:var(--r-sm);overflow:hidden;}
+  .b-b .card-button{width:33px;height:30px;border:0;border-radius:0;background:#fff;color:var(--muted);}
+  .b-b .card-button + .card-button{border-left:1px solid var(--field);}
+  .b-b .card-button:hover{background:var(--field);color:var(--ink);}
+  .b-b .card-button[data-delete]:hover{color:var(--red);background:var(--red-soft);}
+
+  /* C 더보기형 — 점 세 개 하나로 접는다 */
+  /* 더보기는 수정도 삭제도 아니라 색으로 갈릴 것이 없다 — 면만 한 톤 진해진다. */
+  .b-c .card-button:hover{background:var(--field-hover);color:var(--ink);}
+
+  /* D 아래줄형 — 카드 맨 아래, 이미 있는 구분선 오른쪽에 앉힌다 */
+  .b-d .card-foot{display:flex;gap:14px;align-items:center;justify-content:space-between;margin:16px 0 0;padding:9px 0 0;border-top:1px solid var(--line);}
+  .b-d .card-notes{margin:0;padding:0;border:0;}
+  .b-d .row-actions{flex:none;gap:6px;}
+
+  /* 원칙 */
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;border-radius:var(--r-md);overflow:hidden;background:var(--line);}
+  .rules div{display:flex;flex-direction:column;gap:5px;padding:22px 24px;background:var(--paper);}
+  .rules h3{margin:0;font:700 .96rem var(--font-head);letter-spacing:-.01em;}
+  .rules p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.7;}
+
+  .sian footer{color:var(--muted);font-size:.82rem;}
+  .sian footer a{color:var(--deep);}
+  </style>
+</head>
+<body>
+
+<div class="sian">
+
+  <header class="sian-head">
+    <p class="sian-eyebrow">프로젝트 카드</p>
+    <h1>장식을 덜어내는 방법</h1>
+    <p class="sian-lede">
+      카드가 산만했던 건 색이나 여백 때문이 아니라, 정보 하나마다 장식을 하나씩 붙여
+      놓았기 때문입니다. 지금 적용된 모양을 먼저 두고, 그 결정에 이르기까지 견줘 본
+      안들을 아래에 남겨 둡니다. 먼저 <b>카드 본문</b>, 이어서 <b>오른쪽 위 버튼</b>입니다.
+      미리보기는 전부 <code>style.css</code>의 실제 토큰과 글꼴로 그립니다.
+    </p>
+  </header>
+
+  <hr>
+
+  <!-- ── 지금 적용된 모양 ──────────────────── -->
+  <section>
+    <div class="sian-title">
+      <h2>지금 쓰는 모양</h2>
+      <p>아래 미리보기는 앱과 같은 클래스를 쓰므로, <code>style.css</code>를 고치면 여기도 함께 바뀝니다.</p>
+    </div>
+
+    <div class="case">
+      <div>
+        <div class="stage">
+          <article class="project-card">
+            <div class="card-top">
+              <h3 class="card-title">하나카드 스마트창구 구축</h3>
+              <div class="row-actions">
+                <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+                <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              </div>
+            </div>
+            <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+            <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+            <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+            <div class="card-notes">전자서식, 태블릿 단말</div>
+          </article>
+        </div>
+        <p class="stage-note">실제 화면과 같은 클래스로 그린 미리보기입니다</p>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">A+C 혼합 <span class="flag live">적용됨</span></h3>
+        <p>기간은 제목에 붙이고, 발주처와 기술만 아이콘 레일에 세웠습니다. 카드가 두 덩어리로 갈립니다.</p>
+        <ul class="why">
+          <li><b>[제목 + 기간]이 한 덩어리입니다.</b> 무엇을 · 언제는 프로젝트의 정체이고, 발주처와 기술은 거기 딸린 속성입니다. 8px으로 붙이고 22px으로 뗀 간격이 그 구조를 그대로 말해 줍니다.</li>
+          <li><b>기간에서 아이콘을 뺐습니다.</b> 날짜는 생김새만 봐도 날짜라 달력 아이콘이 알려 줄 게 없습니다. 아이콘을 달면 아래 레일과 같은 줄에 서 버려서, "제목에 딸린 것"이라는 간격의 신호와 어긋납니다.</li>
+          <li><b>아이콘을 원에서 꺼냈습니다.</b> 원에 담으면 20px 글리프가 32px 덩어리가 되어 옆의 스킬 칩과 무게를 다툽니다. 폭만 22px으로 못박아 두 값의 시작선을 맞췄습니다.</li>
+          <li><b>아이콘 색은 <code>--placeholder</code>까지 뺐습니다.</b> 아이콘은 눈에 띌 일이 아니라 자리만 잡아 주면 됩니다. 값(<code>--ink-soft</code>)보다 확실히 연해야 표지가 아니라 레일로 읽힙니다.</li>
+          <li><b>남은 색은 칩뿐입니다.</b> 회색 원도 알약 테두리도 없으니 카드는 흰 면 하나이고, 그 위에서 스킬 칩의 색만 신호로 살아납니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── 출발점 ──────────────────────────── -->
+  <section>
+    <div class="sian-title">
+      <h2>출발점 — 무엇이 걸렸나</h2>
+      <p>정리 전 모양입니다. 각 요소는 저마다 괜찮은데 한자리에 모이면 무너집니다.</p>
+    </div>
+
+    <div class="case">
+      <div class="stage">
+        <article class="project-card v-old">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <p class="card-period"><span class="icon" aria-hidden="true">date_range</span>2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span><span class="lbl">Client</span>하나은행</p>
+          <div class="card-skills"><span class="icon" aria-hidden="true">interests</span><span class="lbl">Skill</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">구안 <span class="flag old">폐기</span></h3>
+        <ul class="why">
+          <li><b>강조 장치가 네 겹입니다.</b> 회색 원, 테두리 알약, 라벨, 색 칩. 하나하나가 "여기 봐 달라"는 신호인데 넷이 동시에 말하면 아무것도 눈에 안 들어옵니다.</li>
+          <li><b>시작선이 제각각입니다.</b> 제목은 0px, 기간은 알약 안쪽 14px, 발주처 값은 원 32px + 간격 + 라벨 46px 뒤. 세 줄을 읽는 데 눈이 세 번 좌우로 움직입니다.</li>
+          <li><b>같은 말을 두 번 합니다.</b> 건물 아이콘 옆에 "Client"가 또 있습니다. 아이콘이 있으면 라벨이 필요 없고, 라벨이 있으면 아이콘이 필요 없습니다.</li>
+          <li><b>회색 면이 세 종류입니다.</b> 아이콘 원, 알약 면, 알약 테두리. 카드는 흰색인데 그 위에 회색 조각이 흩어져 얼룩처럼 읽힙니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── 견줘 본 안들 ─────────────────────── -->
+  <section>
+    <div class="sian-title">
+      <h2>견줘 본 안들</h2>
+      <p>무엇을 덜어냈는지가 서로 다릅니다. 지금 적용된 모양은 A의 정렬과 C의 레일을 섞은 것입니다.</p>
+    </div>
+
+    <!-- A -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card v-a">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <dl class="meta">
+            <dt>기간</dt><dd>2026. 02. 01 – 2026. 07. 31</dd>
+            <dt>발주처</dt><dd>하나은행</dd>
+            <dt>기술</dt><dd class="chips"><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></dd>
+          </dl>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">A · 정렬형</h3>
+        <p>아이콘과 알약을 전부 걷어내고 항목 이름을 고정폭 왼쪽 칸에 세웁니다. 남는 장식은 색 칩 하나뿐입니다.</p>
+        <ul class="why">
+          <li><b>값이 한 줄로 정렬됩니다.</b> 라벨 칸을 52px로 못박아 세 값이 같은 x에서 시작합니다. 카드를 여러 장 늘어놓으면 이 세로선이 격자처럼 잡혀 훑어보기가 빨라집니다.</li>
+          <li><b>아이콘을 뺀 자리에 뜻이 남습니다.</b> 건물 아이콘은 발주처인지 회사인지 장소인지 해석이 필요하지만 글자는 그렇지 않습니다.</li>
+          <li><b>날짜를 숫자로 바꿨습니다.</b> 자릿수를 맞추고 <code>tabular-nums</code>를 주면 카드가 여러 장일 때 날짜 폭이 흔들리지 않습니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 값의 뜻이 라벨 없이는 애매할 때. 항목이 지금보다 늘어나면 이쪽이 안전합니다.</p>
+      </div>
+    </div>
+
+    <!-- B -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card v-b">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <p class="client">하나은행</p>
+          <p class="date">2026. 02. 01 – 2026. 07. 31 · 5개월 30일</p>
+          <div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">B · 여백형</h3>
+        <p>라벨도 아이콘도 없이 크기·색·간격만으로 층을 나눕니다. 가장 적은 요소로 가장 조용한 안입니다.</p>
+        <ul class="why">
+          <li><b>제목 → 발주처 → 날짜 순으로 작아집니다.</b> 크기와 색이 함께 내려가니 무엇이 주인공인지 한눈에 잡힙니다.</li>
+          <li><b>세 줄을 6px·3px로 붙였습니다.</b> 그다음 칩까지 20px을 띄워, 선 하나 없이 여백만으로 두 덩어리를 갈랐습니다.</li>
+          <li><b>숨어 있던 툴팁을 꺼냈습니다.</b> 마우스를 올려야 보이던 "5개월 30일"을 날짜 뒤에 붙였습니다. 숨긴 정보는 대개 아무도 못 봅니다.</li>
+          <li><b>대신 확신이 필요합니다.</b> 라벨이 없으니 "하나은행"이 발주처라는 걸 맥락으로 알아야 합니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 카드가 한 화면에 6장 이상 깔릴 때. 장식이 없을수록 개수가 늘어도 화면이 조용합니다.</p>
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card v-c">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <div class="rail">
+            <span class="icon" aria-hidden="true">calendar_today</span><span class="val">2026. 02. 01 – 2026. 07. 31</span>
+            <span class="icon" aria-hidden="true">corporate_fare</span><span class="val">하나은행</span>
+            <span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div>
+          </div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">C · 아이콘 레일형</h3>
+        <p>아이콘은 살리되 원과 라벨을 뺍니다. 22px 고정 칸에 옅은 글리프만 세워 조용한 세로 레일을 만듭니다.</p>
+        <ul class="why">
+          <li><b>원을 빼면 글리프가 덩어리로 부풀지 않습니다.</b> 아이콘이 '표지'에서 '들여쓰기 기호'로 내려앉습니다.</li>
+          <li><b>정렬은 A와 같습니다.</b> 고정 칸이 값의 시작선을 하나로 모읍니다. A의 라벨을 아이콘으로 바꾼 것에 가깝습니다.</li>
+          <li><b>기간까지 레일에 세운 점이 다릅니다.</b> 세 줄이 동급이 되어 제목과의 묶음은 사라집니다. 지금 적용안은 여기서 기간만 제목 쪽으로 옮긴 것입니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 항목이 늘어날 때. 라벨 글자는 6~7개가 되면 왼쪽이 빽빽해지지만 아이콘은 그만큼 늘어도 조용합니다.</p>
+      </div>
+    </div>
+
+    <!-- D -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card v-d">
+          <div class="card-top">
+            <div style="min-width:0">
+              <span class="over">2026. 02. 01 – 2026. 07. 31</span>
+              <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            </div>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <p class="client">하나은행</p>
+          <div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">D · 머리글형</h3>
+        <p>기간을 제목 위로 올려 눈썹처럼 얹습니다. 카드 본문이 [발주처 + 기술] 두 줄로 줄어듭니다.</p>
+        <ul class="why">
+          <li><b>기간은 내용이 아니라 색인입니다.</b> 프로젝트를 고를 때 기간은 가려내는 기준이지 읽을 거리가 아닙니다.</li>
+          <li><b>카드 여러 장이 시간축으로 읽힙니다.</b> 같은 자리에 날짜가 반복되면 세로로 훑을 때 연표처럼 보입니다.</li>
+          <li><b>제목 줄의 무게를 눌러 줍니다.</b> 두 줄로 넘어가는 긴 이름 위에 작은 글자가 한 줄 얹히면 덩어리가 안정됩니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 기간이 이 목록의 주된 정렬 기준일 때. 발주처가 더 중요하다면 눈썹에 올릴 것도 발주처입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── 카드 버튼 ────────────────────────── -->
+  <section>
+    <div class="sian-title">
+      <h2>카드 버튼 — 제목 줄에 놓인 두 개의 상자</h2>
+      <p>
+        본문은 장식을 한 겹까지 덜어냈는데 오른쪽 위만 그대로였습니다 — 흰 면 위에
+        옅은 테두리 상자가 둘, 그것도 제목과 같은 줄에. A 유령형을 골라 앱에 반영했고,
+        나머지 셋은 왜 안 골랐는지와 함께 남겨 둡니다. 아래 미리보기는 마우스를
+        올려 보셔야 차이가 온전히 보입니다.
+      </p>
+    </div>
+
+    <!-- 구안 -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card b-old">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">구안 <span class="flag old">폐기</span></h3>
+        <ul class="why">
+          <li><b>본문에서 지운 상자가 여기 남아 있습니다.</b> 아이콘 원도 알약 테두리도 걷어냈는데, 오른쪽 위에는 <code>1px solid var(--field)</code> 상자가 둘 그대로입니다. 카드 안에서 테두리를 가진 유일한 요소입니다.</li>
+          <li><b>제목과 같은 줄에서 무게를 다툽니다.</b> 34px 정사각형 둘에 사이 4px, 합쳐서 72px입니다. 제목이 차지한 높이와 거의 같은 덩어리가 반대편에 서 있습니다.</li>
+          <li><b>두 상자가 생김새로는 똑같습니다.</b> 수정과 삭제는 되돌릴 수 있는 정도가 전혀 다른데, 크기·테두리·색이 같아 안쪽 글리프 하나로만 갈립니다.</li>
+          <li><b>늘 보일 필요가 없습니다.</b> 카드를 훑을 때 필요한 건 내용이고, 버튼은 "이 카드를 손보겠다"고 마음먹은 다음에 찾는 것입니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- A -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card b-a">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">A · 유령형</h3>
+        <p>상자를 지우고 글리프만 남깁니다. 면은 마우스를 올렸을 때만 생깁니다.</p>
+        <ul class="why">
+          <li><b>가장 조용합니다.</b> 색을 본문 아이콘 레일과 같은 <code>--placeholder</code>까지 뺐습니다. 카드 안에 회색 단계가 하나도 늘지 않습니다.</li>
+          <li><b>제목이 줄을 되찾습니다.</b> 오른쪽에 남는 게 글리프 두 개뿐이라 제목 줄의 무게 중심이 제목 쪽으로 돌아옵니다.</li>
+          <li><b>대신 누를 것인지 알 수 없습니다.</b> 이게 결정적입니다. 옆의 발주처·기술 아이콘과 색도 크기도 같아서, 마우스를 올려 보기 전에는 <b>같은 종류의 표시 아이콘으로 읽힙니다.</b> 그 둘은 누를 수 없는 장식인데 말입니다.</li>
+          <li><b>터치에서는 hover가 없습니다.</b> 태블릿·휴대폰에서는 "올려 보면 나타난다"가 아예 일어나지 않아, 버튼이 끝까지 회색 글리프로만 남습니다.</li>
+        </ul>
+        <p class="when"><b>안 골랐습니다.</b> 산만함은 확실히 줄지만, 버튼을 못 찾는 대가가 너무 큽니다. 아래 A′가 이 문제만 고친 것입니다.</p>
+      </div>
+    </div>
+
+    <!-- A′ -->
+    <div class="case">
+      <div>
+        <div class="stage">
+          <article class="project-card">
+            <div class="card-top">
+              <h3 class="card-title">하나카드 스마트창구 구축</h3>
+              <div class="row-actions">
+                <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+                <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              </div>
+            </div>
+            <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+            <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+            <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+            <div class="card-notes">전자서식, 태블릿 단말</div>
+          </article>
+        </div>
+        <p class="stage-note">앱과 같은 클래스입니다 — 마우스를 올리면 면은 그대로 두고 색만 갈립니다</p>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">A′ · 회색 원형 <span class="flag live">적용됨</span></h3>
+        <p>A에서 면만 되돌립니다. 테두리는 여전히 없고, <code>--field</code> 한 톤짜리 옅은 원을 깝니다.</p>
+        <ul class="why">
+          <li><b>선이 아니라 면입니다.</b> 이게 구안과의 차이입니다. 테두리는 카드 안에 또 하나의 카드를 만들지만, 옅은 면은 경계를 긋지 않고 자리만 표시합니다. 카드에서 걸렸던 건 상자였지 회색이 아니었습니다.</li>
+          <li><b>본문 아이콘의 원을 걷어낸 것과 어긋나 보이지만, 역할이 다릅니다.</b> 저쪽 원은 글자를 꾸미는 <b>장식</b>이었고 그래서 지웠습니다. 이쪽 원은 <b>누를 수 있다는 표시</b>입니다. 옆에 놓인 표시 아이콘과 생김새가 달라야 하는 이유가 여기 있습니다.</li>
+          <li><b>글자색을 <code>--muted</code>로 올렸습니다.</b> 회색 면 위에서 <code>--placeholder</code>는 묻힙니다. 면과 글자가 함께 한 톤씩 올라가야 원이 버튼으로 읽힙니다.</li>
+          <li><b>hover에서 면 크기는 그대로고 색만 갈립니다.</b> 수정은 <code>--soft</code> 보라, 삭제는 <code>--red-soft</code> 분홍. A에서는 없던 면이 갑자기 생겨 튀었는데, 여기서는 이미 있던 면의 색만 바뀌니 움직임이 없습니다.</li>
+          <li><b>터치에서도 그대로 동작합니다.</b> hover에 기대는 정보가 하나도 없습니다.</li>
+          <li><b>위치는 당기지 않습니다.</b> 원이 보이는 면이 된 뒤로는 그 가장자리가 곧 버튼의 가장자리라, 오른쪽을 카드 안쪽선에 그냥 맞추면 됩니다(A는 글리프 둘레의 빈 공간만큼 되밀어야 했습니다). 위쪽도 제목 줄 윗선입니다 — 원 중심을 제목 글자 중심에 맞추려면 5px쯤 올려야 하지만 그러면 <b>버튼이 제목보다 떠 보입니다.</b></li>
+          <li><b>사이는 6px입니다.</b> 면이 생겼으니 2px로는 두 원이 붙은 하나로 읽힙니다.</li>
+          <li><b>로그인 전에도 그대로 보입니다.</b> 전에는 로그인해야 버튼이 생겼습니다. 그러면 카드의 오른쪽 위가 로그인 전후로 달라져 화면이 흔들리고, 무엇보다 손님은 이 화면을 고칠 수 있다는 걸 알 방법이 없습니다. 지금은 늘 그려 두고, 눌렀을 때 로그인 모달을 띄웁니다 — 로그인하면 이어서 같은 버튼이 그대로 동작합니다.</li>
+        </ul>
+        <p class="when"><b>이렇게 골랐습니다.</b> 구안의 산만함과 A의 안 보임 사이에서, 없앨 것은 테두리 하나뿐이었습니다.</p>
+        <p class="when"><b>표 뷰도 같은 벌입니다.</b> <code>.row-button</code>과 <code>.card-button</code>이 32px 원·테두리 없음·<code>--muted</code> 글리프·같은 hover 색까지 전부 같습니다. 갈리는 건 <b>평상시 배경 한 줄뿐</b>이고 — 표에서는 <code>transparent</code>, 카드에서는 <code>--field</code> — 마우스를 올린 뒤로는 두 뷰가 완전히 같아집니다. 표에서 면을 뺀 이유는 A가 카드에서 실패한 이유가 표에는 없기 때문입니다: 맨 오른쪽 칸에서 모든 행이 같은 글리프 두 개를 반복하니 그 <b>반복이 면의 일을 대신</b>합니다. 카드는 홀로 선 물건이라 기댈 패턴이 없었습니다.</p>
+      </div>
+    </div>
+
+    <!-- B -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card b-b">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+          <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">B · 세그먼트형</h3>
+        <p>테두리를 지우는 대신 하나로 합칩니다. 두 버튼이 한 상자 안에 들어가고 사이만 1px로 갈립니다.</p>
+        <ul class="why">
+          <li><b>상자가 둘에서 하나로 줄어듭니다.</b> 테두리를 완전히 없애는 건 아니지만, 눈이 세는 덩어리 수가 절반이 됩니다.</li>
+          <li><b>둘이 한 벌이라는 게 보입니다.</b> 수정과 삭제는 "이 카드를 손보는 일" 한 묶음입니다. 4px 틈으로 떨어져 있을 때보다 관계가 정확합니다.</li>
+          <li><b>버튼이 있다는 게 확실합니다.</b> 테두리가 남아 있으니 마우스를 올려 보기 전에도 누를 것으로 읽힙니다. A가 잃는 유일한 것이 이겁니다.</li>
+          <li><b>대신 상자가 남습니다.</b> 카드 안에서 테두리를 가진 유일한 요소라는 점은 그대로입니다. 원칙 "장식은 한 겹만"과는 계속 어긋납니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 이 화면을 처음 쓰는 사람이 많을 때. 버튼을 찾지 못하는 위험이 산만함보다 클 때 고릅니다.</p>
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card b-c">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="더보기" aria-haspopup="menu"><span class="icon" aria-hidden="true">more_vert</span></button>
+            </div>
+          </div>
+          <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <div class="card-notes">전자서식, 태블릿 단말</div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">C · 더보기형</h3>
+        <p>점 세 개 하나만 두고 수정·삭제는 눌렀을 때 열리는 메뉴로 접습니다.</p>
+        <ul class="why">
+          <li><b>제목 줄이 완전히 조용해집니다.</b> 오른쪽에 남는 폭이 32px입니다. 네 안 중 제목이 가장 넓게 쓰입니다.</li>
+          <li><b>삭제가 한 겹 뒤로 갑니다.</b> 되돌릴 수 없는 동작이 실수로 눌릴 일이 줄어듭니다. 메뉴 안에서 글자로 "삭제"라고 쓰면 경고도 더 분명해집니다.</li>
+          <li><b>메뉴를 새로 만들어야 합니다.</b> 지금 이 프로젝트에 드롭다운 메뉴 컴포넌트가 없습니다. 바깥 클릭으로 닫기, Esc, 포커스 되돌리기까지 붙여야 제대로 동작합니다.</li>
+          <li><b>항상 한 번 더 눌러야 합니다.</b> 동작이 둘뿐인데 메뉴를 여는 건 비용이 이득보다 큽니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 카드마다 할 수 있는 일이 넷 이상으로 늘었을 때. 지금 둘일 때는 과합니다.</p>
+      </div>
+    </div>
+
+    <!-- D -->
+    <div class="case">
+      <div class="stage">
+        <article class="project-card b-d">
+          <div class="card-top">
+            <h3 class="card-title">하나카드 스마트창구 구축</h3>
+          </div>
+          <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
+          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <div class="card-foot">
+            <div class="card-notes">전자서식, 태블릿 단말</div>
+            <div class="row-actions">
+              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">D · 아래줄형</h3>
+        <p>버튼을 제목 줄에서 빼서 카드 맨 아래, 이미 있는 구분선 오른쪽에 앉힙니다.</p>
+        <ul class="why">
+          <li><b>제목 줄에 제목만 남습니다.</b> 긴 이름이 두 줄로 넘어갈 때 오른쪽 72px을 비워 둘 필요가 없어져, 제목이 카드 폭을 다 씁니다.</li>
+          <li><b>선을 새로 긋지 않습니다.</b> <code>.card-notes</code>가 이미 <code>border-top</code>을 갖고 있습니다. 그 줄을 그대로 쓰니 카드 안에 선이 늘지 않습니다.</li>
+          <li><b>읽는 순서와 하는 순서가 맞습니다.</b> 위에서 아래로 카드를 다 읽고 나서 "고칠까"가 오는 자리입니다.</li>
+          <li><b>비고가 없는 카드가 문제입니다.</b> 이 프로젝트의 비고는 선택 입력입니다. 비어 있으면 버튼만 뜬 줄이 남고, 그때 구분선이 무엇을 가르는 선인지 애매해집니다.</li>
+          <li><b>카드마다 버튼 높이가 달라집니다.</b> 비고가 두 줄인 카드와 없는 카드가 나란히 놓이면 버튼이 서로 다른 높이에 섭니다. 지금은 제목 줄이라 항상 같은 자리입니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 비고를 필수 입력으로 바꾸거나, 비고 자리에 항상 무언가가 들어가게 될 때.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── 원칙 ─────────────────────────────── -->
+  <section>
+    <div class="sian-title">
+      <h2>다음에 또 헤매지 않으려면</h2>
+      <p>네 안이 서로 다르게 생겨도 지키는 규칙은 같습니다. 새 요소를 붙일 때마다 확인하면 됩니다.</p>
+    </div>
+
+    <div class="rules">
+      <div>
+        <h3>장식은 한 겹만</h3>
+        <p>원·알약·라벨·색 칩은 전부 "여기 봐 달라"는 신호입니다. 한 카드에 하나만 고릅니다.</p>
+      </div>
+      <div>
+        <h3>시작선을 하나로</h3>
+        <p>값이 같은 x에서 시작하면 눈이 위아래로만 움직입니다. 고정폭 칸이 그 선을 만듭니다.</p>
+      </div>
+      <div>
+        <h3>색은 한 가지 역할에만</h3>
+        <p>이 카드에서 색은 이미 스킬 칩이 씁니다. 아이콘·기간·테두리까지 회색 면을 가지면 칩의 신호가 죽습니다.</p>
+      </div>
+      <div>
+        <h3>선보다 여백</h3>
+        <p>테두리는 카드 안에 또 하나의 카드를 만듭니다. 8px로 붙이고 22px로 떼면 구분선 대부분이 필요 없어집니다.</p>
+      </div>
+      <div>
+        <h3>글자 크기로 층을 만들기</h3>
+        <p>제목 1rem → 값 .875rem → 라벨 .72rem 세 단계면 충분합니다. 크기가 줄면 색도 함께 연해져야 층이 보입니다.</p>
+      </div>
+      <div>
+        <h3>숨긴 정보는 없는 정보</h3>
+        <p>중요하면 꺼내 놓고, 안 중요하면 지웁니다. 툴팁은 대개 아무도 안 봅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <footer>
+    시안 보드입니다. 앞으로 새 디자인 제안은 이 페이지에 쌓습니다 —
+    <a href="index.html">앱으로 돌아가기</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
