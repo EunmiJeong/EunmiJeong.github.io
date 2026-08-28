@@ -163,7 +163,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 .brand{margin:0 0 0 10px;color:var(--deep);font:1.45rem Georgia, serif;letter-spacing:-.03em;}
 .brand span{color:var(--pink);}
 .nav{display:flex;flex-direction:column;gap:2px;}
-.nav-link{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:var(--r-sm);color:var(--ink-soft);font-size:.85rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:.2s;}
+.nav-link{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:var(--r-lg);color:var(--ink-soft);font-size:.85rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:.2s;}
 .nav-link .icon{color:var(--muted);transition:.2s;}
 .nav-link:hover{color:var(--deep);background:var(--field);}
 .nav-link:hover .icon{color:var(--brand);}
@@ -196,9 +196,15 @@ section{margin-bottom:34px;}
 h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 .subtext{margin:9px 0 0;color:#ffffffdb;font-size:.88rem;}
 /* 추가 버튼. 헤더 밴드가 아니라 각 목록 머리(.content-head)에 놓이므로
-   흰 바탕 위에서 눈에 띄도록 그라데이션으로 채운다. */
-.add-button{display:flex;flex:none;gap:6px;align-items:center;border:0;padding:11px 20px;border-radius:var(--r-pill);color:#fff;background:var(--grad);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;box-shadow:var(--shadow-brand);transition:.2s;}
-.add-button .icon{font-size:20px;}
+   흰 바탕 위에서 눈에 띄도록 그라데이션으로 채운다.
+   높이를 정하는 건 글자가 아니라 아이콘이다 — .82rem 글자의 줄 상자는 16px 인데
+   글리프를 20px 로 두면 그것이 그대로 버튼 속높이가 되어, 옆의 뷰 전환 알약(40px)
+   보다 큰 42px 짜리 덩어리가 된다. 글리프를 18px 로 줄이고 위아래를 1px 씩 깎아
+   38px 로 맞췄다. 이웃보다 살짝 낮되, 강조는 크기가 아니라 그라데이션이 맡는다.
+   글자 크기는 건드리지 않는다. 이 줄에서 유일하게 눌러야 하는 것이라 라벨은
+   .count(.8rem) · .view-tab(.72rem) 보다 커야 한다. */
+.add-button{display:flex;flex:none;gap:6px;align-items:center;border:0;padding:10px 18px;border-radius:var(--r-pill);color:#fff;background:var(--grad);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;box-shadow:var(--shadow-brand);transition:.2s;}
+.add-button .icon{font-size:18px;}
 .add-button:hover{transform:translateY(-1px);filter:brightness(1.05);}
 
 /* ── 경력계산기 ─────────────────────────── */
@@ -249,6 +255,11 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 
 /* ── 콘텐츠 헤더 / 뷰 전환 ─────────────── */
 .content-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px;padding:0 6px;}
+/* 개수·전체경력은 제목 옆에 붙인다. 이 목록이 무엇인지 말해 주는 값이라 제목의
+   일부이지, 오른쪽 컨트롤 줄(보기 전환 · 추가)과 같은 무리가 아니다.
+   baseline 정렬이라 .8rem 짜리 작은 글자가 제목의 밑선에 앉는다 — 가운데로 맞추면
+   글자 크기가 두 배 가까이 차이 나 어중간하게 뜬다. */
+.head-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;min-width:0;}
 h2, h3{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:800;}
 .count{color:var(--deep);font-size:.8rem;}
 .view-tools{display:flex;gap:16px;align-items:center;}
@@ -274,6 +285,9 @@ th:first-child{border-radius:var(--r-lg) 0 0 0;}
 th:last-child{border-radius:0 var(--r-lg) 0 0;}
 td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-align:middle;}
 .project-name{font-weight:600;}
+/* 회사명 뒤의 "(=옛 이름)" 덧말. 색만 내리는 것으로는 부족하다 — 굵기까지 되돌려야
+   이름 본체(600)와 층이 갈려 회사가 하나로 읽힌다. */
+.alias{color:var(--muted);font-weight:400;}
 .client{color:var(--ink-soft);}
 .period{width:1%;color:var(--ink-soft);white-space:nowrap;font-size:.8rem;font-variant-numeric:tabular-nums;letter-spacing:-0.7px;}
 /* 기준일로 잘린 실제 기간을 일수·개월로 나눠 보여 주는 칸. 숫자를 비교하기 쉽게 폭을 좁게 잡는다. */
@@ -310,7 +324,7 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
    가장자리라, 오른쪽은 카드 안쪽선에 그대로 맞추면 된다. 위쪽도 제목 줄 윗선이다.
    원 중심을 제목 글자의 시각적 중심에 맞추려면 5px 쯤 올려야 하지만, 그러면 원이
    제목 줄 위로 삐져나와 버튼이 제목보다 떠 보인다. */
-.card-top .row-actions{gap:6px;}
+.card-top .row-actions{position:absolute;top:0;right:0;gap:6px;}
 
 /* 표는 평상시 면을 뺀다. 맨 오른쪽 칸에서 모든 행이 같은 자리에 같은 글리프 두 개를
    반복하니, 그 반복이 카드에서 면이 하던 일을 대신한다. 게다가 th 가 이미 --field 라
@@ -326,7 +340,16 @@ td .row-actions{gap:2px;margin-right:-6px;}
 /* ── 카드 뷰 ───────────────────────────── */
 .project-card{padding:32px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);transition:.25s;} /* linear-gradient(149deg, var(--paper) 0%, #ffffff00 120%) */
 .project-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift);}
-.card-top{display:flex;justify-content:space-between;gap:12px;align-items:start;}
+/* 버튼은 흐름에서 빼서 절대 배치한다.
+   흐름에 두면 .card-top 의 높이가 [제목, 버튼] 중 큰 쪽으로 정해진다. 버튼은 32px,
+   제목 한 줄은 23.5px 이라 — 제목이 한 줄인 카드에서만 아래에 8.5px 이 덤으로 생기고,
+   두 줄인 카드에서는 안 생긴다. 제목과 기간 사이 여백이 카드마다 달라 보이던 원인이
+   이것이다(설계된 여백이 아니라 버튼 높이가 남긴 자국이었다).
+   빼내면 .card-top 의 높이는 언제나 제목만으로 정해지고, 아래 .card-period 의
+   margin-top 이 줄 수와 상관없이 그대로 지켜진다.
+   padding-right 는 버튼 자리(32×2 + 사이 6) 에 제목과의 최소 간격 12px 을 더한 값이다 —
+   제목은 이 선에 닿으면 줄을 바꾸므로 버튼과 겹치지 않는다. */
+.card-top{position:relative;padding-right:82px;}
 .card-title{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:800;}
 /* 카드는 두 덩어리로 읽힌다 — [제목 + 기간] 과 [발주처 + 스킬]. 덩어리 안은 8px,
    덩어리 사이는 22px 로 벌려 간격만으로 묶음이 보이게 한다. */
@@ -341,7 +364,7 @@ td .row-actions{gap:2px;margin-right:-6px;}
 /* tabular-nums 는 숫자 표기(2026.02.01)라 못박는다. 비례폭 숫자는 1 이 좁아서
    카드마다 기간 줄의 길이와 점 위치가 미묘하게 어긋나는데, 카드가 격자로 여러 장
    깔리는 화면에서는 그 흔들림이 눈에 띈다. */
-.card-period{position:relative;display:block;width:fit-content;margin:0;color:var(--muted);font-size:.8rem;font-variant-numeric:tabular-nums;}
+.card-period{position:relative;display:block;width:fit-content;margin:8px 0 0;color:var(--muted);font-size:.8rem;font-variant-numeric:tabular-nums;}
 /* 일수·개월은 기간 위에 뜨는 툴팁으로 숨긴다. 카드에서는 기간이 주인공이고 이건 참고값. */
 .card-tip{position:absolute;z-index:4;top:calc(100% + 8px);left:20px;padding:7px 11px;border-radius:var(--r-sm);color:#fff;background:var(--ink);font-size:.72rem;font-weight:600;white-space:nowrap;opacity:0;visibility:hidden;transform:translateY(-3px);transition:.18s ease;pointer-events:none;box-shadow:0 10px 20px -10px #2e274080;}
 .card-tip::after{content:"";position:absolute;bottom:100%;left:18px;border:5px solid transparent;border-bottom-color:var(--ink);}

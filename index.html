@@ -43,7 +43,7 @@
         </div>
       </section>
       <section>
-        <div class="content-head"><h2>프로젝트 목록</h2><div class="view-tools"><span class="count" id="list-count">0 projects</span><div class="view-tabs" role="tablist" aria-label="프로젝트 보기 방식"><button class="view-tab active" data-mode="card" type="button" role="tab" aria-selected="true">카드형</button><button class="view-tab" data-mode="list" type="button" role="tab" aria-selected="false">리스트형</button></div><button class="add-button" id="add-project" type="button" hidden><span class="icon" aria-hidden="true">add</span>프로젝트 추가</button></div></div>
+        <div class="content-head"><div class="head-title"><h2>프로젝트 목록</h2><span class="count" id="list-count">0 projects</span></div><div class="view-tools"><div class="view-tabs" role="tablist" aria-label="프로젝트 보기 방식"><button class="view-tab active" data-mode="card" type="button" role="tab" aria-selected="true">카드형</button><button class="view-tab" data-mode="list" type="button" role="tab" aria-selected="false">리스트형</button></div><button class="add-button" id="add-project" type="button" hidden><span class="icon" aria-hidden="true">add</span>프로젝트 추가</button></div></div>
         <div class="card-list" id="card-list"></div>
         <div class="table-wrap" id="table-view"><table><thead><tr><th>프로젝트명</th><th>기간</th><th>일수</th><th>개월</th><th>발주처</th><th>스킬</th><th>기타</th><th></th></tr></thead><tbody id="project-list"></tbody></table></div>
         <div class="empty" id="empty-state">아직 등록된 프로젝트가 없습니다.<br>새 프로젝트를 추가해보세요.</div>
@@ -67,7 +67,7 @@
       </section>
 
       <section class="career-section">
-        <div class="content-head"><h2>경력사항</h2><div class="view-tools"><span class="count" id="career-summary">전체경력 계산 중</span><button class="add-button" id="add-career" type="button" hidden><span class="icon" aria-hidden="true">add</span>경력 추가</button></div></div>
+        <div class="content-head"><div class="head-title"><h2>경력사항</h2><span class="count" id="career-summary">전체경력 계산 중</span></div><div class="view-tools"><button class="add-button" id="add-career" type="button" hidden><span class="icon" aria-hidden="true">add</span>경력 추가</button></div></div>
         <div class="table-wrap" id="career-table">
           <table>
             <thead><tr><th>근무기간</th><th>회사명</th><th>담당 업무</th><th>기간</th><th></th></tr></thead>
@@ -467,6 +467,26 @@
       return `<span class="strike">${careerLabel(gross)}</span> ${careerLabel(net)}<span class="note">(${esc(reason)} ${row.leave_months}개월)</span>`;
     }
 
+    /* 회사명 끝에 붙는 괄호는 이름이 아니라 "같은 회사"라고 알려 주는 덧말이다
+       (예: (주)클렉스(=(주)메이플경영컨설팅)). 이름 본체와 같은 무게로 그리면 회사가
+       둘인 것처럼 읽히므로 한 톤 내린다.
+       여는 괄호는 뒤에서부터 깊이를 세어 찾는다 — 이름 앞머리의 (주) 때문에 괄호가
+       중첩되어 정규식 하나로는 짝을 맞출 수 없다.
+       안쪽이 두 글자 이하면 (주)·(유) 같은 법인 형태이므로 그대로 둔다.
+       aria-label 과 삭제 확인창은 원래 문자열을 그대로 쓴다 — 읽어 주는 쪽에는
+       덧말도 이름의 일부다. */
+    function companyCell(name) {
+      const text = String(name);
+      if (!text.endsWith(')')) return esc(text);
+      let depth = 0, open = -1;
+      for (let i = text.length - 1; i >= 0; i--) {
+        if (text[i] === ')') depth++;
+        else if (text[i] === '(' && --depth === 0) { open = i; break }
+      }
+      if (open <= 0 || text.length - open - 2 <= 2) return esc(text);
+      return `${esc(text.slice(0, open))}<span class="alias">${esc(text.slice(open))}</span>`;
+    }
+
     // 프로젝트 쪽과 같은 이유로 로그인 전에도 그대로 그린다.
     function careerRowButtons(row) {
       return `<div class="row-actions">
@@ -503,7 +523,7 @@
       $('career-table').hidden = careers.length === 0;
       $('career-list').innerHTML = careers.map(row => `<tr>
         <td class="period">${dot(row.start_date)} ~ ${row.end_date ? dot(row.end_date) : '<span class="tag">재직중</span>'}<span class="note">${careerDays(row).toLocaleString('ko-KR')}일</span></td>
-        <td class="project-name">${esc(row.company)}</td>
+        <td class="project-name">${companyCell(row.company)}</td>
         <td class="client">${esc(row.role)}</td>
         <td>${periodCell(row)}</td>
         <td>${careerRowButtons(row)}</td>
