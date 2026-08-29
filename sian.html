@@ -131,6 +131,53 @@
   .b-d .card-notes{margin:0;padding:0;border:0;}
   .b-d .row-actions{flex:none;gap:6px;}
 
+  /* ── 본문 폭 시안 ─────────────────────────
+     여기서 비교하는 것은 카드 하나가 아니라 화면 전체라, 미리보기를 앱 클래스로
+     그릴 수가 없다(사이드바까지 통째로 필요하다). 대신 아래 .mock 은 앱과 같은
+     수치 — 사이드바 246px, 본문 패딩 40px, 간격 26px — 를 실제 픽셀로 그린 뒤
+     통째로 축소한다. 비율을 손으로 줄이면 "2560px에서 카드가 727px"이라는
+     이야기가 거짓말이 되므로, 축소는 반드시 transform 한 번으로만 한다. */
+  .wide-ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .wide-ctrl b{margin-right:5px;color:var(--ink-soft);font-size:.84rem;font-weight:600;}
+  .wide-ctrl button{padding:6px 15px;border:1px solid var(--field-line);border-radius:var(--r-pill);background:#fff;color:var(--muted);font:600 .8rem var(--font);cursor:pointer;}
+  .wide-ctrl button:hover{background:var(--soft);}
+  .wide-ctrl button[aria-pressed="true"]{border-color:transparent;background:var(--brand);color:#fff;}
+
+  .wcase{display:flex;flex-direction:column;gap:17px;padding:clamp(20px,2.6vw,30px);border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);}
+  .wcase > p{margin:0;color:var(--ink-soft);font-size:.9rem;line-height:1.8;}
+  .wcase .why{margin-top:2px;}
+
+  /* 모니터 틀 */
+  .mon{overflow:hidden;border-radius:var(--r-md);border:1px solid var(--line);background:#f5f6fe;}
+  .mon-vp{position:relative;height:calc(var(--h) * var(--s));}
+  .mon-vp > .mock{position:absolute;top:0;left:0;transform:scale(var(--s));transform-origin:0 0;}
+  .mon-read{display:flex;gap:8px;align-items:baseline;justify-content:center;margin:9px 0 0;color:var(--muted);font-size:.76rem;font-variant-numeric:tabular-nums;}
+  .mon-read b{color:var(--deep);font-weight:600;}
+
+  /* 틀 안쪽 — 전부 실제 픽셀이다 */
+  .mock{display:flex;width:var(--mw);height:var(--h);background:#f5f6fe;}
+  .mock-side{display:flex;flex-direction:column;gap:20px;flex:none;width:246px;padding:30px 20px;background:#fff;border-right:1px solid var(--line);}
+  .mock-side i{display:block;height:40px;border-radius:var(--r-pill);background:var(--field);}
+  .mock-side i:first-child{width:150px;height:26px;margin-bottom:10px;border-radius:7px;}
+  .mock-side i:nth-child(2){background:var(--soft);}
+  .mock-side i:last-child{width:72%;}
+  .mock-main{position:relative;flex:1;min-width:0;padding:34px 40px 60px;}
+  /* 밴드는 .mock-wrap 바깥이다 — 폭을 좁혀도 색은 화면 끝까지 간다는 것이 요점이다. */
+  .mock-band{position:absolute;top:0;left:0;right:0;height:298px;background:var(--grad);}
+  .mock-wrap{position:relative;}
+  .mock-hero{display:flex;flex-direction:column;gap:15px;padding-bottom:44px;}
+  .mock-hero i{display:block;height:40px;width:340px;border-radius:9px;background:#ffffffdb;}
+  .mock-hero i + i{height:18px;width:520px;border-radius:6px;background:#ffffff85;}
+  .mock-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-bottom:26px;}
+  .mock-stats i{height:150px;border-radius:var(--r-lg);background:#fff;box-shadow:var(--shadow);}
+  .mock-panel{height:120px;margin-bottom:30px;border-radius:var(--r-lg);background:#fff;box-shadow:var(--shadow);}
+  .mock-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;}
+  .mock-cards i{height:210px;border-radius:var(--r-lg);background:#fff;box-shadow:var(--shadow);}
+
+  .m-a .mock-wrap{max-width:1440px;margin-inline:auto;}
+  .m-b .mock-wrap{max-width:1600px;margin-inline:auto;}
+  .m-b .mock-cards{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));}
+
   /* 원칙 */
   .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;border-radius:var(--r-md);overflow:hidden;background:var(--line);}
   .rules div{display:flex;flex-direction:column;gap:5px;padding:22px 24px;background:var(--paper);}
@@ -622,12 +669,173 @@
 
   <hr>
 
+  <!-- ── 본문 폭 ──────────────────────────── -->
+  <section class="wide-topic" id="wide" style="--mw:2560px; --h:1060px; --s:.37;">
+    <div class="sian-title">
+      <h2>넓은 모니터에서 본문 폭</h2>
+      <p>
+        지금 <code>.main</code>은 <code>width:100%</code>뿐이라 화면이 커질수록 카드가 끝없이 넓어집니다.
+        27인치에서 카드 한 장이 700px을 넘으면 제목 한 줄 뒤로 빈 흰 면만 남습니다. 아래 세 틀은
+        앱과 같은 수치(사이드바 246px · 본문 패딩 40px · 간격 26px)를 <b>실제 픽셀로 그린 뒤 통째로 축소</b>한
+        것이라, 보이는 비율이 실제 비율입니다.
+      </p>
+    </div>
+
+    <div class="wide-ctrl">
+      <b>모니터 폭</b>
+      <button type="button" data-mw="1920" aria-pressed="false">1920</button>
+      <button type="button" data-mw="2560" aria-pressed="true">2560</button>
+      <button type="button" data-mw="3440" aria-pressed="false">3440</button>
+    </div>
+
+    <!-- 현재 -->
+    <div class="wcase">
+      <h3 class="case-name">지금 <span class="flag old">손볼 것</span></h3>
+      <p>폭 제한이 없어 본문이 화면 끝까지 늘어납니다. 3열 고정이라 늘어난 폭이 전부 카드 안쪽 빈 면이 됩니다.</p>
+      <div class="mon">
+        <div class="mon-vp">
+          <div class="mock m-now">
+            <div class="mock-side"><i></i><i></i><i></i></div>
+            <div class="mock-main">
+              <div class="mock-band"></div>
+              <div class="mock-wrap">
+                <div class="mock-hero"><i></i><i></i></div>
+                <div class="mock-stats"><i></i><i></i><i></i><i></i></div>
+                <div class="mock-panel"></div>
+                <div class="mock-cards"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mon-read" data-read>카드 폭 <b>—</b> · <b>—</b>열</p>
+    </div>
+
+    <!-- A -->
+    <div class="wcase">
+      <h3 class="case-name">A · 1440px 가운데 정렬</h3>
+      <p>본문 덩어리에만 <code>max-width:1440px; margin-inline:auto</code>를 겁니다. 색 밴드는 <code>.mock-wrap</code> 바깥이라 화면 끝까지 그대로 갑니다.</p>
+      <div class="mon">
+        <div class="mon-vp">
+          <div class="mock m-a">
+            <div class="mock-side"><i></i><i></i><i></i></div>
+            <div class="mock-main">
+              <div class="mock-band"></div>
+              <div class="mock-wrap">
+                <div class="mock-hero"><i></i><i></i></div>
+                <div class="mock-stats"><i></i><i></i><i></i><i></i></div>
+                <div class="mock-panel"></div>
+                <div class="mock-cards"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mon-read" data-read>카드 폭 <b>—</b> · <b>—</b>열</p>
+      <ul class="why">
+        <li><b>카드 폭이 어느 모니터에서든 같습니다.</b> 1920이든 3440이든 462px입니다. 한 번 익힌 카드 모양이 자리를 옮겨도 그대로라, 읽는 눈이 매번 다시 적응할 일이 없습니다.</li>
+        <li><b>색 밴드는 좁히지 않습니다.</b> 밴드까지 가운데로 모으면 화면 양끝에 흰 띠가 생겨 창이 덜 열린 것처럼 보입니다. 좁히는 것은 글이 놓이는 덩어리뿐입니다.</li>
+        <li><b>사이드바 때문에 살짝 오른쪽으로 쏠립니다.</b> 남은 본문 영역 안에서 가운데이지 화면 가운데가 아닙니다. Linear·Vercel·Notion이 전부 이 방식이고, 실제로 보면 이쪽이 자연스럽습니다.</li>
+        <li><b>고칠 곳은 한 군데입니다.</b> <code>.main</code> 안에 감싸개 하나를 두거나, <code>.main > section</code>에 폭과 마진을 주면 끝납니다.</li>
+      </ul>
+      <p class="when"><b>이럴 때</b> — 카드 한 장 한 장을 찬찬히 읽는 화면. 지금처럼 카드에 제목·기간·발주처·기술이 다 들어 있으면 폭이 일정한 쪽이 훨씬 편합니다.</p>
+    </div>
+
+    <!-- B -->
+    <div class="wcase">
+      <h3 class="case-name">B · 1600px + 열이 늘어나는 격자</h3>
+      <p>폭을 조금 더 열어 두고 <code>repeat(auto-fill, minmax(340px, 1fr))</code>로 바꿉니다. 화면이 넓어지면 카드가 넓어지는 대신 열이 하나 늘어납니다.</p>
+      <div class="mon">
+        <div class="mon-vp">
+          <div class="mock m-b">
+            <div class="mock-side"><i></i><i></i><i></i></div>
+            <div class="mock-main">
+              <div class="mock-band"></div>
+              <div class="mock-wrap">
+                <div class="mock-hero"><i></i><i></i></div>
+                <div class="mock-stats"><i></i><i></i><i></i><i></i></div>
+                <div class="mock-panel"></div>
+                <div class="mock-cards"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mon-read" data-read>카드 폭 <b>—</b> · <b>—</b>열</p>
+      <ul class="why">
+        <li><b>넓은 화면이 스크롤을 줄여 줍니다.</b> 프로젝트가 45개입니다. 3열이면 15줄, 4열이면 12줄 — 한 화면에 들어오는 양이 늘어납니다.</li>
+        <li><b>대신 카드 폭이 화면마다 달라집니다.</b> 1920에서 378px, 2560에서 380px로 비슷하다가, 열이 하나 늘거나 주는 경계에서는 눈에 띄게 튑니다.</li>
+        <li><b>1920도 함께 바뀝니다.</b> 지금 3열인 화면이 4열이 되므로 A보다 큰 변화입니다. 좁아진 카드에서 제목이 두 줄로 접히는지 확인이 필요합니다.</li>
+        <li><b>깨지는 폭이 없는지 봐야 합니다.</b> <code>auto-fill</code>은 남는 칸을 빈자리로 남깁니다. 카드가 4개뿐인 줄에서 5열이 되면 오른쪽에 빈 칸이 생깁니다 — <code>auto-fit</code>은 그 칸을 접어 카드를 늘리므로, 폭 일정함을 지키려면 <code>auto-fill</code>이 맞습니다.</li>
+      </ul>
+      <p class="when"><b>이럴 때</b> — 목록을 훑어 원하는 하나를 찾는 화면. 카드가 지금보다 더 간결해져서 340px에 충분히 담긴다면 이쪽이 유리합니다.</p>
+    </div>
+
+    <div class="rules">
+      <div>
+        <h3>추천은 A입니다</h3>
+        <p>지금 카드에는 네 종류의 정보가 들어 있어 340px은 빠듯합니다. 폭을 고정하는 쪽이 손도 덜 가고 되돌리기도 쉽습니다.</p>
+      </div>
+      <div>
+        <h3>둘은 배타적이지 않습니다</h3>
+        <p>A를 먼저 넣고 카드를 더 줄인 다음, 그때 격자만 <code>auto-fill</code>로 바꾸면 B가 됩니다. 순서대로 갈 수 있습니다.</p>
+      </div>
+      <div>
+        <h3>밴드는 항상 full-bleed</h3>
+        <p>어느 쪽을 고르든 <code>.main::before</code>는 건드리지 않습니다. 색은 화면의 것이고, 폭 제한은 글의 것입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
   <footer>
     시안 보드입니다. 앞으로 새 디자인 제안은 이 페이지에 쌓습니다 —
     <a href="index.html">앱으로 돌아가기</a>
   </footer>
 
 </div>
+
+<script>
+/* 본문 폭 시안 — 축소 배율과 읽어 주는 수치를 맞춘다.
+   틀 안쪽은 실제 픽셀로 그려져 있으므로, 배율은 "보이는 칸 폭 ÷ 모니터 폭"이면 된다.
+   카드 폭은 transform 이 offsetWidth 에 영향을 주지 않으므로 그대로 실제 값이다. */
+(function () {
+  var topic = document.getElementById('wide');
+  if (!topic) return;
+
+  function fit() {
+    var mw = parseInt(getComputedStyle(topic).getPropertyValue('--mw'), 10);
+    topic.querySelectorAll('.mon').forEach(function (mon) {
+      mon.style.setProperty('--s', mon.clientWidth / mw);
+    });
+    topic.querySelectorAll('.wcase').forEach(function (wcase) {
+      var grid = wcase.querySelector('.mock-cards');
+      var read = wcase.querySelector('[data-read]');
+      if (!grid || !read) return;
+      var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+      var b = read.querySelectorAll('b');
+      b[0].textContent = Math.round(grid.firstElementChild.offsetWidth) + 'px';
+      b[1].textContent = cols;
+    });
+  }
+
+  topic.querySelectorAll('.wide-ctrl button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      topic.querySelectorAll('.wide-ctrl button').forEach(function (o) {
+        o.setAttribute('aria-pressed', String(o === btn));
+      });
+      topic.style.setProperty('--mw', btn.dataset.mw + 'px');
+      fit();
+    });
+  });
+
+  window.addEventListener('resize', fit);
+  /* 웹폰트가 늦게 오면 칸 폭이 한 번 더 바뀐다 — 그때 다시 잰다. */
+  if (document.fonts) document.fonts.ready.then(fit);
+  fit();
+})();
+</script>
 
 </body>
 </html>

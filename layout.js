@@ -101,12 +101,17 @@ const CONFIRM_HTML = `<dialog id="confirm-dialog">
 /**
  * confirm() 대신 쓰는 모달. 확인을 누르면 true, 취소·닫기·ESC 는 false 로 끝난다.
  * 예: if (await confirmAsk({ message: '삭제할까요?' })) remove(id);
+ *
+ * danger 는 확인 버튼을 빨갛게 물들인다. 되돌릴 수 없는 일(삭제)에만 켜고, 저장처럼
+ * 다시 고칠 수 있는 일에는 끈다 — 빨강이 모든 확인에 붙으면 경고로 안 읽힌다.
  */
-export function confirmAsk({ title = '삭제할까요?', message = '', confirmLabel = '삭제' } = {}) {
+export function confirmAsk({ title = '삭제할까요?', message = '', confirmLabel = '삭제', danger = true } = {}) {
   const dialog = document.getElementById('confirm-dialog');
+  const okButton = document.getElementById('confirm-ok');
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-message').textContent = message;
-  document.getElementById('confirm-ok').textContent = confirmLabel;
+  okButton.textContent = confirmLabel;
+  okButton.classList.toggle('danger', danger);
   dialog.showModal();
   return new Promise(resolve => {
     dialog.addEventListener('close', () => resolve(dialog.returnValue === 'ok'), { once: true });
@@ -369,7 +374,11 @@ function markInvalid(control) {
     message = document.createElement('p');
     message.className = 'field-error';
     message.innerHTML = '<span class="icon" aria-hidden="true">error</span><span></span>';
-    field.append(message);
+    /* 칸 맨 끝이 아니라 컨트롤 바로 뒤에 꽂는다. 말풍선은 top 없이 흐름상 제자리(static
+       position)에 뜨므로, 도움말이 뒤따르거나 옆 칸에 밀려 칸이 늘어나도 인풋 밑에 붙는다. */
+    let anchor = control;
+    while (anchor.parentElement && anchor.parentElement !== field) anchor = anchor.parentElement;
+    anchor.after(message);
   }
   message.lastElementChild.textContent = invalidText(control);
 }
@@ -443,7 +452,8 @@ export function mountLayout(options) {
     const box = $('auth-message');
     box.hidden = !error;
     box.classList.toggle('error', !!error);
-    if (error) box.textContent = '로그인에 실패했습니다. 이메일과 비밀번호를 확인하세요.';
+    // 실패 사실과 대처법은 다른 문장이라 줄을 나눈다(.auth-message 가 pre-line).
+    if (error) box.textContent = '로그인에 실패했습니다.\n이메일과 비밀번호를 확인하세요.';
   });
 
   $('sign-in').addEventListener('click', openAuth);

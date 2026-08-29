@@ -43,17 +43,38 @@
         </div>
       </section>
       <section>
-        <div class="content-head"><div class="head-title"><h2>프로젝트 목록</h2><span class="count" id="list-count">0 projects</span></div><div class="view-tools"><div class="view-tabs" role="tablist" aria-label="프로젝트 보기 방식"><button class="view-tab active" data-mode="card" type="button" role="tab" aria-selected="true">카드형</button><button class="view-tab" data-mode="list" type="button" role="tab" aria-selected="false">리스트형</button></div><button class="add-button" id="add-project" type="button" hidden><span class="icon" aria-hidden="true">add</span>프로젝트 추가</button></div></div>
+        <div class="content-head"><div class="head-title"><h2>프로젝트 목록</h2><span class="count" id="list-count">0 projects</span></div><div class="view-tools"><button class="view-toggle" id="view-toggle" type="button" title="리스트형으로 보기" aria-label="리스트형으로 보기"><span class="icon" aria-hidden="true">list</span></button><button class="add-button" id="add-project" type="button"><span class="icon" aria-hidden="true">add</span>프로젝트 추가</button></div></div>
         <div class="card-list" id="card-list"></div>
-        <div class="table-wrap" id="table-view"><table><thead><tr><th>프로젝트명</th><th>기간</th><th>일수</th><th>개월</th><th>발주처</th><th>스킬</th><th>기타</th><th></th></tr></thead><tbody id="project-list"></tbody></table></div>
+        <div class="table-wrap" id="table-view"><table><thead><tr><th>프로젝트명</th><th>기간</th><th>개월·일수</th><th>발주처</th><th>스킬</th><th>기타</th><th></th></tr></thead><tbody id="project-list"></tbody></table></div>
         <div class="empty" id="empty-state">아직 등록된 프로젝트가 없습니다.<br>새 프로젝트를 추가해보세요.</div>
       </section>
       </div>
 
       <div class="view" data-view="resume" hidden>
-      <section class="panel" aria-label="개인이력카드">
-        <h2>개인이력카드</h2>
-        <dl class="info-grid" id="profile"></dl>
+      <!-- 이력카드의 머리는 이름표다. 사진·이름·소속을 그라데이션 띠에 얹고, 아래 표에는
+           나머지 기록만 남긴다 — 머리에 올라간 이름·소속회사는 표에서 뺐다.
+           개인이력카드와 학력사항은 바뀔 일이 없어 값을 여기 그대로 적어 둔다. 스크립트가
+           채우는 건 경력사항 합계로 계산되는 'IT 근무경력' 한 칸(#career-total-label)뿐이다.
+           사진을 넣으려면 아래 .avatar 안의 <span> 을 <img src="img/profile.jpg" alt="정은미 프로필 사진"> 로 바꾸면 된다. -->
+      <section class="panel profile-panel" aria-label="개인이력카드">
+        <div class="profile-head">
+          <div class="avatar"><span aria-hidden="true">정은미</span></div>
+          <div class="profile-id">
+            <p class="eyebrow">개인이력카드</p>
+            <h2>정은미</h2>
+            <p class="profile-role">㈜인스웨이브</p>
+          </div>
+        </div>
+        <!-- 주소는 값이 길어 wide 로 한 줄을 다 쓴다. 마지막 줄에 홀로 서므로 밑줄도 걷힌다. -->
+        <dl class="info-grid">
+          <div><dt>생년월일</dt><dd>1987년 4월 6일</dd></div>
+          <div><dt>입사일</dt><dd>2021년 10월 5일</dd></div>
+          <div><dt>부서 / 직위</dt><dd>UX지원팀 / 선임</dd></div>
+          <div><dt>기술등급</dt><dd>고급</dd></div>
+          <div><dt>IT 근무경력</dt><dd id="career-total-label">계산 중</dd></div>
+          <div><dt>전문기술</dt><dd><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></dd></div>
+          <div class="wide"><dt>주소</dt><dd>인천 미추홀구 학익동</dd></div>
+        </dl>
       </section>
 
       <section>
@@ -61,13 +82,16 @@
         <div class="table-wrap">
           <table>
             <thead><tr><th>졸업년월</th><th>학교명 및 전공</th></tr></thead>
-            <tbody id="school-list"></tbody>
+            <tbody>
+              <tr><td class="period">2008.02</td><td class="project-name">동양전문대학교 시각디자인전공</td></tr>
+              <tr><td class="period">2006.02</td><td class="project-name">인천여자고등학교</td></tr>
+            </tbody>
           </table>
         </div>
       </section>
 
       <section class="career-section">
-        <div class="content-head"><div class="head-title"><h2>경력사항</h2><span class="count" id="career-summary">전체경력 계산 중</span></div><div class="view-tools"><button class="add-button" id="add-career" type="button" hidden><span class="icon" aria-hidden="true">add</span>경력 추가</button></div></div>
+        <div class="content-head"><div class="head-title"><h2>경력사항</h2><span class="count" id="career-summary">전체경력 계산 중</span></div><div class="view-tools"><button class="add-button" id="add-career" type="button"><span class="icon" aria-hidden="true">add</span>경력 추가</button></div></div>
         <div class="table-wrap" id="career-table">
           <table>
             <thead><tr><th>근무기간</th><th>회사명</th><th>담당 업무</th><th>기간</th><th></th></tr></thead>
@@ -83,11 +107,11 @@
   <dialog id="project-dialog">
     <div class="modal"><div class="modal-head"><h2 id="project-modal-title">새 프로젝트 추가</h2><button class="close" id="project-close" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
       <form id="project-form">
-        <div><label for="project-name">프로젝트명 *</label><input id="project-name" name="projectName" type="text" placeholder="예: 브랜드 웹사이트 리뉴얼" required></div>
-        <div class="field-row"><div><label for="start-date">시작일 *</label><input id="start-date" name="startDate" type="date" required></div><div><label for="end-date">종료일 *</label><input id="end-date" name="endDate" type="date" required></div></div>
-        <div><label for="client">발주처 *</label><input id="client" name="client" type="text" placeholder="예: 주식회사 클라이언트" required></div>
-        <div><label for="skill-input">스킬 *</label><div class="skills-input"><input id="skill-input" type="text" placeholder="스킬을 입력하고 추가하세요 (콤마로 여러 개)"><button class="skill-add" id="add-skill" type="button"><span class="icon" aria-hidden="true">add</span>추가</button></div><p class="helper">예: HTML, CSS, JavaScript</p><div class="selected-skills" id="selected-skills"></div></div>
-        <div><label for="notes">기타</label><textarea id="notes" name="notes" rows="3" placeholder="예: 담당 역할, 성과, 참고 링크 등"></textarea><p class="helper">선택 항목입니다. 비워두어도 저장됩니다.</p></div>
+        <div><label for="project-name">프로젝트명 <span class="req" aria-hidden="true">*</span></label><input id="project-name" name="projectName" type="text" placeholder="J.컴퍼니 프로젝트" required></div>
+        <div class="field-row"><div><label for="start-date">시작일 <span class="req" aria-hidden="true">*</span></label><input id="start-date" name="startDate" type="date" required></div><div><label for="end-date">종료일 <span class="req" aria-hidden="true">*</span></label><input id="end-date" name="endDate" type="date" required></div></div>
+        <div><label for="client">발주처 <span class="req" aria-hidden="true">*</span></label><input id="client" name="client" type="text" placeholder="J.컴퍼니" required></div>
+        <div><label for="skill-input">스킬 <span class="req" aria-hidden="true">*</span></label><div class="skills-input"><input id="skill-input" type="text" placeholder="스킬을 입력하고 추가하세요 (콤마로 여러 개)"><button class="skill-add" id="add-skill" type="button"><span class="icon" aria-hidden="true">add</span>추가</button></div><p class="helper">예: HTML, CSS, JavaScript</p><div class="selected-skills" id="selected-skills"></div></div>
+        <div><label for="notes">기타</label><textarea id="notes" name="notes" rows="3" placeholder="특이사항, 담당 역할 등"></textarea></div>
         <div class="form-actions"><button id="project-cancel" type="button">취소</button><button class="save" id="submit-project" type="submit">프로젝트 저장</button></div>
       </form>
     </div>
@@ -96,10 +120,10 @@
   <dialog id="career-dialog">
     <div class="modal"><div class="modal-head"><h2 id="career-modal-title">경력 추가</h2><button class="close" id="career-close" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
       <form id="career-form">
-        <div><label for="company">회사명 *</label><input id="company" name="company" type="text" placeholder="예: ㈜인스웨이브시스템즈" required></div>
-        <div><label for="role">담당 업무 *</label><input id="role" name="role" type="text" placeholder="예: 디자인/퍼블리싱" required></div>
+        <div><label for="company">회사명 <span class="req" aria-hidden="true">*</span></label><input id="company" name="company" type="text" placeholder="예: ㈜인스웨이브시스템즈" required></div>
+        <div><label for="role">담당 업무 <span class="req" aria-hidden="true">*</span></label><input id="role" name="role" type="text" placeholder="예: 디자인/퍼블리싱" required></div>
         <div class="field-row">
-          <div><label for="career-start">입사일 *</label><input id="career-start" name="start" type="date" required></div>
+          <div><label for="career-start">입사일 <span class="req" aria-hidden="true">*</span></label><input id="career-start" name="start" type="date" required></div>
           <div><label for="career-end">퇴사일</label><input id="career-end" name="end" type="date"><p class="helper">비워두면 재직중으로 표시됩니다.</p></div>
         </div>
         <div class="field-row">
@@ -155,16 +179,16 @@
     /* ── 인증 (사이드바·헤더는 위 스크립트가 이미 그려 두었다) ── */
     onAuthChange(session => {
       signedIn = !!session;
-      $('add-project').hidden = !signedIn;
-      $('add-career').hidden = !signedIn;
       if (signedIn) checkLocalBackup(); else $('migrate-notice').hidden = true;
       loadProjects();
       loadCareers();
     });
 
-    // 추가 버튼은 각 목록 바로 위에 하나씩 있다.
-    $('add-project').addEventListener('click', () => openProjectModal(null));
-    $('add-career').addEventListener('click', () => openCareerModal(null));
+    /* 추가 버튼은 각 목록 바로 위에 하나씩 있다. 로그인 여부와 상관없이 늘 보인다 —
+       숨겨 두면 비로그인 화면에서 목록 머리가 휑한 데다, 여기서 무엇을 할 수 있는지
+       자체가 안 보인다. 대신 누르는 순간 로그인 창을 띄운다(수정·삭제와 같은 길이다). */
+    $('add-project').addEventListener('click', () => signedIn ? openProjectModal(null) : openAuth());
+    $('add-career').addEventListener('click', () => signedIn ? openCareerModal(null) : openAuth());
 
     /* ══ 프로젝트 관리 ═══════════════════════ */
     /* ── 데이터 ─────────────────────────────── */
@@ -298,29 +322,40 @@
       $('table-view').hidden = viewMode !== 'list';
       $('card-list').hidden = viewMode !== 'card';
       // 기준일로 잘린 뒤의 실제 기간. 카드형은 날짜 밑에 한 줄로 붙이고,
-      // 리스트형은 정렬해서 보기 좋게 일수·개월을 각각 독립된 칸으로 뽑는다.
+      // 리스트형은 한 칸에 개월·일수를 함께 넣는다.
       const span = project => {
         const days = spanDays.get(project.id);
         return days ? `<span class="card-tip">${days.toLocaleString('ko-KR')}일 · ${spanLabel(days)}</span>` : '';
       };
-      const dayCell = project => { const days = spanDays.get(project.id); return days ? `${days.toLocaleString('ko-KR')}일` : '' };
-      const monthCell = project => { const days = spanDays.get(project.id); return days ? spanLabel(days) : '' };
+      // 리스트형은 개월이 먼저다 — 프로젝트를 견주는 단위는 일수가 아니라 개월이고,
+      // 일수는 그 근거로 뒤에 옅게 붙인다.
+      const spanCell = project => {
+        const days = spanDays.get(project.id);
+        return days ? `${spanLabel(days)}<span class="span-sub">(${days.toLocaleString('ko-KR')}일)</span>` : '';
+      };
       const chips = project => project.skills.map(skill => `<span class="skill">${esc(skill)}</span>`).join('');
       const notes = project => project.notes ? esc(project.notes).replace(/\n/g, '<br>') : '';
       // 버튼은 로그인 여부와 상관없이 항상 그린다. 로그인 전에 감춰 두면 카드의 오른쪽
       // 위가 로그인 전후로 달라져 화면이 흔들리고, 무엇보다 "고칠 수 있는 화면"이라는
       // 걸 알 방법이 없다. 로그인이 필요한 건 누른 다음에 listClick 이 알려 준다.
       const rowButtons = (project, className) => `<div class="row-actions"><button class="${className}" type="button" data-edit="${project.id}" aria-label="${esc(project.project_name)} 수정" title="수정"><span class="icon" aria-hidden="true">edit</span></button><button class="${className}" type="button" data-delete="${project.id}" aria-label="${esc(project.project_name)} 삭제" title="삭제"><span class="icon" aria-hidden="true">delete</span></button></div>`;
-      $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${shortDate(project.start_date)} ~ ${shortDate(project.end_date)}</td><td class="span-days">${dayCell(project)}</td><td class="span-months">${monthCell(project)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${rowButtons(project, 'row-button')}</td></tr>`).join('');
+      $('project-list').innerHTML = projects.map(project => `<tr><td class="project-name">${esc(project.project_name)}</td><td class="period">${shortDate(project.start_date)} ~ ${shortDate(project.end_date)}</td><td class="span-months">${spanCell(project)}</td><td class="client">${esc(project.client)}</td><td><div class="skill-list">${chips(project)}</div></td><td class="notes">${notes(project)}</td><td>${rowButtons(project, 'row-button')}</td></tr>`).join('');
       $('card-list').innerHTML = projects.map(project => `<article class="project-card"><div class="card-top"><h3 class="card-title">${esc(project.project_name)}</h3>${rowButtons(project, 'card-button')}</div><p class="card-period">${dotDate(project.start_date)} ~ ${dotDate(project.end_date)}${span(project)}</p><p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>${esc(project.client)}</p><div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list">${chips(project)}</div></div>${project.notes ? `<div class="card-notes">${notes(project)}</div>` : ''}</article>`).join('');
     }
 
     /* ── 입력 ───────────────────────────────── */
-    document.querySelectorAll('.view-tab').forEach(tab => tab.addEventListener('click', () => {
-      viewMode = tab.dataset.mode;
-      document.querySelectorAll('.view-tab').forEach(item => { item.classList.toggle('active', item === tab); item.setAttribute('aria-selected', item === tab) });
+    /* 보기 전환은 버튼 하나다. 상태가 둘뿐이라 누르면 무조건 반대편으로 간다.
+       버튼에 담기는 건 지금 보고 있는 뷰가 아니라 '누르면 갈 뷰'다 — 아이콘 하나로
+       현재 상태를 말하면 그림이 지금 화면과 겹쳐 보여 무엇을 뜻하는지 갈리지 않는다. */
+    $('view-toggle').addEventListener('click', () => {
+      viewMode = viewMode === 'card' ? 'list' : 'card';
+      const next = viewMode === 'card' ? '리스트형' : '카드형';
+      const toggle = $('view-toggle');
+      toggle.querySelector('.icon').textContent = viewMode === 'card' ? 'list' : 'grid_view';
+      toggle.title = `${next}으로 보기`;
+      toggle.setAttribute('aria-label', toggle.title);
       renderProjects();
-    }));
+    });
     // 개월 환산 방식은 두 화면에 함께 걸린다(전체경력도 같은 규칙을 쓴다).
     $('base-date').addEventListener('change', renderProjects);
     $('round-mode').addEventListener('change', () => { renderProjects(); renderResume() });
@@ -387,6 +422,15 @@
       event.preventDefault();
       const data = new FormData(projectForm), button = $('submit-project');
       const row = { project_name: data.get('projectName'), start_date: data.get('startDate'), end_date: data.get('endDate'), client: data.get('client'), skills: [...skills], notes: data.get('notes').trim() || null };
+      /* 확인은 폼 검사를 통과한 뒤에 묻는다 — 필수 칸이 비었는데 "저장할까요?" 부터 뜨면
+         예를 눌러도 저장이 안 된다. submit 은 검사를 통과해야만 오므로 여기가 그 자리다. */
+      const ok = await confirmAsk({
+        title: editingProjectId ? '수정한 내용을 저장할까요?' : '이 프로젝트를 저장할까요?',
+        message: row.project_name,
+        confirmLabel: '저장',
+        danger: false,
+      });
+      if (!ok) return;
       button.disabled = true;
       const saved = editingProjectId ? await updateProject(editingProjectId, row) : await addProjects([row]);
       button.disabled = false;
@@ -395,24 +439,9 @@
     });
 
     /* ══ 이력서 ═════════════════════════════ */
-    /* 개인이력카드와 학력사항은 바뀔 일이 드물어 여기에 직접 적어둡니다.
+    /* 개인이력카드와 학력사항은 값이 고정이라 위 마크업에 그대로 적혀 있습니다 — 고칠 일이
+       생기면 스크립트가 아니라 그 HTML 을 고치면 됩니다.
        경력사항은 Supabase(resume_careers)에 저장되고 화면에서 관리합니다. */
-    const PROFILE = [
-      { label: '이름',        value: '정은미' },
-      { label: '생년월일',    value: '1987년 4월 6일' },
-      { label: '소속회사',    value: '㈜인스웨이브시스템즈' },
-      { label: '입사일',      value: '2021년 10월 5일' },
-      { label: '부서 / 직위', value: 'UX지원팀 / 선임' },
-      { label: '기술등급',    value: '고급' },
-      { label: 'IT 근무경력', value: 'auto' }, // 경력사항 합계로 자동 계산
-      { label: '전문기술',    value: 'Html / CSS' },
-      { label: '주소',        value: '인천 미추홀구 학익동', wide: true },
-    ];
-
-    const SCHOOLS = [
-      { date: '2008.02', name: '동양전문대학교 시각디자인전공' },
-      { date: '2006.02', name: '인천여자고등학교' },
-    ];
 
     const careerDialog = $('career-dialog'), careerForm = $('career-form');
     let careers = [], editingCareerId = null;
@@ -510,14 +539,8 @@
     function renderResume() {
       const totalLabel = careerLabel(totalCareerMonths());
 
-      $('profile').innerHTML = PROFILE.map(item =>
-        `<div${item.wide ? ' class="wide"' : ''}><dt>${esc(item.label)}</dt><dd>${esc(item.value === 'auto' ? totalLabel : item.value)}</dd></div>`
-      ).join('');
-
-      $('school-list').innerHTML = SCHOOLS.map(school =>
-        `<tr><td class="period">${esc(school.date)}</td><td class="project-name">${esc(school.name)}</td></tr>`
-      ).join('');
-
+      // 이력카드에서 스크립트가 손대는 건 이 한 칸뿐이다. 나머지는 마크업에 적혀 있다.
+      $('career-total-label').textContent = totalLabel;
       $('career-summary').textContent = `전체경력 ${totalLabel}`;
       $('career-empty').hidden = careers.length > 0;
       $('career-table').hidden = careers.length === 0;
@@ -574,6 +597,13 @@
         leave_months: leave,
         leave_reason: leave ? (data.get('reason').trim() || '휴직') : null,
       };
+      const ok = await confirmAsk({
+        title: editingCareerId ? '수정한 내용을 저장할까요?' : '이 경력을 저장할까요?',
+        message: row.company,
+        confirmLabel: '저장',
+        danger: false,
+      });
+      if (!ok) return;
       button.disabled = true;
       const saved = await saveCareer(row, editingCareerId);
       button.disabled = false;
