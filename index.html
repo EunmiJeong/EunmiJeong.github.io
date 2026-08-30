@@ -177,11 +177,21 @@
     $('base-date').value = toISO(new Date()); // 인증 콜백보다 먼저 기준일을 채워둔다.
 
     /* ── 인증 (사이드바·헤더는 위 스크립트가 이미 그려 두었다) ── */
+    /* 이 콜백은 첫 접속에 두 번 불린다 — 페이지가 뜰 때(세션 없음)와 로그인 직후.
+       주의할 점이 둘 있다.
+       ① supabase 는 이 콜백을 인증 잠금을 쥔 채 부른다. 그 안에서 곧바로 from(...) 을
+          await 하면 그 요청이 같은 잠금을 기다리다 서로 물려 실패한다(모바일에서 특히).
+          그래서 setTimeout 0 으로 콜백을 빠져나온 뒤에 부른다.
+       ② 토큰이 그대로면(창 복귀·토큰 갱신 등) 다시 불러올 것이 없다. 다시 그리기만 한다. */
+    let sessionToken, everLoaded = false;
     onAuthChange(session => {
       signedIn = !!session;
       if (signedIn) checkLocalBackup(); else $('migrate-notice').hidden = true;
-      loadProjects();
-      loadCareers();
+      const token = session ? session.access_token : null;
+      if (everLoaded && token === sessionToken) { renderProjects(); renderResume(); return }
+      everLoaded = true;
+      sessionToken = token;
+      setTimeout(() => { loadProjects(); loadCareers() }, 0);
     });
 
     /* 추가 버튼은 각 목록 바로 위에 하나씩 있다. 로그인 여부와 상관없이 늘 보인다 —
@@ -192,10 +202,15 @@
 
     /* ══ 프로젝트 관리 ═══════════════════════ */
     /* ── 데이터 ─────────────────────────────── */
+    /* 불러오기는 여러 번 겹칠 수 있다(로그인 직후, 저장 직후 …).
+       늦게 도착한 예전 응답이 방금 그린 화면이나 알림 줄을 덮지 않도록 차수를 매겨 둔다. */
+    let projectLoad = 0, careerLoad = 0;
     async function loadProjects() {
+      const turn = ++projectLoad;
       const { data, error } = await supabase.from('projects').select('*')
         .order('start_date', { ascending: false, nullsFirst: false })
         .order('created_at', { ascending: false });
+      if (turn !== projectLoad) return; // 뒤이은 호출이 이미 끝냈다.
       if (error) showError('프로젝트를 불러오지 못했습니다.', error, 'projects');
       else { showError('', null, 'projects'); projects = data; renderProjects() }
       pageReady(); // 실패했더라도 로딩 화면은 걷어내고 메시지를 보여준다.
@@ -478,7 +493,9 @@
     const careerLabel = total => { const years = Math.floor(total / 12), rest = total % 12; return years ? `${years}년 ${rest}개월` : `${rest}개월` };
 
     async function loadCareers() {
+      const turn = ++careerLoad;
       const { data, error } = await supabase.from('resume_careers').select('*').order('start_date', { ascending: false });
+      if (turn !== careerLoad) return; // 늦게 온 예전 응답은 버린다(loadProjects 와 같다).
       if (error) { careers = []; showError('경력사항을 불러오지 못했습니다. SETUP.md 의 resume_careers 테이블을 만들었는지 확인하세요.', error, 'careers') }
       else { showError('', null, 'careers'); careers = data }
       renderResume();
