@@ -504,8 +504,8 @@ dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
 }
 /* 배지 면은 흰색이고 색은 글리프에만 준다. 원까지 채우면 작은 카드 안에서 같은 색이
    배지·버튼 두 번 나와 무거워진다. */
-.confirm-badge{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:#fff;box-shadow:0 8px 20px -8px #aaaaaa5c;}
-.confirm-badge .icon{font-size:27px;color:var(--deep);}
+.confirm-badge{display:grid;place-items:center;width:50px;height:50px;margin:0 auto 18px;border-radius:50%;background:#fff;box-shadow:0 8px 20px -8px #aaaaaa5c;}
+.confirm-badge .icon{font-size:28px;color:var(--deep);}
 .confirm-card.danger .confirm-badge .icon{color:var(--red);}
 .confirm-card.warn .confirm-badge .icon{color:var(--amber);}
 .confirm-card.ok .confirm-badge .icon{color:var(--green);}
