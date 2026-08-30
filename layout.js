@@ -27,15 +27,22 @@ const NAV = [
 
 const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
 
+/**
+ * 아이콘 한 개를 그린다. 모양은 각 페이지 맨 위의 아이콘 모음(.icon-sprite)에서 가져온다.
+ * 이름은 Material Symbols 의 이름 그대로다(edit · delete · close …).
+ * 쓰려는 이름의 symbol 이 모음에 없으면 아무것도 안 그려지니, 새 아이콘은 모음에 먼저 더할 것.
+ */
+export const icon = (name, className = 'icon') => `<svg class="${className}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+
 function sidebarHTML() {
   const links = NAV.map(item =>
-    `<a class="nav-link" href="#${item.key}" data-nav="${item.key}"><span class="icon" aria-hidden="true">${item.icon}</span>${esc(item.label)}</a>`
+    `<a class="nav-link" href="#${item.key}" data-nav="${item.key}">${icon(item.icon)}${esc(item.label)}</a>`
   ).join('');
 
   /* .nav-close 는 좁은 화면(서랍 모드)에서만 보인다 — 넓은 화면에서는 CSS 가 감춘다. */
   return `<aside class="sidebar" id="sidebar">
     <p class="brand">project<span>.</span>desk</p>
-    <button class="nav-close" id="nav-close" type="button" aria-label="메뉴 닫기"><span class="icon" aria-hidden="true">close</span></button>
+    <button class="nav-close" id="nav-close" type="button" aria-label="메뉴 닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
     <nav class="nav" aria-label="주요 메뉴">${links}</nav>
   </aside>`;
 }
@@ -44,10 +51,10 @@ function sidebarHTML() {
    제목 문구는 뷰마다 다르므로 비워 두고 applyView() 가 채운다.
    추가 버튼은 여기가 아니라 각 섹션 머리(.content-head)에 붙는다 — index.html 참고. */
 const HEADER_HTML = `<div class="appbar">
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="메뉴 열기" aria-controls="sidebar" aria-expanded="false"><span class="icon" aria-hidden="true">menu</span></button>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="메뉴 열기" aria-controls="sidebar" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
     <p class="account-mail" id="account-mail"></p>
-    <button id="sign-in" type="button" hidden><span class="icon" aria-hidden="true">login</span>로그인</button>
-    <button id="sign-out" type="button" hidden><span class="icon" aria-hidden="true">logout</span>로그아웃</button>
+    <button id="sign-in" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-login"/></svg>로그인</button>
+    <button id="sign-out" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>로그아웃</button>
   </div>
   <header class="topbar">
     <div><p class="kicker" id="page-kicker"></p><h1 id="page-title"></h1><p class="subtext" id="page-subtext"></p></div>
@@ -91,7 +98,7 @@ export function onViewChange(handler) {
    취소가 이미 같은 일을 하므로, 보이는 선택지는 둘로 줄이고 ESC 만 남긴다. */
 const CONFIRM_HTML = `<dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message">
   <div class="confirm-card danger" id="confirm-card">
-    <div class="confirm-badge"><span class="icon" id="confirm-icon" aria-hidden="true">delete</span></div>
+    <div class="confirm-badge"><svg class="icon" id="confirm-icon" aria-hidden="true"><use href="#i-delete"/></svg></div>
     <h2 id="confirm-title">삭제할까요?</h2>
     <p class="confirm-message" id="confirm-message"></p>
     <div class="confirm-actions" id="confirm-actions">
@@ -120,7 +127,7 @@ const CONFIRM_ICONS = { brand: 'help', danger: 'delete', warn: 'priority_high', 
  * cancelLabel 을 빈 값으로 주면 취소가 사라지고 확인 버튼 하나가 통으로 늘어난다.
  * 물을 것이 없고 알리기만 하는 창(ok)에 쓴다.
  *
- * icon 은 Material Symbols 이름이다. 안 주면 톤에 딸린 글리프를 쓴다.
+ * icon 은 Material Symbols 이름이다. 안 주면 톤에 딸린 아이콘을 쓴다.
  */
 export function confirmAsk({ title = '삭제할까요?', message = '', confirmLabel = '삭제', cancelLabel = '취소', danger = true, tone, icon } = {}) {
   const dialog = document.getElementById('confirm-dialog');
@@ -129,7 +136,9 @@ export function confirmAsk({ title = '삭제할까요?', message = '', confirmLa
   const key = tone || (danger ? 'danger' : 'brand');
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-message').textContent = message;
-  document.getElementById('confirm-icon').textContent = icon || CONFIRM_ICONS[key] || CONFIRM_ICONS.brand;
+  // 아이콘은 글자가 아니라 그림이라, 글자를 갈아 끼우는 대신 가져올 모양을 바꾼다.
+  document.getElementById('confirm-icon').firstElementChild
+    .setAttribute('href', `#i-${icon || CONFIRM_ICONS[key] || CONFIRM_ICONS.brand}`);
   document.getElementById('confirm-card').className = key === 'brand' ? 'confirm-card' : `confirm-card ${key}`;
   okButton.textContent = confirmLabel;
   cancelButton.textContent = cancelLabel;
@@ -144,7 +153,7 @@ export function confirmAsk({ title = '삭제할까요?', message = '', confirmLa
 function authHTML(authLead) {
   return `<dialog id="auth-dialog">
     <form class="auth-card" id="auth-form">
-      <div class="modal-head"><h2 class="auth-title"><span class="icon" aria-hidden="true">account_circle</span>Login</h2><button class="close" id="close-auth" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
+      <div class="modal-head"><h2 class="auth-title"><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>Login</h2><button class="close" id="close-auth" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
       <p class="auth-lead">${esc(authLead)}</p>
       <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
       <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
@@ -188,12 +197,12 @@ function upgradeDateInput(input) {
   input.replaceWith(wrap);
   wrap.append(input);
   wrap.insertAdjacentHTML('beforeend',
-    `<button class="date-pick" type="button" tabindex="-1" aria-label="달력 열기"><span class="icon" aria-hidden="true">calendar_month</span></button>
+    `<button class="date-pick" type="button" tabindex="-1" aria-label="달력 열기"><svg class="icon" aria-hidden="true"><use href="#i-calendar_month"/></svg></button>
      <div class="calendar" hidden>
        <div class="cal-head">
-         <button class="cal-nav" type="button" data-step="-1"><span class="icon" aria-hidden="true">chevron_left</span></button>
+         <button class="cal-nav" type="button" data-step="-1"><svg class="icon" aria-hidden="true"><use href="#i-chevron_left"/></svg></button>
          <button class="cal-label" type="button"></button>
-         <button class="cal-nav" type="button" data-step="1"><span class="icon" aria-hidden="true">chevron_right</span></button>
+         <button class="cal-nav" type="button" data-step="1"><svg class="icon" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
        </div>
        <div class="cal-grid cal-week">${WEEKDAYS.map(day => `<span>${day}</span>`).join('')}</div>
        <div class="cal-grid cal-days"></div>
@@ -396,7 +405,7 @@ function markInvalid(control) {
   if (!message) {
     message = document.createElement('p');
     message.className = 'field-error';
-    message.innerHTML = '<span class="icon" aria-hidden="true">error</span><span></span>';
+    message.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-error"/></svg><span></span>';
     /* 칸 맨 끝이 아니라 컨트롤 바로 뒤에 꽂는다. 말풍선은 top 없이 흐름상 제자리(static
        position)에 뜨므로, 도움말이 뒤따르거나 옆 칸에 밀려 칸이 늘어나도 인풋 밑에 붙는다. */
     let anchor = control;

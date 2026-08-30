@@ -312,6 +312,41 @@
   </style>
 </head>
 <body>
+<!-- 아이콘 모음. 화면에는 안 보이고, 아래 <use href="#i-이름"> 이 여기서 모양을 가져다 쓴다.
+     Material Symbols Rounded · 굵기 400 · 24px 원본을 그대로 뽑아 왔다. 왜 폰트가 아니라
+     그림인지는 style.css 의 .icon 설명을 볼 것. 아이콘을 새로 쓰려면 여기에 symbol 을 더한다. -->
+<svg class="icon-sprite" aria-hidden="true"><defs>
+<symbol id="i-account_circle" viewBox="0 -960 960 960"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/></symbol>
+<symbol id="i-add" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></symbol>
+<symbol id="i-badge" viewBox="0 -960 960 960"><path d="M240-240h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm350-60h100q13 0 21.5-8.5T720-330q0-13-8.5-21.5T690-360H590q-13 0-21.5 8.5T560-330q0 13 8.5 21.5T590-300Zm-230-60q25 0 42.5-17.5T420-420q0-25-17.5-42.5T360-480q-25 0-42.5 17.5T300-420q0 25 17.5 42.5T360-360Zm230-60h100q13 0 21.5-8.5T720-450q0-13-8.5-21.5T690-480H590q-13 0-21.5 8.5T560-450q0 13 8.5 21.5T590-420ZM160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm280-440h80v-200h-80v200Zm40 220Z"/></symbol>
+<symbol id="i-bolt" viewBox="0 -960 960 960"><path d="m422-232 207-248H469l29-227-185 267h139l-30 208Zm-62-128H236q-24 0-35.5-21.5T203-423l299-430q10-14 26-19.5t33 .5q17 6 25 21t6 32l-32 259h155q26 0 36.5 23t-6.5 43L416-100q-11 13-27 17t-31-3q-15-7-23.5-21.5T328-139l32-221Zm111-110Z"/></symbol>
+<symbol id="i-calendar_month" viewBox="0 -960 960 960"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-40q0-17 11.5-28.5T280-880q17 0 28.5 11.5T320-840v40h320v-40q0-17 11.5-28.5T680-880q17 0 28.5 11.5T720-840v40h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></symbol>
+<symbol id="i-calendar_today" viewBox="0 -960 960 960"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-40q0-17 11.5-28.5T280-880q17 0 28.5 11.5T320-840v40h320v-40q0-17 11.5-28.5T680-880q17 0 28.5 11.5T720-840v40h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></symbol>
+<symbol id="i-check" viewBox="0 -960 960 960"><path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z"/></symbol>
+<symbol id="i-chevron_left" viewBox="0 -960 960 960"><path d="m432-480 156 156q11 11 11 28t-11 28q-11 11-28 11t-28-11L348-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 28-11t28 11q11 11 11 28t-11 28L432-480Z"/></symbol>
+<symbol id="i-chevron_right" viewBox="0 -960 960 960"><path d="M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z"/></symbol>
+<symbol id="i-close" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></symbol>
+<symbol id="i-code" viewBox="0 -960 960 960"><path d="m193-479 155 155q11 11 11 28t-11 28q-11 11-28 11t-28-11L108-452q-6-6-8.5-13T97-480q0-8 2.5-15t8.5-13l184-184q12-12 28.5-12t28.5 12q12 12 12 28.5T349-635L193-479Zm574-2L612-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L668-268q-12 12-28 11.5T612-269q-12-12-12-28.5t12-28.5l155-155Z"/></symbol>
+<symbol id="i-corporate_fare" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h240q33 0 56.5 23.5T480-760v80h320q33 0 56.5 23.5T880-600v400q0 33-23.5 56.5T800-120H160Zm0-80h240v-80H160v80Zm0-160h240v-80H160v80Zm0-160h240v-80H160v80Zm0-160h240v-80H160v80Zm320 480h320v-400H480v400Zm120-240q-17 0-28.5-11.5T560-480q0-17 11.5-28.5T600-520h80q17 0 28.5 11.5T720-480q0 17-11.5 28.5T680-440h-80Zm0 160q-17 0-28.5-11.5T560-320q0-17 11.5-28.5T600-360h80q17 0 28.5 11.5T720-320q0 17-11.5 28.5T680-280h-80Z"/></symbol>
+<symbol id="i-dashboard" viewBox="0 -960 960 960"><path d="M520-640v-160q0-17 11.5-28.5T560-840h240q17 0 28.5 11.5T840-800v160q0 17-11.5 28.5T800-600H560q-17 0-28.5-11.5T520-640ZM120-480v-320q0-17 11.5-28.5T160-840h240q17 0 28.5 11.5T440-800v320q0 17-11.5 28.5T400-440H160q-17 0-28.5-11.5T120-480Zm400 320v-320q0-17 11.5-28.5T560-520h240q17 0 28.5 11.5T840-480v320q0 17-11.5 28.5T800-120H560q-17 0-28.5-11.5T520-160Zm-400 0v-160q0-17 11.5-28.5T160-360h240q17 0 28.5 11.5T440-320v160q0 17-11.5 28.5T400-120H160q-17 0-28.5-11.5T120-160Zm80-360h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"/></symbol>
+<symbol id="i-date_range" viewBox="0 -960 960 960"><path d="M320-400q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm160 0q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm160 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-40q0-17 11.5-28.5T280-880q17 0 28.5 11.5T320-840v40h320v-40q0-17 11.5-28.5T680-880q17 0 28.5 11.5T720-840v40h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></symbol>
+<symbol id="i-delete" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520q-17 0-28.5-11.5T160-760q0-17 11.5-28.5T200-800h160q0-17 11.5-28.5T400-840h160q17 0 28.5 11.5T600-800h160q17 0 28.5 11.5T800-760q0 17-11.5 28.5T760-720v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM400-280q17 0 28.5-11.5T440-320v-280q0-17-11.5-28.5T400-640q-17 0-28.5 11.5T360-600v280q0 17 11.5 28.5T400-280Zm160 0q17 0 28.5-11.5T600-320v-280q0-17-11.5-28.5T560-640q-17 0-28.5 11.5T520-600v280q0 17 11.5 28.5T560-280ZM280-720v520-520Z"/></symbol>
+<symbol id="i-edit" viewBox="0 -960 960 960"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></symbol>
+<symbol id="i-error" viewBox="0 -960 960 960"><path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm0-160q17 0 28.5-11.5T520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></symbol>
+<symbol id="i-folder_open" viewBox="0 -960 960 960"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h207q16 0 30.5 6t25.5 17l57 57h360q17 0 28.5 11.5T880-680q0 17-11.5 28.5T840-640H447l-80-80H160v480l79-263q8-26 29.5-41.5T316-560h516q41 0 64.5 32.5T909-457l-72 240q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm-84-262v-218 218Zm84 262 72-240-72 240Z"/></symbol>
+<symbol id="i-help" viewBox="0 -960 960 960"><path d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm2 160q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm4-172q25 0 43.5 16t18.5 40q0 22-13.5 39T502-525q-23 20-40.5 44T444-427q0 14 10.5 23.5T479-394q15 0 25.5-10t13.5-25q4-21 18-37.5t30-31.5q23-22 39.5-48t16.5-58q0-51-41.5-83.5T484-720q-38 0-72.5 16T359-655q-7 12-4.5 25.5T368-609q14 8 29 5t25-17q11-15 27.5-23t34.5-8Z"/></symbol>
+<symbol id="i-info" viewBox="0 -960 960 960"><path d="M480-280q17 0 28.5-11.5T520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280Zm0-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></symbol>
+<symbol id="i-interests" viewBox="0 -960 960 960"><path d="m113-579 132-238q6-11 15-16t20-5q11 0 20 5t15 16l132 238q5 10 4.5 20t-5.5 19q-5 9-14 14.5t-20 5.5H148q-11 0-20-5.5T114-540q-5-9-5.5-19t4.5-20Zm167 459q-66 0-113-47t-47-113q0-67 47-113.5T280-440q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T360-280q0-33-23.5-56.5T280-360q-33 0-56.5 23.5T200-280q0 33 23.5 56.5T280-200Zm-64-400h128l-64-115-64 115Zm304 440v-240q0-17 11.5-28.5T560-440h240q17 0 28.5 11.5T840-400v240q0 17-11.5 28.5T800-120H560q-17 0-28.5-11.5T520-160Zm80-40h160v-160H600v160Zm54-342-53-45q-69-58-95-91.5T480-753q0-45 31.5-76t78.5-31q27 0 50.5 12.5T680-813q16-22 39.5-34.5T770-860q47 0 78.5 31t31.5 76q0 41-26 74.5T759-587l-53 45q-11 10-26 10t-26-10Zm26-83q72-60 96-85t24-41q0-13-7.5-21t-20.5-8q-10 0-19.5 5.5T729-755l-49 47-49-47q-14-14-23.5-19.5T588-780q-13 0-20.5 8t-7.5 21q0 16 24 41t96 85Zm0-78Zm-400 45Zm0 378Zm400 0Z"/></symbol>
+<symbol id="i-layers" viewBox="0 -960 960 960"><path d="M161-366q-16-12-15.5-31.5T162-429q11-8 24-8t24 8l270 209 270-209q11-8 24-8t24 8q16 12 16.5 31.5T799-366L529-156q-22 17-49 17t-49-17L161-366Zm270 8L201-537q-31-24-31-63t31-63l230-179q22-17 49-17t49 17l230 179q31 24 31 63t-31 63L529-358q-22 17-49 17t-49-17Zm49-64 230-178-230-178-230 178 230 178Zm0-178Z"/></symbol>
+<symbol id="i-list" viewBox="0 -960 960 960"><path d="M320-600q-17 0-28.5-11.5T280-640q0-17 11.5-28.5T320-680h480q17 0 28.5 11.5T840-640q0 17-11.5 28.5T800-600H320Zm0 160q-17 0-28.5-11.5T280-480q0-17 11.5-28.5T320-520h480q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H320Zm0 160q-17 0-28.5-11.5T280-320q0-17 11.5-28.5T320-360h480q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280H320ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z"/></symbol>
+<symbol id="i-login" viewBox="0 -960 960 960"><path d="M520-120q-17 0-28.5-11.5T480-160q0-17 11.5-28.5T520-200h240v-560H520q-17 0-28.5-11.5T480-800q0-17 11.5-28.5T520-840h240q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H520Zm-73-320H160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h287l-75-75q-11-11-11-27t11-28q11-12 28-12.5t29 11.5l143 143q12 12 12 28t-12 28L429-309q-12 12-28.5 11.5T372-310q-11-12-10.5-28.5T373-366l74-74Z"/></symbol>
+<symbol id="i-logout" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h240q17 0 28.5 11.5T480-160q0 17-11.5 28.5T440-120H200Zm487-320H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-11-11-11-27t11-28q11-12 28-12.5t29 11.5l143 143q12 12 12 28t-12 28L669-309q-12 12-28.5 11.5T612-310q-11-12-10.5-28.5T613-366l74-74Z"/></symbol>
+<symbol id="i-menu" viewBox="0 -960 960 960"><path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z"/></symbol>
+<symbol id="i-more_vert" viewBox="0 -960 960 960"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></symbol>
+<symbol id="i-priority_high" viewBox="0 -960 960 960"><path d="M480-120q-33 0-56.5-23.5T400-200q0-33 23.5-56.5T480-280q33 0 56.5 23.5T560-200q0 33-23.5 56.5T480-120Zm0-240q-33 0-56.5-23.5T400-440v-320q0-33 23.5-56.5T480-840q33 0 56.5 23.5T560-760v320q0 33-23.5 56.5T480-360Z"/></symbol>
+<symbol id="i-schedule" viewBox="0 -960 960 960"><path d="M520-496v-144q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v159q0 8 3 15.5t9 13.5l132 132q11 11 28 11t28-11q11-11 11-28t-11-28L520-496ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></symbol>
+<symbol id="i-workspace_premium" viewBox="0 -960 960 960"><path d="m480-483-68 52q-6 5-12 .5t-4-11.5l26-84-70-56q-5-5-3-11.5t9-6.5h86l26-82q2-7 10-7t10 7l26 82h85q7 0 9.5 6.5T608-582l-71 56 26 84q2 7-4 11.5t-12-.5l-67-52Zm0 363L293-58q-20 7-36.5-5T240-95v-254q-38-42-59-96t-21-115q0-134 93-227t227-93q134 0 227 93t93 227q0 61-21 115t-59 96v254q0 20-16.5 32T667-58l-187-62Zm0-200q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70ZM320-159l160-41 160 41v-124q-35 20-75.5 31.5T480-240q-44 0-84.5-11.5T320-283v124Zm160-62Z"/></symbol>
+</defs></svg>
 
 <div class="sian">
 
@@ -342,13 +377,13 @@
             <div class="card-top">
               <h3 class="card-title">하나카드 스마트창구 구축</h3>
               <div class="row-actions">
-                <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-                <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+                <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+                <button class="card-button" type="button" aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
               </div>
             </div>
             <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-            <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-            <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+            <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+            <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
             <div class="card-notes">전자서식, 태블릿 단말</div>
           </article>
         </div>
@@ -384,13 +419,13 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
-          <p class="card-period"><span class="icon" aria-hidden="true">date_range</span>2026년 2월 1일 ~ 2026년 7월 31일</p>
-          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span><span class="lbl">Client</span>하나은행</p>
-          <div class="card-skills"><span class="icon" aria-hidden="true">interests</span><span class="lbl">Skill</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <p class="card-period"><svg class="icon" aria-hidden="true"><use href="#i-date_range"/></svg>2026년 2월 1일 ~ 2026년 7월 31일</p>
+          <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg><span class="lbl">Client</span>하나은행</p>
+          <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-interests"/></svg><span class="lbl">Skill</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
           <div class="card-notes">전자서식, 태블릿 단말</div>
         </article>
       </div>
@@ -423,8 +458,8 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <dl class="meta">
@@ -455,8 +490,8 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <p class="client">하나은행</p>
@@ -486,14 +521,14 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <div class="rail">
-            <span class="icon" aria-hidden="true">calendar_today</span><span class="val">2026. 02. 01 – 2026. 07. 31</span>
-            <span class="icon" aria-hidden="true">corporate_fare</span><span class="val">하나은행</span>
-            <span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div>
+            <svg class="icon" aria-hidden="true"><use href="#i-calendar_today"/></svg><span class="val">2026. 02. 01 – 2026. 07. 31</span>
+            <svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg><span class="val">하나은행</span>
+            <svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div>
           </div>
           <div class="card-notes">전자서식, 태블릿 단말</div>
         </article>
@@ -521,8 +556,8 @@
               <h3 class="card-title">하나카드 스마트창구 구축</h3>
             </div>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <p class="client">하나은행</p>
@@ -565,13 +600,13 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+          <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
           <div class="card-notes">전자서식, 태블릿 단말</div>
         </article>
       </div>
@@ -594,13 +629,13 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+          <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
           <div class="card-notes">전자서식, 태블릿 단말</div>
         </article>
       </div>
@@ -626,13 +661,13 @@
             <div class="card-top">
               <h3 class="card-title">하나카드 스마트창구 구축</h3>
               <div class="row-actions">
-                <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-                <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+                <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+                <button class="card-button" type="button" data-delete aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
               </div>
             </div>
             <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-            <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-            <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+            <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+            <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
             <div class="card-notes">전자서식, 태블릿 단말</div>
           </article>
         </div>
@@ -664,13 +699,13 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
           <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+          <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
           <div class="card-notes">전자서식, 태블릿 단말</div>
         </article>
       </div>
@@ -695,12 +730,12 @@
           <div class="card-top">
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="더보기" aria-haspopup="menu"><span class="icon" aria-hidden="true">more_vert</span></button>
+              <button class="card-button" type="button" aria-label="더보기" aria-haspopup="menu"><svg class="icon" aria-hidden="true"><use href="#i-more_vert"/></svg></button>
             </div>
           </div>
           <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+          <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
           <div class="card-notes">전자서식, 태블릿 단말</div>
         </article>
       </div>
@@ -726,13 +761,13 @@
             <h3 class="card-title">하나카드 스마트창구 구축</h3>
           </div>
           <p class="card-period">2026년 2월 1일 ~ 2026년 7월 31일</p>
-          <p class="card-client"><span class="icon" aria-hidden="true">corporate_fare</span>하나은행</p>
-          <div class="card-skills"><span class="icon" aria-hidden="true">code</span><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
+          <p class="card-client"><svg class="icon" aria-hidden="true"><use href="#i-corporate_fare"/></svg>하나은행</p>
+          <div class="card-skills"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div class="skill-list"><span class="skill">HTML</span><span class="skill">CSS</span></div></div>
           <div class="card-foot">
             <div class="card-notes">전자서식, 태블릿 단말</div>
             <div class="row-actions">
-              <button class="card-button" type="button" aria-label="수정"><span class="icon" aria-hidden="true">edit</span></button>
-              <button class="card-button" type="button" data-delete aria-label="삭제"><span class="icon" aria-hidden="true">delete</span></button>
+              <button class="card-button" type="button" aria-label="수정"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+              <button class="card-button" type="button" data-delete aria-label="삭제"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></button>
             </div>
           </div>
         </article>
@@ -929,7 +964,7 @@
           <div class="modal confirm-card">
             <div class="modal-head">
               <h2>삭제할까요?</h2>
-              <button class="close" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button>
+              <button class="close" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
             </div>
             <p class="confirm-message">「하나카드 스마트창구 구축」을 삭제합니다.
 되돌릴 수 없습니다.</p>
@@ -956,7 +991,7 @@
     <div class="case">
       <div class="stage stage-dim">
         <div class="al al-halo del">
-          <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+          <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></div>
           <h3>프로젝트를 삭제할까요?</h3>
           <p><b>하나카드 스마트창구 구축</b><br>목록에서 사라지며 되돌릴 수 없습니다.</p>
           <div class="al-act">
@@ -985,7 +1020,7 @@
     <div class="case">
       <div class="stage stage-dim">
         <div class="al al-tint del">
-          <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+          <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></div>
           <h3>프로젝트를 삭제할까요?</h3>
           <p><b>하나카드 스마트창구 구축</b><br>목록에서 사라지며 되돌릴 수 없습니다.</p>
           <div class="al-act">
@@ -1012,7 +1047,7 @@
       <div class="stage stage-dim">
         <div class="al al-left del">
           <div class="al-head">
-            <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+            <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></div>
             <h3>프로젝트를 삭제할까요?</h3>
           </div>
           <p><b>하나카드 스마트창구 구축</b>이 목록에서 사라집니다. 되돌릴 수 없습니다.</p>
@@ -1040,7 +1075,7 @@
       <div class="stage stage-dim">
         <div class="al al-band del">
           <div class="al-cap">
-            <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+            <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-delete"/></svg></div>
             <h3>프로젝트를 삭제할까요?</h3>
           </div>
           <p><b>하나카드 스마트창구 구축</b><br>목록에서 사라지며 되돌릴 수 없습니다.</p>
@@ -1068,28 +1103,28 @@
       <div>
         <div class="al-grid">
           <div class="al al-halo ok">
-            <div class="al-badge"><span class="icon" aria-hidden="true">check</span></div>
+            <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></div>
             <h3>저장했습니다</h3>
             <p>프로젝트 <b>12</b>건이 목록에 반영되었습니다.</p>
             <div class="al-act one"><button type="button">확인</button></div>
           </div>
 
           <div class="al al-halo wait">
-            <div class="al-badge"><span class="icon" aria-hidden="true">schedule</span></div>
+            <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-schedule"/></svg></div>
             <h3>저장하는 중…</h3>
             <p>예상보다 오래 걸리고 있습니다.<br>잠시만 기다려 주세요.</p>
             <div class="al-act one"><button type="button">취소</button></div>
           </div>
 
           <div class="al al-halo bad">
-            <div class="al-badge"><span class="icon" aria-hidden="true">error</span></div>
+            <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-error"/></svg></div>
             <h3>저장하지 못했습니다</h3>
             <p>다시 시도하거나 <a href="#alert">연결 상태</a>를 확인해 주세요.</p>
             <div class="al-act one"><button class="go" type="button">다시 시도</button></div>
           </div>
 
           <div class="al al-halo warn">
-            <div class="al-badge"><span class="icon" aria-hidden="true">priority_high</span></div>
+            <div class="al-badge"><svg class="icon" aria-hidden="true"><use href="#i-priority_high"/></svg></div>
             <h3>저장하지 않고 닫을까요?</h3>
             <p>작성 중인 내용 <span class="num">4</span>칸이 사라집니다.</p>
             <div class="al-act">

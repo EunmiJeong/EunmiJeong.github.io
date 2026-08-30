@@ -58,7 +58,6 @@
   --card-pink:#f89dc8;--card-pink-soft:#fdeef6;--card-pink-ink:#d1608f;
   --font:"Pretendard Variable", "Malgun Gothic", sans-serif;/* 본문 */
   --font-head:"NanumSquareNeo", "Malgun Gothic", sans-serif;/* 제목 */
-  --icon-weight:300;/* 아이콘 굵기. 300 · 400 · 500 만 가능(그 굵기의 폰트 파일만 있다) */
   /* 본문 내용의 최대 폭. 사이드바를 뺀 영역 안에서 이 폭으로 묶고 가운데로 모은다. */
   --page-max:1440px;
   /* 모달 안에서 누르는 것들의 공통 높이. 인풋(12px 패딩 + 1.4 줄높이 + 테두리)과 같은
@@ -91,24 +90,22 @@
 @font-face{font-family:"NanumSquareNeo";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");}
 @font-face{font-family:"NanumSquareNeo";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");}
 
-/* ── Material Symbols Rounded (opsz 20 / FILL 0 / GRAD 0) ──
-   가변 폰트가 아니라 굵기 하나씩 잘라 낸 정적 인스턴스라, 굵기마다 파일이 따로 있다.
-   셋을 모두 등록해 두었으니 굵기를 바꾸려면 아래 :root 의 --icon-weight 만 300 / 400 /
-   500 중 하나로 고치면 된다 — 브라우저가 맞는 파일 하나만 골라 받는다. */
-@font-face{font-family:"Material Symbols Rounded";font-style:normal;font-weight:300;font-display:block;src:url("fonts/material-symbols-rounded-300.woff2") format("woff2");}
-@font-face{font-family:"Material Symbols Rounded";font-style:normal;font-weight:400;font-display:block;src:url("fonts/material-symbols-rounded-400.woff2") format("woff2");}
-@font-face{font-family:"Material Symbols Rounded";font-style:normal;font-weight:500;font-display:block;src:url("fonts/material-symbols-rounded-500.woff2") format("woff2");}
+/* ── 아이콘 (Material Symbols Rounded · 굵기 400 · Apache 2.0) ──
+   폰트가 아니라 그림이다. 예전에는 아이콘 폰트를 썼는데, 그 폰트는 edit·delete 같은
+   단어를 합자로 글리프에 바꿔 그리는 방식이라 폰트가 안 실리면 아이콘 자리에 그 영어
+   단어가 그대로 드러났다. 기기 글꼴을 웹페이지에 강제로 씌우는 브라우저(삼성인터넷 등)에서
+   실제로 그랬다. 그림은 글꼴 설정이 건드리지 못하므로 어디서든 똑같이 나온다.
+
+   모양은 각 페이지 맨 위의 .icon-sprite 안에 symbol 로 들어 있고, 여기서는 그 그림을
+   어떻게 놓을지만 정한다. 크기는 예전처럼 font-size 로 준다 — 아래 width·height 가
+   1em 이라, 이미 붙어 있는 .xxx .icon{font-size:19px} 같은 규칙이 그대로 먹는다. */
+.icon-sprite{display:none;}
 .icon{
-  font-family:"Material Symbols Rounded";
-  font-weight:var(--icon-weight);font-style:normal;font-size:20px;line-height:1;
   display:inline-block;vertical-align:middle;
-  letter-spacing:normal;text-transform:none;white-space:nowrap;word-wrap:normal;direction:ltr;
-  /* 이 폰트는 edit·delete 같은 단어를 합자로 글리프에 바꿔 그린다. 합자가 꺼지면
-     아이콘 대신 그 단어가 그대로 보이므로, 표준·구형 속성을 모두 켜서 못 꺼지게 한다
-     (삼성인터넷처럼 브라우저·사용자 설정이 합자를 끄는 경우가 있다). */
-  font-variant-ligatures:normal;
-  font-feature-settings:"liga";-moz-font-feature-settings:"liga";-webkit-font-feature-settings:"liga";
-  -webkit-font-smoothing:antialiased;
+  width:1em;height:1em;font-size:20px;line-height:1;
+  fill:currentColor;/* 색은 글자색을 따라간다 — color 만 주면 아이콘도 같이 바뀐다. */
+  flex:none;/* 좁은 칸에서 아이콘이 찌그러지지 않게. */
+  pointer-events:none;/* 아이콘을 눌러도 그 클릭은 감싼 버튼이 받는다. */
   user-select:none;
 }
 
@@ -157,10 +154,19 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* 기본은 일반 안내. 실패 메시지는 .error 를 함께 준다. */
 /* 두 줄짜리 오류 문구를 그대로 받기 위해 pre-line. 줄이 늘어도 아이콘은 첫 줄에 붙는다. */
 .auth-message{display:flex;gap:8px;align-items:flex-start;white-space:pre-line;line-height:1.5;margin:0;padding:12px 16px;border-radius:var(--r-sm);color:var(--deep);background:var(--soft);font-size:.78rem;}
-/* 아이콘 줄높이를 본문 첫 줄 높이(.78rem × 1.5)에 맞춰 첫 줄 가운데에 세운다. */
-.auth-message::before{content:"info";flex:none;font-family:"Material Symbols Rounded";font-size:18px;font-weight:var(--icon-weight);line-height:calc(.78rem * 1.5);font-variant-ligatures:normal;font-feature-settings:"liga";}
+/* 이 아이콘만은 ::before 라 <svg> 를 넣을 수 없다(메시지 글자를 textContent 로 갈아 끼우는
+   자리라 자식 요소를 두면 지워진다). 그래서 그림을 마스크로 씌우고 색은 글자색을 따르게 한다.
+   위 여백은 본문 첫 줄 높이(.78rem × 1.5)와의 차를 반씩 나눠 첫 줄 가운데에 세운 값이다. */
+.auth-message::before{
+  content:"";flex:none;width:18px;height:18px;margin-top:calc((.78rem * 1.5 - 18px) / 2);
+  background:currentColor;
+  -webkit-mask:var(--auth-icon) center/contain no-repeat;mask:var(--auth-icon) center/contain no-repeat;
+  --auth-icon:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-280q17 0 28.5-11.5T520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280Zm0-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>');
+}
 .auth-message.error{color:var(--red-deep);background:var(--red-soft);}
-.auth-message.error::before{content:"error";}
+.auth-message.error::before{
+  --auth-icon:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm0-160q17 0 28.5-11.5T520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>');
+}
 .auth-message[hidden]{display:none;}/* display:flex 가 hidden 을 덮으므로 되살린다 */
 .auth-actions{display:grid;gap:9px;}
 .auth-actions button{display:flex;gap:6px;align-items:center;justify-content:center;min-height:var(--btn-h);border:1px solid var(--line);padding:0 26px;border-radius:var(--r-pill);background:#fff;font:inherit;cursor:pointer;transition:.2s;}
@@ -289,8 +295,9 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 /* 카드 머리에 큼직한 아이콘 배지를 얹고, 제목은 그 아래 작은 라벨로 내린다.
    배지가 이 카드의 색 그 자체다 — 강조색 단색으로 채우고 아래에 같은 색의 진한 쪽
    (--accent-ink) 그림자를 깔아 살짝 띄운다.
-   .icon 보다 뒤에 와야 display:grid 가 inline-block 을 이긴다(특이도가 같다). */
-.stat-icon{display:grid;place-items:center;width:48px;height:48px;margin-bottom:18px;border-radius:50%;color:#fff;background:var(--accent);font-size:26px;}
+   이 배지가 곧 아이콘 그림 자체다. 그림은 안쪽 여백을 뺀 자리에만 그려지므로,
+   48px 원 안에 26px 짜리 아이콘을 앉히려면 사방 11px 을 비워 둔다. */
+.stat-icon{width:48px;height:48px;padding:11px;margin-bottom:18px;border-radius:50%;color:#fff;background:var(--accent);}
 .stat-title{margin:0 0 8px;color:var(--muted);font-size:.78rem;}
 .stat-value{margin:0;font:800 2rem var(--font-head);}
 /* 총 경력. 색은 다른 카드와 같은 규칙을 따르고, 이 줄의 대표 숫자라는 것은
@@ -495,9 +502,9 @@ dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
    덜 급한 일(작성 중인 내용을 잃는 정도)이라는 뜻이 색에 남는다. */
 .confirm-card.warn::before{
   background:
-    radial-gradient(130px 108px at 35% 58%, #fbdfb4 0%, transparent 70%),
-    radial-gradient(145px 115px at 66% 42%, #fad3c4 0%, transparent 72%),
-    radial-gradient(130px 100px at 82% 74%, #f7e6bf 0%, transparent 72%);
+    radial-gradient(130px 108px at 35% 58%, #ffc492 0%, transparent 70%), 
+    radial-gradient(145px 115px at 66% 42%, #ffefa3 0%, transparent 72%), 
+    radial-gradient(130px 100px at 60% 72%, #ffc29a 0%, transparent 72%)
 }
 /* ok 는 초록에 하늘 한 겹을 섞는다. 초록만 세 겹이면 이 화면에 없던 색이 통째로
    들어와 브랜드 밖으로 튄다 — 하늘이 기본 톤과 이어 준다. */
