@@ -184,6 +184,129 @@
   .rules h3{margin:0;font:700 .96rem var(--font-head);letter-spacing:-.01em;}
   .rules p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.7;}
 
+  /* ── 알림 팝업(alert) 시안 ────────────────
+     여기 나오는 .al-* 는 전부 시안 전용 클래스다. 앱의 확인 모달은 아직
+     .confirm-card 를 쓰고 있으므로, 무엇을 고르든 실제 화면에는 영향이 없다.
+     다만 색·둥글기·그림자·아이콘은 전부 style.css 의 토큰에서 가져온다 —
+     시안이 앱과 다른 팔레트를 쓰면 "예쁘다"가 "쓸 수 있다"로 이어지지 않는다. */
+
+  /* 모달이 놓이는 무대. 실제로는 어두워진 배경 위에 뜨므로 무대도 그렇게 깐다. */
+  .stage-dim{background:#dcdeeb;}
+
+  .al{
+    position:relative;overflow:hidden;isolation:isolate;
+    width:100%;max-width:340px;
+    padding:34px 28px 26px;
+    border-radius:var(--r-lg);background:var(--paper);
+    box-shadow:0 30px 60px -28px #3d4d6e66;
+    text-align:center;
+  }
+  .al h3{margin:0;font:800 1.06rem/1.45 var(--font-head);letter-spacing:-.02em;}
+  .al p{margin:9px 0 0;color:var(--ink-soft);font-size:.83rem;line-height:1.7;}
+  .al p b{color:var(--ink);font-weight:600;}
+  .al .num{color:var(--red-deep);font-weight:600;font-variant-numeric:tabular-nums;}
+  .al a{color:var(--deep);}
+
+  /* 버튼 줄 — 둘이면 반반, 하나면 통으로 */
+  .al-act{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px;}
+  .al-act.one{grid-template-columns:1fr;}
+  .al-act button{
+    height:var(--btn-h);border:0;border-radius:var(--r-pill);
+    color:var(--ink-soft);background:var(--field);
+    font:600 .86rem var(--font);cursor:pointer;transition:.2s;
+  }
+  .al-act button:hover{background:var(--field-hover);color:var(--ink);}
+  .al-act .go{color:#fff;background:var(--grad);box-shadow:var(--shadow-brand);}
+  .al-act .go:hover{filter:brightness(1.05);}
+  /* 되돌릴 수 없는 일에만 빨강. 저장·확인까지 빨개지면 빨강이 경고로 안 읽힌다. */
+  .al-act .go.danger{background:var(--red);box-shadow:0 14px 30px -12px #e3799b99;}
+
+  /* 원형 배지 — 흰 면 + 옅은 그림자. 색은 글리프에만 준다. */
+  .al-badge{
+    display:grid;place-items:center;width:56px;height:56px;margin:0 auto 18px;
+    border-radius:50%;background:#fff;box-shadow:0 8px 20px -8px #6a6c9d5c, 0 0 0 1px #ffffff;
+  }
+  .al-badge .icon{font-size:27px;}
+  .ok .al-badge .icon{color:#3fa980;}
+  .wait .al-badge .icon{color:var(--violet);}
+  .bad .al-badge .icon{color:var(--red);}
+  .warn .al-badge .icon{color:#e8a13c;}
+  .del .al-badge .icon{color:var(--red);}
+
+  /* A 후광형 — 카드 위쪽에 흐린 색 얼룩을 깐다.
+     blur 한 번으로 만들어야 색끼리 섞이면서 경계가 사라진다. 그라데이션을 여러 겹
+     겹치는 것만으로는 이 물감 번짐이 나오지 않는다. 아래로는 마스크로 서서히 지운다. */
+  .al-halo::before{
+    content:"";position:absolute;z-index:-1;top:-78px;left:-40px;right:-40px;height:260px;
+    filter:blur(34px);
+    -webkit-mask-image:linear-gradient(#000 45%, transparent 90%);
+            mask-image:linear-gradient(#000 45%, transparent 90%);
+    background:
+      radial-gradient(125px 105px at 22% 60%, #c3e1f8 0%, transparent 70%),
+      radial-gradient(145px 115px at 60% 40%, #d7cef6 0%, transparent 72%),
+      radial-gradient(135px 105px at 88% 68%, #fbd4e8 0%, transparent 72%),
+      radial-gradient(125px 95px at 46% 88%, #d1e8fa 0%, transparent 72%);
+  }
+  /* 얼룩의 색만 상태별로 갈아 끼운다. 배치와 흐림은 그대로다. */
+  .al-halo.ok::before{background:
+      radial-gradient(125px 105px at 22% 60%, #b3e8cb 0%, transparent 70%),
+      radial-gradient(145px 115px at 60% 40%, #d0edda 0%, transparent 72%),
+      radial-gradient(135px 105px at 88% 70%, #cee5f9 0%, transparent 72%);}
+  .al-halo.wait::before{background:
+      radial-gradient(125px 105px at 22% 60%, #d2cef7 0%, transparent 70%),
+      radial-gradient(145px 115px at 60% 40%, #eccef2 0%, transparent 72%),
+      radial-gradient(135px 105px at 88% 70%, #c8def9 0%, transparent 72%);}
+  /* 삭제·오류는 색상환의 따뜻한 쪽으로. 기본(하늘·보라·분홍)에서 파란 기를 완전히 빼야
+     두 창이 나란히 놓였을 때 색만으로 갈린다. */
+  .al-halo.bad::before, .al-halo.del::before{background:
+      radial-gradient(130px 108px at 26% 58%, #fcd6b8 0%, transparent 70%),
+      radial-gradient(145px 115px at 66% 42%, #f9baba 0%, transparent 72%),
+      radial-gradient(130px 100px at 90% 74%, #fbcbdc 0%, transparent 72%);}
+  .al-halo.warn::before{background:
+      radial-gradient(130px 108px at 24% 60%, #fbdfb4 0%, transparent 70%),
+      radial-gradient(145px 115px at 64% 42%, #fad3c4 0%, transparent 72%),
+      radial-gradient(130px 100px at 90% 74%, #f7e6bf 0%, transparent 72%);}
+
+  /* B 파스텔 면형 — 후광 대신 배지 자체에 색을 채운다 */
+  .al-tint .al-badge{box-shadow:none;}
+  .al-tint.del .al-badge{background:var(--red-soft);}
+  .al-tint.ok .al-badge{background:#e6f5ed;}
+  .al-tint.warn .al-badge{background:#fdf0dd;}
+
+  /* C 좌측 정렬형 — 배지를 제목 왼쪽에 눕히고 글은 왼쪽에서 시작한다 */
+  .al-left{text-align:left;padding:28px 28px 24px;}
+  .al-left .al-head{display:flex;gap:13px;align-items:center;}
+  .al-left .al-badge{flex:none;width:42px;height:42px;margin:0;}
+  .al-left .al-badge .icon{font-size:22px;}
+  .al-left h3{font-size:1.02rem;}
+  .al-left p{margin-top:13px;}
+  .al-left .al-act{grid-template-columns:auto auto;justify-content:end;margin-top:22px;}
+  .al-left .al-act button{padding:0 20px;}
+
+  /* D 띠형 — 카드 위쪽 전체를 옅은 색 띠로 덮고 그 안에 배지를 놓는다 */
+  .al-band{padding:0 0 24px;}
+  .al-band .al-cap{padding:26px 28px 22px;background:var(--red-soft);}
+  .al-band.warn .al-cap{background:#fdf0dd;}
+  .al-band .al-badge{width:48px;height:48px;margin-bottom:14px;box-shadow:0 6px 16px -8px #6a6c9d66;}
+  .al-band h3{margin:0;}
+  .al-band > p{padding:18px 28px 0;}
+  .al-band .al-act{margin:22px 24px 0;}
+
+  /* 상태 갤러리 — 한 틀이 네 상태를 어떻게 견디는지 나란히 본다 */
+  .al-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;padding:26px 20px;border-radius:var(--r-md);background:#dcdeeb;}
+  .al-grid .al{max-width:none;padding:28px 22px 22px;}
+  .al-grid .al h3{font-size:.98rem;}
+  .al-grid .al p{font-size:.79rem;}
+  .al-grid .al-act{margin-top:20px;}
+  .al-grid .al-act button{height:40px;font-size:.82rem;}
+
+  /* 구안(지금 앱) — .confirm-card 를 시안 판 안에서 그대로 그린다 */
+  .al-now{width:100%;max-width:360px;border-radius:var(--r-lg);background:var(--paper);box-shadow:0 30px 60px -28px #3d4d6e66;}
+  .al-now .modal{padding:30px 30px 32px;}
+  .al-now .form-actions{display:flex;gap:10px;justify-content:flex-end;}
+  .al-now .form-actions button{height:var(--btn-h);padding:0 22px;border:0;border-radius:var(--r-sm);background:var(--field);color:var(--ink-soft);font:600 .86rem var(--font);cursor:pointer;}
+  .al-now .form-actions .save{color:#fff;background:var(--red);}
+
   .sian footer{color:var(--muted);font-size:.82rem;}
   .sian footer a{color:var(--deep);}
   </style>
@@ -783,6 +906,221 @@
       <div>
         <h3>밴드는 항상 full-bleed</h3>
         <p>어느 쪽을 고르든 <code>.main::before</code>는 건드리지 않습니다. 색은 화면의 것이고, 폭 제한은 글의 것입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── 알림 팝업 ────────────────────────── -->
+  <section id="alert">
+    <div class="sian-title">
+      <h2>알림 팝업 — "프로젝트를 삭제할까요?"</h2>
+      <p>
+        묻는 말 하나와 버튼 두 개뿐인 창입니다. 폼 모달과 같은 옷을 입힐 이유가 없습니다.
+        아이콘 하나로 "무슨 일인지"를 먼저 알리고, 글은 그다음에 읽히게 하는 안들입니다.
+      </p>
+    </div>
+
+    <!-- 지금 -->
+    <div class="case">
+      <div class="stage stage-dim">
+        <div class="al-now">
+          <div class="modal confirm-card">
+            <div class="modal-head">
+              <h2>삭제할까요?</h2>
+              <button class="close" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button>
+            </div>
+            <p class="confirm-message">「하나카드 스마트창구 구축」을 삭제합니다.
+되돌릴 수 없습니다.</p>
+            <div class="form-actions">
+              <button type="button">취소</button>
+              <button class="save danger" type="button">삭제</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">구안 — 폼 모달과 같은 틀 <span class="flag old">걷어냄</span></h3>
+        <p>폼 모달(<code>.modal</code>)의 틀을 그대로 물려받습니다. 왼쪽 제목 · 오른쪽 닫기 · 아래 오른쪽 버튼 두 개.</p>
+        <ul class="why">
+          <li><b>닫기 버튼이 세 번째 선택지처럼 보입니다.</b> 취소와 X가 같은 일을 하는데 둘 다 있습니다. 물음이 하나뿐인 창에서는 취소 하나면 충분합니다.</li>
+          <li><b>제목이 왼쪽 끝에 붙어 있습니다.</b> 700px 폼에서는 맞지만, 420px 창에서 한 줄짜리 물음은 가운데가 더 빨리 읽힙니다.</li>
+          <li><b>무슨 일인지가 글자로만 옵니다.</b> 삭제인지 저장인지 오류인지, 문장을 읽어야 알 수 있습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- A 후광형 -->
+    <div class="case">
+      <div class="stage stage-dim">
+        <div class="al al-halo del">
+          <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+          <h3>프로젝트를 삭제할까요?</h3>
+          <p><b>하나카드 스마트창구 구축</b><br>목록에서 사라지며 되돌릴 수 없습니다.</p>
+          <div class="al-act">
+            <button type="button">취소</button>
+            <button class="go danger" type="button">삭제</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">A · 후광형 <span class="flag live">적용됨</span></h3>
+        <p>카드 위쪽에 흐린 색 얼룩을 깔고, 그 위에 흰 원 배지를 띄웁니다. 닫기 X는 없애고 취소·실행 두 알약만 남깁니다.</p>
+        <ul class="why">
+          <li><b>얼룩은 <code>blur(38px)</code> 한 번으로 만듭니다.</b> 그라데이션 네 겹을 겹쳐 놓고 통째로 흐리는 방식입니다. 겹칠 때 색끼리 섞여야 물감처럼 번집니다 — 겹만 쌓으면 경계가 남습니다.</li>
+          <li><b>아래로는 마스크로 지웁니다.</b> <code>mask-image</code>로 42%부터 투명해지게 해서 얼룩이 버튼 근처까지 내려오지 않습니다. 글자 뒤가 깨끗해야 본문 대비가 유지됩니다.</li>
+          <li><b>색은 흐림을 셈해서 고릅니다.</b> 파스텔 값(<code>#fbd3e2</code>)은 <code>blur</code>와 마스크를 지나면 흰 종이에 묻혀 사라지고, 쨍한 값(<code>#f79ab9</code>)은 흐려도 색면으로 남아 글자와 다툽니다. 그 사이(<code>#f9b6cd</code>)에서 후광으로 읽힙니다 — <code>opacity</code>로 눅이면 네 겹이 한꺼번에 옅어져 조절이 안 되므로 색 자체로 잡습니다.</li>
+          <li><b>기본과 삭제는 색상환의 반대편입니다.</b> 기본은 하늘·보라·분홍(파란 기), 삭제는 주황·붉은·분홍(따뜻한 기)입니다. 분홍 한 겹만 공유해 같은 집안으로 남되, 파란 기가 있고 없고로 두 창이 갈립니다 — 처음엔 둘 다 분홍·보라라 나란히 놓으면 구분이 안 됐습니다.</li>
+          <li><b>바꾸는 것은 색상뿐입니다.</b> 밝기·배치·흐림 값은 네 상태가 전부 같습니다. 무게까지 달라지면 상태가 아니라 다른 창처럼 보입니다.</li>
+          <li><b>배지 면은 흰색입니다.</b> 색은 글리프에만 줍니다. 원까지 빨갛게 채우면 작은 카드 안에서 빨강이 두 번(배지·버튼) 나와 무거워집니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 창이 드물게 뜰 때. 하루에 몇 번씩 보는 창이라면 후광이 금세 장식으로 읽힙니다.</p>
+      </div>
+    </div>
+
+    <!-- B 파스텔 면형 -->
+    <div class="case">
+      <div class="stage stage-dim">
+        <div class="al al-tint del">
+          <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+          <h3>프로젝트를 삭제할까요?</h3>
+          <p><b>하나카드 스마트창구 구축</b><br>목록에서 사라지며 되돌릴 수 없습니다.</p>
+          <div class="al-act">
+            <button type="button">취소</button>
+            <button class="go danger" type="button">삭제</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">B · 파스텔 면형</h3>
+        <p>A에서 후광만 걷어내고, 그 색을 배지 안으로 옮깁니다. 나머지 구조는 같습니다.</p>
+        <ul class="why">
+          <li><b>이미 앱에 있는 어법입니다.</b> 통계 카드 배지와 스킬 칩이 쓰는 "옅은 면 + 진한 글리프"를 그대로 씁니다. 새 시각 규칙을 만들지 않습니다.</li>
+          <li><b>흐림 효과가 없어 가볍습니다.</b> <code>filter:blur</code>는 이 창이 뜰 때마다 한 겹을 새로 그립니다. 자주 뜨는 창이라면 이쪽이 안전합니다.</li>
+          <li><b>대신 인상이 약합니다.</b> 후광 쪽이 "특별한 순간"으로 읽히는 반면, 이쪽은 목록 카드와 같은 톤이라 조용히 지나갑니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 삭제 확인처럼 자주 뜨는 창. A는 아껴 두고 이쪽을 기본으로 두는 조합도 가능합니다.</p>
+      </div>
+    </div>
+
+    <!-- C 좌측 정렬형 -->
+    <div class="case">
+      <div class="stage stage-dim">
+        <div class="al al-left del">
+          <div class="al-head">
+            <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+            <h3>프로젝트를 삭제할까요?</h3>
+          </div>
+          <p><b>하나카드 스마트창구 구축</b>이 목록에서 사라집니다. 되돌릴 수 없습니다.</p>
+          <div class="al-act">
+            <button type="button">취소</button>
+            <button class="go danger" type="button">삭제</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">C · 좌측 정렬형</h3>
+        <p>배지를 제목 왼쪽에 눕히고 글은 왼쪽에서 시작합니다. 버튼은 오른쪽 아래에 모입니다.</p>
+        <ul class="why">
+          <li><b>앱의 다른 모달과 읽는 방향이 같습니다.</b> 프로젝트 · 경력 폼이 전부 좌측 정렬 · 우하단 버튼이라, 창이 바뀌어도 눈이 가는 자리가 그대로입니다.</li>
+          <li><b>설명이 길어져도 버팁니다.</b> 가운데 정렬은 두 줄만 넘어가도 줄 끝이 들쭉날쭉해집니다. 왼쪽 정렬은 몇 줄이든 같은 x에서 시작합니다.</li>
+          <li><b>배지가 42px로 작아집니다.</b> 제목 줄 안에 서므로 56px은 들어가지 않습니다. 아이콘의 존재감은 A·B보다 확실히 약합니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 설명이 두 줄을 넘거나, 조건·목록을 함께 보여 줘야 할 때.</p>
+      </div>
+    </div>
+
+    <!-- D 띠형 -->
+    <div class="case">
+      <div class="stage stage-dim">
+        <div class="al al-band del">
+          <div class="al-cap">
+            <div class="al-badge"><span class="icon" aria-hidden="true">delete</span></div>
+            <h3>프로젝트를 삭제할까요?</h3>
+          </div>
+          <p><b>하나카드 스마트창구 구축</b><br>목록에서 사라지며 되돌릴 수 없습니다.</p>
+          <div class="al-act">
+            <button type="button">취소</button>
+            <button class="go danger" type="button">삭제</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">D · 띠형</h3>
+        <p>카드 위쪽 전체를 옅은 색 띠로 덮고 그 안에 배지와 제목을 넣습니다. 아래 흰 면에는 설명과 버튼만 남습니다.</p>
+        <ul class="why">
+          <li><b>심각도가 카드 밖에서 먼저 보입니다.</b> 색 면적이 가장 넓어, 창이 뜨는 순간 빨강인지 살구인지가 글보다 먼저 읽힙니다.</li>
+          <li><b>띠가 층을 나눕니다.</b> "무슨 일인가"와 "그래서 무엇을 할까"가 면 색으로 갈립니다. 선을 긋지 않아도 됩니다.</li>
+          <li><b>단, 앱에 없던 어법입니다.</b> 지금 어떤 모달에도 색 띠가 없습니다. 이걸 들이면 알림 팝업만 다른 계열이 됩니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 데이터 손실처럼 진짜로 무거운 확인에만. 전부 이 모양이면 띠가 경고로 안 읽힙니다.</p>
+      </div>
+    </div>
+
+    <!-- 상태 갤러리 -->
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <div class="al-grid">
+          <div class="al al-halo ok">
+            <div class="al-badge"><span class="icon" aria-hidden="true">check</span></div>
+            <h3>저장했습니다</h3>
+            <p>프로젝트 <b>12</b>건이 목록에 반영되었습니다.</p>
+            <div class="al-act one"><button type="button">확인</button></div>
+          </div>
+
+          <div class="al al-halo wait">
+            <div class="al-badge"><span class="icon" aria-hidden="true">schedule</span></div>
+            <h3>저장하는 중…</h3>
+            <p>예상보다 오래 걸리고 있습니다.<br>잠시만 기다려 주세요.</p>
+            <div class="al-act one"><button type="button">취소</button></div>
+          </div>
+
+          <div class="al al-halo bad">
+            <div class="al-badge"><span class="icon" aria-hidden="true">error</span></div>
+            <h3>저장하지 못했습니다</h3>
+            <p>다시 시도하거나 <a href="#alert">연결 상태</a>를 확인해 주세요.</p>
+            <div class="al-act one"><button class="go" type="button">다시 시도</button></div>
+          </div>
+
+          <div class="al al-halo warn">
+            <div class="al-badge"><span class="icon" aria-hidden="true">priority_high</span></div>
+            <h3>저장하지 않고 닫을까요?</h3>
+            <p>작성 중인 내용 <span class="num">4</span>칸이 사라집니다.</p>
+            <div class="al-act">
+              <button type="button">계속 쓰기</button>
+              <button class="go" type="button">닫기</button>
+            </div>
+          </div>
+        </div>
+        <p class="stage-note">
+          A 후광형의 네 상태 — 얼룩 색과 글리프만 바뀌고 배치·흐림·크기는 같습니다.
+          앱에는 <code>brand</code> · <code>danger</code> · <code>warn</code> · <code>ok</code> 네 톤으로 들어가 있습니다(<code>confirmAsk({ tone })</code>).
+        </p>
+      </div>
+    </div>
+
+    <div class="rules">
+      <div>
+        <h3>X는 빼는 쪽이 낫습니다</h3>
+        <p>취소가 이미 있으면 닫기 X는 같은 일을 하는 세 번째 버튼입니다. ESC는 그대로 두고 눈에 보이는 선택지만 둘로 줄입니다.</p>
+      </div>
+      <div>
+        <h3>빨강은 삭제에만</h3>
+        <p>저장·확인처럼 다시 고칠 수 있는 일에는 그라데이션 버튼을 씁니다. 모든 확인이 빨개지면 빨강이 신호를 잃습니다.</p>
+      </div>
+      <div>
+        <h3>대상 이름을 넣습니다</h3>
+        <p>"이 항목"이 아니라 「하나카드 스마트창구 구축」이라고 적습니다. 어느 카드의 버튼을 눌렀는지는 자주 헷갈립니다.</p>
+      </div>
+      <div>
+        <h3>A와 B는 한 틀입니다</h3>
+        <p>구조가 같고 <code>::before</code> 얼룩 하나만 다릅니다. B로 넣어 두고 나중에 클래스 한 줄로 A가 될 수 있습니다.</p>
       </div>
     </div>
   </section>

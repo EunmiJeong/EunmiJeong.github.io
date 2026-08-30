@@ -87,31 +87,54 @@ export function onViewChange(handler) {
   if (currentKey) handler(currentKey);
 }
 
-const CONFIRM_HTML = `<dialog id="confirm-dialog">
-  <div class="modal confirm-card">
-    <div class="modal-head"><h2 id="confirm-title">삭제할까요?</h2><button class="close" id="confirm-close" type="button" aria-label="닫기"><span class="icon" aria-hidden="true">close</span></button></div>
+/* 물음 하나와 버튼 둘뿐인 창이라 폼 모달(.modal)의 틀을 쓰지 않는다. 닫기 X 도 없다 —
+   취소가 이미 같은 일을 하므로, 보이는 선택지는 둘로 줄이고 ESC 만 남긴다. */
+const CONFIRM_HTML = `<dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+  <div class="confirm-card danger" id="confirm-card">
+    <div class="confirm-badge"><span class="icon" id="confirm-icon" aria-hidden="true">delete</span></div>
+    <h2 id="confirm-title">삭제할까요?</h2>
     <p class="confirm-message" id="confirm-message"></p>
-    <div class="form-actions">
+    <div class="confirm-actions" id="confirm-actions">
       <button id="confirm-cancel" type="button">취소</button>
-      <button class="save danger" id="confirm-ok" type="button">삭제</button>
+      <button class="go" id="confirm-ok" type="button">삭제</button>
     </div>
   </div>
 </dialog>`;
 
+/* 톤 네 가지. 각 톤이 후광 색 · 배지 글리프 · 확인 버튼 색을 한꺼번에 정한다(색은
+   style.css 의 .confirm-card.<톤>). 여기서는 톤마다의 기본 글리프만 갖는다.
+   brand 는 되돌릴 수 있는 일(저장·확인), danger 는 되돌릴 수 없는 일(삭제),
+   warn 은 잃을 것이 있는 일(작성 중 닫기), ok 는 이미 끝난 일을 알리는 창이다.
+   brand 만 클래스가 없다 — .confirm-card 자체가 그 색이고, .brand 는 사이드바 로고가
+   이미 쓰는 이름이라 붙이면 겹친다. */
+const CONFIRM_ICONS = { brand: 'help', danger: 'delete', warn: 'priority_high', ok: 'check' };
+
 /**
- * confirm() 대신 쓰는 모달. 확인을 누르면 true, 취소·닫기·ESC 는 false 로 끝난다.
+ * confirm() 대신 쓰는 모달. 확인을 누르면 true, 취소·ESC 는 false 로 끝난다.
  * 예: if (await confirmAsk({ message: '삭제할까요?' })) remove(id);
  *
- * danger 는 확인 버튼을 빨갛게 물들인다. 되돌릴 수 없는 일(삭제)에만 켜고, 저장처럼
- * 다시 고칠 수 있는 일에는 끈다 — 빨강이 모든 확인에 붙으면 경고로 안 읽힌다.
+ * tone 은 창 전체의 색을 정한다 — 'brand' | 'danger' | 'warn' | 'ok'.
+ * 안 주면 danger 여부로 brand · danger 둘 중 하나를 고른다(예전 호출부 호환).
+ * 빨강은 되돌릴 수 없는 일에만 쓴다 — 모든 확인이 빨개지면 경고로 안 읽힌다.
+ *
+ * cancelLabel 을 빈 값으로 주면 취소가 사라지고 확인 버튼 하나가 통으로 늘어난다.
+ * 물을 것이 없고 알리기만 하는 창(ok)에 쓴다.
+ *
+ * icon 은 Material Symbols 이름이다. 안 주면 톤에 딸린 글리프를 쓴다.
  */
-export function confirmAsk({ title = '삭제할까요?', message = '', confirmLabel = '삭제', danger = true } = {}) {
+export function confirmAsk({ title = '삭제할까요?', message = '', confirmLabel = '삭제', cancelLabel = '취소', danger = true, tone, icon } = {}) {
   const dialog = document.getElementById('confirm-dialog');
   const okButton = document.getElementById('confirm-ok');
+  const cancelButton = document.getElementById('confirm-cancel');
+  const key = tone || (danger ? 'danger' : 'brand');
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-message').textContent = message;
+  document.getElementById('confirm-icon').textContent = icon || CONFIRM_ICONS[key] || CONFIRM_ICONS.brand;
+  document.getElementById('confirm-card').className = key === 'brand' ? 'confirm-card' : `confirm-card ${key}`;
   okButton.textContent = confirmLabel;
-  okButton.classList.toggle('danger', danger);
+  cancelButton.textContent = cancelLabel;
+  cancelButton.hidden = !cancelLabel;
+  document.getElementById('confirm-actions').classList.toggle('one', !cancelLabel);
   dialog.showModal();
   return new Promise(resolve => {
     dialog.addEventListener('close', () => resolve(dialog.returnValue === 'ok'), { once: true });
@@ -156,7 +179,7 @@ function upgradeDateInput(input) {
   input.type = 'text';
   input.inputMode = 'numeric';
   input.autocomplete = 'off';
-  input.placeholder = 'YYYY-MM-DD';
+  input.placeholder = '2027-01-01';
   input.maxLength = 10;
   input.classList.add('date-text');
 
@@ -190,7 +213,7 @@ function upgradeDateInput(input) {
     const value = input.value;
     input.setCustomValidity(
       !value ? ''
-        : !isDate(value) ? '날짜를 YYYY-MM-DD 형식으로 입력하세요.'
+        : !isDate(value) ? '날짜를 2027-01-01 형식으로 입력하세요.'
           : input.min && value < input.min ? `${input.min} 이후 날짜를 입력하세요.`
             : ''
     );
@@ -443,7 +466,6 @@ export function mountLayout(options) {
   const authDialog = $('auth-dialog'), confirmDialog = $('confirm-dialog');
   $('confirm-ok').addEventListener('click', () => confirmDialog.close('ok'));
   $('confirm-cancel').addEventListener('click', () => confirmDialog.close('cancel'));
-  $('confirm-close').addEventListener('click', () => confirmDialog.close('cancel'));
 
   $('auth-form').addEventListener('submit', async event => {
     event.preventDefault();

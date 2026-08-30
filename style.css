@@ -34,6 +34,11 @@
   --red:#e3799b;
   --red-soft:#fdedf3;/* 에러 메시지 배경 */
   --red-deep:#b5416c;/* 에러 메시지 글자 */
+  /* 경고(주황) · 완료(초록). 확인 모달의 톤에만 쓴다. 밝기·채도를 --red 에 맞춰 잡았다 —
+     이 화면의 파스텔 옆에서 어두운 색은 혼자 칙칙해 보인다. 흰 글자와의 대비는 --red
+     와 같은 수준이고, 배지 글리프도 같은 값을 쓴다(빨강이 그렇듯 한 색이 두 자리를 맡는다). */
+  --amber:#e79b3d;
+  --green:#3fb890;
   /* 스킬 칩 3색. 파스텔 면 + 밝고 선명한 글자. 색상(hue)은 아래 통계 카드 4색에서
      파랑·라벤더·분홍 세 가지를 그대로 빌려 오되, 밝기만 칩 쪽으로 따로 잡았다 —
      면은 --card-*-soft 보다 한 톤 진하고(칩은 면적이 작아 카드만큼 옅으면 색이 안 보인다),
@@ -334,8 +339,9 @@ table{width:100%;min-width:760px;border-collapse:collapse;text-align:left;}
    letter-spacing 은 body 의 -.5px 을 되돌린 것이다. .72rem 짜리 짧은 라벨은
    자간이 붙으면 글자가 덩어리로 뭉쳐 오히려 안 읽힌다. */
 th{padding:18px 22px;color:var(--label);background:var(--head);font-size:.72rem;font-weight:600;letter-spacing:0;}
-th:first-child{border-radius:var(--r-lg) 0 0 0;}
-th:last-child{border-radius:0 var(--r-lg) 0 0;}
+/* 위 모서리는 .table-wrap 이 overflow 로 잘라 준다. 머리글에 따로 border-radius 를
+   주면 곡률이 두 벌이 되고, 좁은 화면에서 판만 --r-md 로 줄었을 때 머리글은 --r-lg 인
+   채로 남아 더 크게 깎여 그 사이로 판의 흰 면이 비친다. 모서리는 판 하나만 갖는다. */
 td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-align:middle;}
 .project-name{font-weight:600;}
 /* 회사명 뒤의 "(=옛 이름)" 덧말. 색만 내리는 것으로는 부족하다 — 굵기까지 되돌려야
@@ -451,12 +457,78 @@ dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
 .close:hover{color:var(--ink);background:var(--field-hover);}
 
 /* ── 확인 모달 ─────────────────────────── */
-#confirm-dialog{width:min(420px, calc(100% - 24px));}
-.confirm-card .modal-head{margin-bottom:14px;}
-.confirm-card h2{font:800 1.2rem var(--font-head);}
-.confirm-message{margin:0 0 24px;color:var(--muted);font-size:.86rem;line-height:1.6;white-space:pre-line;}
-.form-actions .save.danger{background:var(--red);box-shadow:0 14px 30px -12px #e3799b99;}
-.form-actions .save.danger:hover{filter:brightness(1.05);}
+/* 폼 모달과 달리 물음 하나뿐이라 가운데로 모은다. 위쪽에는 흐린 색 얼룩(후광)을 깔고
+   그 위에 흰 원 배지를 띄워, 문장을 읽기 전에 "무슨 일인지"가 먼저 오게 한다. */
+#confirm-dialog{width:min(380px, calc(100% - 24px));overflow:hidden;}
+.confirm-card{position:relative;overflow:hidden;isolation:isolate;padding:34px 28px 26px;text-align:center;}
+/* 후광. 그라데이션 여러 겹을 겹쳐 놓고 통째로 흐린다 — 겹만 쌓으면 경계가 남고, 흐려야
+   색끼리 섞이면서 물감처럼 번진다. 아래쪽은 마스크로 지워 글자 뒤를 비운다(안 그러면
+   본문 대비가 떨어진다).
+   여기 색이 기본 톤 — 되돌릴 수 있는 일(저장·확인)에 쓰는 하늘·보라·분홍이다. 아래
+   danger·warn·ok 는 background 만 갈아 끼운다. 기본에는 클래스를 주지 않는다 —
+   .brand 는 사이드바 로고가 이미 쓰는 이름이라 겹친다. */
+.confirm-card::before{
+  content:"";position:absolute;z-index:-1;top:-78px;left:-40px;right:-40px;height:260px;
+  filter:blur(34px);
+  -webkit-mask-image:linear-gradient(#000 45%, transparent 90%);
+          mask-image:linear-gradient(#000 45%, transparent 90%);
+  background:
+    radial-gradient(125px 105px at 35% 60%, #c3e1f8 0%, transparent 70%),
+    radial-gradient(145px 115px at 60% 40%, #d7cef6 0%, transparent 72%),
+    radial-gradient(135px 105px at 72% 68%, #fbd4e8 0%, transparent 72%),
+    radial-gradient(125px 95px at 46% 88%, #d1e8fa 0%, transparent 72%);
+}
+/* danger 는 기본 톤의 반대편이다. 파란 기를 완전히 빼야 두 창이 나란히 놓였을 때
+   색만으로 갈린다. 밝기와 배치는 같게 둔다 — 달라야 하는 것은 색상이지 무게가 아니다. */
+.confirm-card.danger::before{
+  background:
+    radial-gradient(130px 108px at 35% 58%, #fcd6b8 0%, transparent 70%),
+    radial-gradient(145px 115px at 66% 42%, #f9baba 0%, transparent 72%),
+    radial-gradient(130px 100px at 82% 74%, #fbcbdc 0%, transparent 72%);
+}
+/* warn 은 danger 와 같은 따뜻한 쪽이되 붉은을 빼고 노랑으로 옮긴다. 삭제보다 한 칸
+   덜 급한 일(작성 중인 내용을 잃는 정도)이라는 뜻이 색에 남는다. */
+.confirm-card.warn::before{
+  background:
+    radial-gradient(130px 108px at 35% 58%, #fbdfb4 0%, transparent 70%),
+    radial-gradient(145px 115px at 66% 42%, #fad3c4 0%, transparent 72%),
+    radial-gradient(130px 100px at 82% 74%, #f7e6bf 0%, transparent 72%);
+}
+/* ok 는 초록에 하늘 한 겹을 섞는다. 초록만 세 겹이면 이 화면에 없던 색이 통째로
+   들어와 브랜드 밖으로 튄다 — 하늘이 기본 톤과 이어 준다. */
+.confirm-card.ok::before{
+  background:
+    radial-gradient(130px 108px at 35% 58%, #b3e8cb 0%, transparent 70%),
+    radial-gradient(145px 115px at 66% 42%, #d0edda 0%, transparent 72%),
+    radial-gradient(130px 100px at 82% 74%, #cee5f9 0%, transparent 72%);
+}
+/* 배지 면은 흰색이고 색은 글리프에만 준다. 원까지 채우면 작은 카드 안에서 같은 색이
+   배지·버튼 두 번 나와 무거워진다. */
+.confirm-badge{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:#fff;box-shadow:0 8px 20px -8px #aaaaaa5c;}
+.confirm-badge .icon{font-size:27px;color:var(--deep);}
+.confirm-card.danger .confirm-badge .icon{color:var(--red);}
+.confirm-card.warn .confirm-badge .icon{color:var(--amber);}
+.confirm-card.ok .confirm-badge .icon{color:var(--green);}
+.confirm-card h2{font:800 1.06rem/1.45 var(--font-head);letter-spacing:-.02em;}
+.confirm-message{margin:9px 0 0;color:var(--ink-soft);font-size:.83rem;line-height:1.7;white-space:pre-line;}
+/* 알약 둘을 반반. 폼 모달의 우하단 버튼과 달리, 물음이 하나라 선택지도 대등하게 놓는다. */
+.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px;}
+/* 물을 것이 없고 알리기만 하는 창(주로 ok)은 확인 하나가 통으로 늘어난다. */
+.confirm-actions.one{grid-template-columns:1fr;}
+.confirm-actions button{height:var(--btn-h);border:0;border-radius:var(--r-pill);color:var(--ink-soft);background:var(--field);font:600 .86rem var(--font);cursor:pointer;transition:.2s;}
+/* .go 는 반드시 제외한다. :not() 없이 두면 이 규칙(클래스 둘 + 요소)이 아래
+   .confirm-actions .go(클래스 둘)보다 특이도가 높아, 그라데이션 버튼이 hover 할 때
+   회색으로 덮인다. .form-actions 도 같은 이유로 같은 모양을 하고 있다. */
+.confirm-actions button:not(.go):hover{background:var(--field-hover);color:var(--ink);}
+.confirm-actions .go{color:#fff;background:var(--grad);box-shadow:var(--shadow-brand);}
+.confirm-actions .go:hover{filter:brightness(1.05);}
+/* 확인 버튼도 톤을 따라간다. 그림자는 버튼 색을 그대로 흘린 것이라 색마다 따로 준다.
+   투명도는 --shadow-brand(99)보다 낮은 4d 다 — 그쪽은 연보라라 진하게 깔아도 눅지만,
+   빨강·주황·초록은 같은 값에서 버튼 아래에 색 웅덩이가 생긴다.
+   빨강은 되돌릴 수 없는 일에만 — 저장·완료까지 빨개지면 빨강이 신호를 잃는다. */
+.confirm-card.danger .confirm-actions .go{background:var(--red);box-shadow:0 12px 26px -14px #e3799b4d;}
+.confirm-card.warn .confirm-actions .go{background:var(--amber);box-shadow:0 12px 26px -14px #e79b3d4d;}
+.confirm-card.ok .confirm-actions .go{background:var(--green);box-shadow:0 12px 26px -14px #3fb8904d;}
 
 /* ── 폼 ────────────────────────────────── */
 form{display:grid;gap:22px;}
@@ -520,10 +592,10 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
 .calendar{position:absolute;z-index:7;/* 에러 말풍선(.field-error, 6)보다 위 */top:calc(100% + 8px);left:0;width:min(290px, 100%);padding:14px;border-radius:var(--r-md);background:#fff;box-shadow:0 0 0 1px var(--line), 0 22px 45px -18px #3d4d6e4d;}
 .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .cal-label{border:0;padding:4px 10px;border-radius:var(--r-pill);color:var(--label);background:transparent;font:800 .9rem var(--font-head);cursor:pointer;transition:.2s;}
-.cal-label:hover:not(:disabled){background:var(--field);}
+.cal-label:hover:not(:disabled){color:var(--deep);background:var(--soft);}
 .cal-label:disabled{cursor:default;}/* 연도 화면에서는 더 넓힐 단계가 없다 */
 .cal-nav{display:grid;place-items:center;width:28px;height:28px;border:0;padding:0;border-radius:50%;color:var(--muted);background:transparent;cursor:pointer;transition:.2s;}
-.cal-nav:hover{color:var(--deep);background:var(--field);}
+.cal-nav:hover{color:var(--deep);background:var(--soft);}
 .cal-nav .icon{font-size:18px;pointer-events:none;}
 .cal-grid{display:grid;grid-template-columns:repeat(7, 1fr);gap:2px;}
 .cal-cells{grid-template-columns:repeat(3, 1fr);gap:6px;}
@@ -531,7 +603,10 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
 .cal-grid button{border:0;padding:0;color:var(--ink);background:transparent;font:inherit;font-size:.8rem;cursor:pointer;transition:.15s;}
 .cal-days button{aspect-ratio:1;border-radius:50%;}
 .cal-cells button{padding:11px 0;border-radius:var(--r-sm);font-variant-numeric:tabular-nums;}
-.cal-grid button:hover:not(:disabled){background:var(--field);}
+/* 달력 판은 흰 면이라 회색 원(--field)으로는 얹혔는지가 안 보인다 — 밝기가 네 단계
+   차이라 원이 종이에 묻힌다. 브랜드 연보라(--soft)를 깔고 숫자까지 보라로 바꿔,
+   면과 글자 둘 다에서 "지금 여기"가 읽히게 한다. */
+.cal-grid button:hover:not(:disabled){color:var(--deep);background:var(--soft);}
 .cal-days .muted{color:var(--placeholder);}
 .cal-grid .today{color:var(--deep);font-weight:600;}
 /* 선택된 날·달·해. .muted · .today 보다 뒤에 와야 색을 이긴다. */
