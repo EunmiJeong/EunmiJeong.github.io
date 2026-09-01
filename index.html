@@ -144,11 +144,13 @@
   <dialog id="project-dialog">
     <div class="modal"><div class="modal-head"><h2 id="project-modal-title">새 프로젝트 추가</h2><button class="close" id="project-close" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
       <form id="project-form">
+        <div class="form-body">
         <div><label for="project-name">프로젝트명 <span class="req" aria-hidden="true">*</span></label><input id="project-name" name="projectName" type="text" placeholder="J.컴퍼니 프로젝트" required></div>
         <div class="field-row"><div><label for="start-date">시작일 <span class="req" aria-hidden="true">*</span></label><input id="start-date" name="startDate" type="date" required></div><div><label for="end-date">종료일 <span class="req" aria-hidden="true">*</span></label><input id="end-date" name="endDate" type="date" required></div></div>
         <div><label for="client">발주처 <span class="req" aria-hidden="true">*</span></label><input id="client" name="client" type="text" placeholder="J.컴퍼니" required></div>
         <div><label for="skill-input">스킬 <span class="req" aria-hidden="true">*</span></label><div class="skills-input"><input id="skill-input" type="text" placeholder="스킬을 입력하고 추가하세요 (콤마로 여러 개)"><button class="skill-add" id="add-skill" type="button"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg>추가</button></div><p class="helper">예: HTML, CSS, JavaScript</p><div class="selected-skills" id="selected-skills"></div></div>
         <div><label for="notes">기타</label><textarea id="notes" name="notes" rows="3" placeholder="특이사항, 담당 역할 등"></textarea></div>
+        </div>
         <div class="form-actions"><button id="project-cancel" type="button">취소</button><button class="save" id="submit-project" type="submit">프로젝트 저장</button></div>
       </form>
     </div>
@@ -157,6 +159,7 @@
   <dialog id="career-dialog">
     <div class="modal"><div class="modal-head"><h2 id="career-modal-title">경력 추가</h2><button class="close" id="career-close" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
       <form id="career-form">
+        <div class="form-body">
         <div><label for="company">회사명 <span class="req" aria-hidden="true">*</span></label><input id="company" name="company" type="text" placeholder="㈜인스웨이브" required></div>
         <div><label for="role">담당 업무 <span class="req" aria-hidden="true">*</span></label><input id="role" name="role" type="text" placeholder="퍼블리싱" required></div>
         <div class="field-row">
@@ -166,6 +169,7 @@
         <div class="field-row">
           <div><label for="leave-months">휴직 개월수</label><input id="leave-months" name="leave" type="number" min="0" step="1" value="0"><p class="helper">경력에서 차감됩니다.</p></div>
           <div><label for="leave-reason">휴직 사유</label><input id="leave-reason" name="reason" type="text" placeholder="육아휴직"></div>
+        </div>
         </div>
         <div class="form-actions"><button id="career-cancel" type="button">취소</button><button class="save" id="submit-career" type="submit">경력 저장</button></div>
       </form>
