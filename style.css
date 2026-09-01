@@ -329,8 +329,10 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 .stat.primary .stat-value{font-size:1.9rem;letter-spacing:-.03em;}
 /* 총 일수는 아래로 내리지 않고 개월 옆에 붙인다. baseline 정렬이라 글자 크기가
    달라도 밑선이 맞는다. 좁아지면 아랫줄로 접힌다.
-   오른쪽 정렬이라 줄 끝이 아니라 줄 시작 쪽이 밀린다(justify-content:flex-end). */
-.stat-line{grid-row:3;grid-column:2;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:flex-end;}
+   row-reverse 로 총 일수를 개월 왼쪽에 둔다. 마크업 순서는 값 → 총 일수 그대로다(읽는
+   순서이고 화면 낭독기도 그 순서로 읽는다). 이렇게 해야 큰 숫자가 오른쪽 끝에 서서
+   다른 세 장의 숫자와 끝선이 맞는다 — 총 일수가 뒤에 붙어 있으면 이 카드만 밀린다. */
+.stat-line{grid-row:3;grid-column:2;display:flex;flex-direction:row-reverse;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:flex-start;}
 .stat-sub{margin:0;color:var(--muted);font-size:.8rem;}
 
 /* ── 콘텐츠 헤더 / 뷰 전환 ─────────────── */
