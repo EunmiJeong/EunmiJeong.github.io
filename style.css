@@ -470,8 +470,8 @@ dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
    주면 닫힌 상태의 display:none 까지 덮어써서 창이 늘 떠 있게 된다.
    :has(.modal) 이라 폼 모달만 걸린다(확인창·로그인창은 원래 짧아서 그대로 둔다). */
 dialog:has(.modal)[open]{display:flex;flex-direction:column;overflow:hidden;}
-.modal{display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 44px 44px;}
-.modal-head{display:flex;flex:none;justify-content:space-between;align-items:center;margin-bottom:28px;}
+.modal{display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 44px 40px;}
+.modal-head{display:flex;flex:none;justify-content:space-between;align-items:center;margin-bottom:22px;}
 /* 창이 길어질 때 스크롤되는 것은 필드뿐이고, 제목 줄과 버튼 줄은 자리에 남는다.
    그래서 폼을 위아래 두 칸(.form-body · .form-actions)으로 나누고, 스크롤은 필드 칸에만 준다.
    버튼 줄을 스크롤 칸 안에 넣고 sticky 로 붙잡는 방법도 있지만, 그러면 버튼이 스크롤에
@@ -656,7 +656,7 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
    스크롤 칸(.form-body) 밖이라 필드가 길어져도 이 줄은 늘 창 아래에 남는다.
    위 여백 28px 은 예전에 필드 사이 간격(22)과 이 줄의 마진(6)이 하던 몫을 합친 값이다 —
    이제 폼이 grid 가 아니라 flex 라 그 간격이 저절로 생기지 않는다. */
-form .form-actions{flex:none;margin-top:28px;padding-top:28px;border-top:1px solid var(--line);}
+form .form-actions{flex:none;padding-top:28px;border-top:1px solid var(--line);}
 .form-actions button{display:inline-flex;gap:6px;align-items:center;justify-content:center;min-height:var(--btn-h);border:0;padding:0 26px;color:var(--ink);border-radius:var(--r-pill);background:var(--field);font:inherit;cursor:pointer;transition:.2s;}
 /* .save 는 제외한다. 그러지 않으면 이 규칙이 .form-actions .save 보다 특이도가 높아
    그라데이션 배경을 회색으로 덮어써서 흰 글자가 안 보인다. */
