@@ -402,7 +402,8 @@
   #optrow .overview, #optrow .panel{margin:0;}
   #optrow .option-row .helper{margin-top:7px;}
 
-  #optrow .o-row{display:grid;gap:26px;align-items:start;min-width:760px;}
+  /* align-items 를 안 건드려야(기본 stretch) 카드 두 줄과 옵션 패널의 아랫선이 맞는다. */
+  #optrow .o-row{display:grid;gap:26px;min-width:760px;}
   #optrow .o-73{grid-template-columns:7fr 3fr;}
   #optrow .o-64{grid-template-columns:6fr 4fr;}
   /* 한 줄에 넉 장이던 카드를 두 줄 두 칸으로 접는다. */

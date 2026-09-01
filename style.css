@@ -286,7 +286,10 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    카드도 오히려 넓어진다 — 넉 장을 한 줄에 넣으면 장당 230px, 2×2 면 350px 이다.
    옵션 3할은 날짜 인풋과 셀렉트가 딱 쓰는 폭이라 남는 자리가 없다.
    비교한 다른 비율은 sian.html 의 "요약 카드와 계산 옵션을 한 줄에" 에 있다. */
-.summary-row{display:grid;grid-template-columns:7fr 3fr;gap:26px;align-items:start;margin-bottom:34px;}
+/* align-items 를 건드리지 않아(기본 stretch) 양쪽이 같은 높이로 선다. 그래야 카드 두 줄의
+   아랫선과 옵션 패널의 아랫선이 한 선에서 맞는다. 남는 높이는 카드 쪽 두 줄이 나눠 갖는다 —
+   .overview 의 줄이 auto 라 격자가 남는 높이를 알아서 줄에 나눠 준다. */
+.summary-row{display:grid;grid-template-columns:7fr 3fr;gap:26px;margin-bottom:34px;}
 .summary-row .overview{grid-template-columns:repeat(2, minmax(0, 1fr));margin-bottom:0;}
 .summary-row .panel{margin-bottom:0;}
 .summary-row .option-row{grid-template-columns:1fr;}/* 좁은 칸이라 늘 한 줄에 하나씩 */
@@ -298,26 +301,30 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    흰색으로 뺀다. 면은 같은 색을 왼쪽 위 모서리에서 아주 옅게만 흘려 두어, 네 장이
    색으로 구분되면서도 본문 바탕(#f5f6fe) 위에서 여전히 흰 카드로 읽힌다.
    색 세 짝(--accent · --accent-soft · --accent-ink)은 바로 아래 nth-child 가 꽂는다. */
-.stat{padding:24px 26px;border-radius:var(--r-lg);background:linear-gradient(135deg, var(--accent-soft) 0%, var(--paper) 75%);box-shadow:var(--shadow);}
+/* 배지를 왼쪽에 세우고 글은 오른쪽에 붙여 오른쪽 정렬한다. 카드가 2×2 로 넓어지면서
+   위아래로 쌓을 이유가 없어졌고, 숫자를 오른쪽 끝에 맞추면 위아래 카드끼리 자릿수가
+   같은 선에서 읽힌다. 배지는 두 줄(제목·값)에 걸쳐 서서 가운데에 놓인다.
+   감싸는 <div> 없이 격자로만 짠다 — 마크업은 예전 그대로다. */
+.stat{display:grid;grid-template-columns:auto minmax(0, 1fr);align-items:center;column-gap:18px;row-gap:6px;padding:24px 26px;border-radius:var(--r-lg);background:linear-gradient(135deg, var(--accent-soft) 0%, var(--paper) 75%);box-shadow:var(--shadow);}
 /* 4n 으로 도는 이유는 카드가 늘어나도 색이 이어지게 하기 위해서다(지금은 정확히 네 장). */
 .stat:nth-child(4n+1){--accent:var(--card-blue);--accent-soft:var(--card-blue-soft);--accent-ink:var(--card-blue-ink);}
 .stat:nth-child(4n+2){--accent:var(--card-violet);--accent-soft:var(--card-violet-soft);--accent-ink:var(--card-violet-ink);}
 .stat:nth-child(4n+3){--accent:var(--card-purple);--accent-soft:var(--card-purple-soft);--accent-ink:var(--card-purple-ink);}
 .stat:nth-child(4n){--accent:var(--card-pink);--accent-soft:var(--card-pink-soft);--accent-ink:var(--card-pink-ink);}
-/* 카드 머리에 큼직한 아이콘 배지를 얹고, 제목은 그 아래 작은 라벨로 내린다.
-   배지가 이 카드의 색 그 자체다 — 강조색 단색으로 채우고 아래에 같은 색의 진한 쪽
-   (--accent-ink) 그림자를 깔아 살짝 띄운다.
+/* 배지가 이 카드의 색 그 자체다 — 강조색 단색으로 채우고 글리프만 흰색으로 뺀다.
    이 배지가 곧 아이콘 그림 자체다. 그림은 안쪽 여백을 뺀 자리에만 그려지므로,
-   48px 원 안에 26px 짜리 아이콘을 앉히려면 사방 11px 을 비워 둔다. */
-.stat-icon{width:48px;height:48px;padding:11px;margin-bottom:18px;border-radius:50%;color:#fff;background:var(--accent);}
-.stat-title{margin:0 0 8px;color:var(--muted);font-size:.78rem;}
-.stat-value{margin:0;font:800 2rem var(--font-head);}
+   48px 원 안에 26px 짜리 아이콘을 앉히려면 사방 11px 을 비워 둔다.
+   제목 줄과 값 줄 둘에 걸쳐 서서 그 가운데에 놓인다. */
+.stat-icon{grid-row:1 / 3;width:48px;height:48px;padding:11px;border-radius:50%;color:#fff;background:var(--accent);}
+.stat-title{grid-column:2;margin:0;color:var(--muted);font-size:.78rem;text-align:right;}
+.stat-value{grid-column:2;margin:0;font:800 2rem var(--font-head);text-align:right;}
 /* 총 경력. 색은 다른 카드와 같은 규칙을 따르고, 이 줄의 대표 숫자라는 것은
    글자 크기(값 + 총 일수 한 줄)로만 표시한다. */
 .stat.primary .stat-value{font-size:1.9rem;letter-spacing:-.03em;}
 /* 총 일수는 아래로 내리지 않고 개월 옆에 붙인다. baseline 정렬이라 글자 크기가
-   달라도 밑선이 맞는다. 좁아지면 아랫줄로 접힌다. */
-.stat-line{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;}
+   달라도 밑선이 맞는다. 좁아지면 아랫줄로 접힌다.
+   오른쪽 정렬이라 줄 끝이 아니라 줄 시작 쪽이 밀린다(justify-content:flex-end). */
+.stat-line{grid-column:2;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;justify-content:flex-end;}
 .stat-sub{margin:0;color:var(--muted);font-size:.8rem;}
 
 /* ── 콘텐츠 헤더 / 뷰 전환 ─────────────── */
@@ -719,8 +726,11 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   /* auto-fit + minmax(190px) 는 좁은 화면에서 한 줄에 한 칸만 남아 카드가 세로로
      길게 늘어선다. 여기서는 칸 수를 둘로 못박고 최소 폭을 0 으로 풀어 2단을 유지한다. */
   .overview{grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px;}
-  .stat{padding:18px 16px;border-radius:var(--r-md);}
-  .stat-icon{width:40px;height:40px;padding:9px;margin-bottom:14px;}
+  /* 좁은 칸에 배지와 글을 나란히 두면 숫자가 앉을 자리가 없다. 여기서는 다시 위아래로
+     쌓는다 — 배지가 위, 글이 아래. 정렬은 오른쪽 그대로 두어 위아래 카드끼리 맞춘다. */
+  .stat{grid-template-columns:minmax(0, 1fr);row-gap:12px;padding:18px 16px;border-radius:var(--r-md);}
+  .stat-icon{grid-row:auto;justify-self:start;width:40px;height:40px;padding:9px;}
+  .stat-title, .stat-value, .stat-line{grid-column:1;}
   .stat-title{font-size:.68rem;}
   .stat-value{font-size:1.5rem;}
   .field-row, .option-row, .info-grid{grid-template-columns:1fr;}
