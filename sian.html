@@ -396,15 +396,17 @@
 
   /* ── 요약 카드 + 계산 옵션 한 줄 시안 ──────
      요약을 2×2 로 접어 왼쪽에, 옵션을 세로로 쌓아 오른쪽에 둔다. 안마다 비율만 다르다. */
-  #optrow .o-stage{display:block;padding:22px;}
+  /* 무대는 좁아져도 데스크톱 구성을 그대로 보여 준다 — 비율을 보려고 만든 자리라,
+     화면이 좁다고 세로로 무너지면 볼 것이 없어진다. 모자라면 가로로 밀어 본다. */
+  #optrow .o-stage{display:block;padding:22px;overflow-x:auto;}
   #optrow .overview, #optrow .panel{margin:0;}
   #optrow .option-row .helper{margin-top:7px;}
 
-  #optrow .o-row{display:grid;gap:26px;align-items:stretch;}
+  #optrow .o-row{display:grid;gap:26px;align-items:start;min-width:760px;}
   #optrow .o-73{grid-template-columns:7fr 3fr;}
   #optrow .o-64{grid-template-columns:6fr 4fr;}
   /* 한 줄에 넉 장이던 카드를 두 줄 두 칸으로 접는다. */
-  #optrow .o-row .overview{grid-template-columns:repeat(2, minmax(0, 1fr));}
+  #optrow .o-row .overview{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:26px;}
   /* 오른쪽 옵션 칸 — 위에서부터 쌓고 남는 자리는 아래에 둔다. */
   #optrow .o-opt{display:flex;flex-direction:column;gap:20px;}
   #optrow .o-title{margin:0;color:var(--label);font-size:.85rem;font-weight:600;}
@@ -412,10 +414,8 @@
   #optrow .o-cards{display:grid;grid-template-rows:1fr 1fr;gap:26px;}
   #optrow .o-card{padding:24px 26px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);}
 
-  @media (max-width:820px){
-    /* 좁아지면 위아래로 나뉜다 — 카드 2열은 앱의 모바일 규칙 그대로다. */
-    #optrow .o-row{grid-template-columns:1fr;}
-  }
+  /* A 안(지금 화면)의 무대도 같은 폭으로 못 박아 비교가 되게 한다. */
+  #optrow .o-stage > .overview{min-width:708px;}
 
   .sian footer{color:var(--muted);font-size:.82rem;}
   .sian footer a{color:var(--deep);}

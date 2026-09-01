@@ -280,6 +280,18 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 .strike{color:var(--muted);text-decoration:line-through;}
 .note{display:block;margin-top:4px;color:var(--muted);font-size:.72rem;white-space:nowrap;}
 
+/* ── 요약 줄 ───────────────────────────
+   요약 카드와 계산 옵션이 한 줄에 선다. 카드는 넉 장을 2×2 로 접어 왼쪽 7할에,
+   옵션 둘은 오른쪽 3할에 위아래로 쌓는다. 층이 하나 줄어 목록이 그만큼 위로 올라오고,
+   카드도 오히려 넓어진다 — 넉 장을 한 줄에 넣으면 장당 230px, 2×2 면 350px 이다.
+   옵션 3할은 날짜 인풋과 셀렉트가 딱 쓰는 폭이라 남는 자리가 없다.
+   비교한 다른 비율은 sian.html 의 "요약 카드와 계산 옵션을 한 줄에" 에 있다. */
+.summary-row{display:grid;grid-template-columns:7fr 3fr;gap:26px;align-items:start;margin-bottom:34px;}
+.summary-row .overview{grid-template-columns:repeat(2, minmax(0, 1fr));margin-bottom:0;}
+.summary-row .panel{margin-bottom:0;}
+.summary-row .option-row{grid-template-columns:1fr;}/* 좁은 칸이라 늘 한 줄에 하나씩 */
+.panel-title{margin:0 0 18px;color:var(--label);font-size:.85rem;font-weight:600;}
+
 /* ── 통계 카드 ─────────────────────────── */
 .overview{display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:26px;margin-bottom:26px;}
 /* 카드 색은 아이콘 배지 하나가 다 짊어진다 — 배지는 강조색으로 꽉 채우고 글리프만
@@ -693,6 +705,8 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   .account-mail{max-width:200px;}
   .main{padding:28px 22px 48px;}
   .main::before{height:288px;}
+  /* 3할이 260px 아래로 내려가는 지점. 여기부터는 옵션을 카드 아래로 내린다. */
+  .summary-row{grid-template-columns:1fr;gap:20px;margin-bottom:26px;}
 }
 
 @media (max-width:760px){

@@ -66,6 +66,9 @@
 
       <div class="view" data-view="projects">
       <div class="notice" id="migrate-notice" hidden>이 브라우저에 저장된 프로젝트 <b id="migrate-count">0</b>건이 있습니다. 계정으로 옮기시겠어요?<button id="migrate" type="button">옮기기</button><button id="migrate-skip" type="button">나중에</button></div>
+      <!-- 요약 카드와 계산 옵션은 한 줄이다 — 카드가 2×2 로 접히고 옵션이 오른쪽에 선다.
+           비율과 그렇게 정한 이유는 sian.html 의 "요약 카드와 계산 옵션을 한 줄에" 를 볼 것. -->
+      <div class="summary-row">
       <section class="overview" aria-label="프로젝트 요약">
         <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value" id="career-total">0년 0개월</p><p class="stat-sub" id="career-days">0일</p></div></div>
         <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value" id="total-count">0</p></div>
@@ -74,11 +77,14 @@
       </section>
 
       <section class="panel" aria-label="계산 옵션">
+        <p class="panel-title">계산 옵션</p>
         <div class="option-row">
           <div><label for="base-date">기준일</label><input id="base-date" type="date"><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
           <div><label for="round-mode">개월 환산</label><select id="round-mode"><option value="30">30일 = 1개월 (통상)</option><option value="calendar">달력 기준 (년/월 단위)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
         </div>
       </section>
+      </div>
+
       <section>
         <div class="content-head"><div class="head-title"><h2>프로젝트 목록</h2><span class="count" id="list-count">0 projects</span></div><div class="view-tools"><button class="view-toggle" id="view-toggle" type="button" title="리스트형으로 보기" aria-label="리스트형으로 보기"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg></button><button class="add-button" id="add-project" type="button" aria-label="프로젝트 추가"><svg class="icon" aria-hidden="true"><use href="#i-add"/></svg><span class="add-what">프로젝트</span>추가</button></div></div>
         <div class="card-list" id="card-list"></div>
