@@ -16,8 +16,9 @@ $Pages  = 'index.html', 'sian.html'
 $Scan   = 'index.html', 'sian.html', 'layout.js'
 
 # 이름을 변수로 넘겨 쓰는 자리가 있어서, 훑기만 해서는 안 걸리는 아이콘들이다.
-# layout.js 의 사이드바 메뉴(NAV)와 확인 모달(CONFIRM_ICONS)이 여기에 해당한다.
-$Extra = 'dashboard', 'badge', 'help', 'delete', 'priority_high', 'check'
+# layout.js 의 사이드바 메뉴(NAV)와 확인 모달(CONFIRM_ICONS), 그리고 index.html 의
+# 보기 전환 버튼(setAttribute 로 href 를 갈아 끼우는 grid_view)이 여기에 해당한다.
+$Extra = 'dashboard', 'badge', 'help', 'delete', 'priority_high', 'check', 'grid_view'
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot

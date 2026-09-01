@@ -235,7 +235,7 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    글리프를 20px 로 두면 그것이 그대로 버튼 속높이가 되어 42px 짜리 덩어리가 된다.
    글리프를 18px 로 줄이고 위아래를 1px 씩 깎아 38px 로 맞췄다 — 옆의 뷰 전환
    동그라미(.view-toggle)와 같은 높이다. 강조는 크기가 아니라 그라데이션이 맡는다. */
-.add-button{display:flex;flex:none;gap:6px;align-items:center;border:0;padding:10px 18px;border-radius:var(--r-pill);color:#fff;background:var(--grad);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;box-shadow:var(--shadow-brand);transition:.2s;}
+.add-button{display:flex;flex:none;gap:6px;align-items:center;border:0;padding:10px 18px;border-radius:var(--r-pill);color:#fff;background:var(--grad);font:inherit;font-size:.82rem;font-weight:600;white-space:nowrap;cursor:pointer;box-shadow:var(--shadow-brand);transition:.2s;}
 .add-button .icon{font-size:18px;}
 .add-button:hover{transform:translateY(-1px);filter:brightness(1.05);}
 
@@ -325,7 +325,9 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 .head-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;min-width:0;}
 h2, h3{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:800;}
 .count{color:var(--deep);font-size:.8rem;font-weight:600;}
-.view-tools{display:flex;gap:16px;align-items:center;}
+/* flex:none 이라야 좁은 화면에서 제목에 밀려 줄어들지 않는다. 이 줄이 줄어들면
+   안쪽 추가 버튼이 부모 폭에 갇혀 글자가 두 줄로 깨진다(제목 쪽이 대신 줄어든다). */
+.view-tools{display:flex;flex:none;gap:16px;align-items:center;}
 /* 보기 방식은 두 가지뿐이라 세그먼트 컨트롤이 필요 없다 — 두 칸을 늘어놓고 하나를
    골라 두는 대신, 아이콘 하나짜리 동그라미로 반대편과 오간다.
    그 옆의 추가 버튼과는 무게로 갈린다: 추가는 채운 그라데이션, 이 버튼은 흰 면에
@@ -459,10 +461,19 @@ td .row-actions{gap:2px;margin-right:-6px;}
 .card-skills .icon{margin-top:6px;}
 
 /* ── 모달 ──────────────────────────────── */
-dialog{width:min(680px, calc(100% - 32px));max-height:calc(100vh - 48px);overflow:auto;padding:0;border:0;border-radius:var(--r-lg);color:var(--ink);background:var(--paper);box-shadow:0 40px 90px -30px #3d4d6e73;}
+/* dvh 는 모바일 주소창이 접혔다 펴져도 실제 보이는 높이를 따라간다. vh 는 못 읽는
+   브라우저용 예비값이라 순서를 바꾸면 안 된다. */
+dialog{width:min(680px, calc(100% - 32px));max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow:auto;padding:0;border:0;border-radius:var(--r-lg);color:var(--ink);background:var(--paper);box-shadow:0 40px 90px -30px #3d4d6e73;}
 dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
-.modal{padding:40px 44px 44px;}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
+/* 창이 길어지면 다이얼로그 전체가 아니라 가운데(폼)만 스크롤된다. 제목 줄과 버튼 줄은
+   자리에 남고 필드만 넘어간다. [open] 을 반드시 함께 준다 — 그냥 dialog 에 display 를
+   주면 닫힌 상태의 display:none 까지 덮어써서 창이 늘 떠 있게 된다.
+   :has(.modal) 이라 폼 모달만 걸린다(확인창·로그인창은 원래 짧아서 그대로 둔다). */
+dialog:has(.modal)[open]{display:flex;flex-direction:column;overflow:hidden;}
+.modal{display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 44px 44px;}
+.modal-head{display:flex;flex:none;justify-content:space-between;align-items:center;margin-bottom:28px;}
+/* 스크롤 되는 칸. min-height:0 이 없으면 flex 항목이 내용만큼 늘어나 스크롤이 안 생긴다. */
+.modal form{flex:1;min-height:0;overflow-y:auto;}
 .modal h2{font:800 1.25rem var(--font-head);}
 .close{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;color:var(--muted);background:var(--field);line-height:1;cursor:pointer;}
 .close .icon{font-size:21px;}
@@ -634,8 +645,10 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
 .selected-skills .icon{font-size:16px;pointer-events:none;}
 .selected-skills button:hover{background:#eddcf7;}
 .form-actions{display:flex;justify-content:flex-end;gap:10px;padding-top:5px;}
-/* 폼 안에서는 마지막 필드와 버튼 줄 사이를 구분선으로 한 번 끊어 준다. */
-form .form-actions{margin-top:6px;padding-top:28px;border-top:1px solid var(--line);}
+/* 폼 안에서는 마지막 필드와 버튼 줄 사이를 구분선으로 한 번 끊어 준다.
+   sticky 로 스크롤 칸 바닥에 붙여 두어, 필드가 길어져도 버튼이 화면 밖으로 안 나간다.
+   배경을 깔아야 밑으로 지나가는 필드가 비쳐 보이지 않는다. */
+form .form-actions{position:sticky;bottom:0;z-index:1;margin-top:6px;padding-top:28px;border-top:1px solid var(--line);background:var(--paper);}
 .form-actions button{display:inline-flex;gap:6px;align-items:center;justify-content:center;min-height:var(--btn-h);border:0;padding:0 26px;color:var(--ink);border-radius:var(--r-pill);background:var(--field);font:inherit;cursor:pointer;transition:.2s;}
 /* .save 는 제외한다. 그러지 않으면 이 규칙이 .form-actions .save 보다 특이도가 높아
    그라데이션 배경을 회색으로 덮어써서 흰 글자가 안 보인다. */
@@ -679,8 +692,11 @@ form .form-actions{margin-top:6px;padding-top:28px;border-top:1px solid var(--li
   .main{padding:24px 18px 40px;}
   .main::before{height:308px;}
   .topbar{gap:16px;flex-direction:column;margin-bottom:26px;}
-  .overview{gap:20px;}
-  .stat{padding:18px 18px;border-radius:var(--r-md);}
+  /* auto-fit + minmax(190px) 는 좁은 화면에서 한 줄에 한 칸만 남아 카드가 세로로
+     길게 늘어선다. 여기서는 칸 수를 둘로 못박고 최소 폭을 0 으로 풀어 2단을 유지한다. */
+  .overview{grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px;}
+  .stat{padding:18px 16px;border-radius:var(--r-md);}
+  .stat-icon{width:40px;height:40px;padding:9px;margin-bottom:14px;}
   .stat-title{font-size:.68rem;}
   .stat-value{font-size:1.5rem;}
   .field-row, .option-row, .info-grid{grid-template-columns:1fr;}
@@ -694,10 +710,13 @@ form .form-actions{margin-top:6px;padding-top:28px;border-top:1px solid var(--li
   .avatar span{font-size:.9rem;}
   .profile-head h2{font-size:1.3rem;}
   .project-card, .table-wrap, .empty{border-radius:var(--r-md);}
+  /* 좁은 화면에서는 "프로젝트 추가" 대신 "추가"만 남긴다. 바로 위가 목록 제목이라
+     무엇을 더하는지는 이미 드러난다. 읽어 주는 이름(aria-label)은 그대로 전체 문장이다. */
+  .add-what{display:none;}
   .modal, .auth-card{padding:24px;}
   form{gap:20px;}
   .field-row{gap:20px;}
-  .view-tools{gap:8px;align-items:flex-end;flex-direction:column;}
+  .view-tools{gap:8px;align-items:flex-end}
 }
 
 @media (max-width:768px){
