@@ -418,6 +418,21 @@
   /* A 안(지금 화면)의 무대도 같은 폭으로 못 박아 비교가 되게 한다. */
   #optrow .o-stage > .overview{min-width:708px;}
 
+  /* ── 통계를 한 박스로 묶기 시안 ────────────
+     앱의 7:3 줄을 그대로 깔고, 왼쪽만 낱장 넷 / 상자 하나로 바꿔 비교한다. */
+  #groupbox .g-stage{display:block;padding:22px;overflow-x:auto;}
+  #groupbox .g-row{display:grid;grid-template-columns:7fr 3fr;gap:26px;min-width:760px;}
+  #groupbox .overview{grid-template-columns:repeat(2, minmax(0, 1fr));margin:0;}
+  #groupbox .g-opt{display:flex;flex-direction:column;gap:20px;margin:0;}
+  #groupbox .g-opt .helper{margin-top:7px;}
+
+  /* 묶는 상자. 안의 타일은 그림자를 버린다 — 상자에도 타일에도 그림자면 두 겹이 된다. */
+  #groupbox .g-box{margin:0;}
+  #groupbox .g-tiles{gap:14px;}
+  #groupbox .g-tiles .stat{padding:18px 20px;border-radius:var(--r-md);box-shadow:none;background:var(--accent-soft);}
+  /* C · 면 색을 빼고 얇은 선으로만 나눈다. 색은 배지 넷이 다 짊어진다. */
+  #groupbox .g-line .stat{border:1px solid var(--line);background:transparent;}
+
   .sian footer{color:var(--muted);font-size:.82rem;}
   .sian footer a{color:var(--deep);}
   </style>
@@ -1703,6 +1718,139 @@ window.addEventListener('popstate', pop);</pre>
           <li><b>여백이 끝내 거슬리면 D.</b> 격자는 가장 깔끔하지만 옵션의 무게가 올라갑니다.</li>
           <li><b>좁은 화면은 전부 A 로 돌아갑니다.</b> 카드 2×2 와 옵션 세로 쌓기가 위아래로 나뉩니다. 지금 모바일 규칙(카드 2열)이 그대로 살아 있으니 따로 손댈 것이 없습니다.</li>
           <li><b>바꾸는 곳은 index.html 한 군데입니다.</b> 요약 <code>&lt;section&gt;</code> 과 옵션 <code>&lt;section&gt;</code> 을 감싸는 <code>&lt;div&gt;</code> 하나를 두르고, CSS 에 그 격자를 더하면 됩니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ── 통계를 한 박스로 묶기 ──────────────── -->
+  <section id="groupbox">
+    <div class="sian-title">
+      <h2>통계를 한 박스로 묶을까</h2>
+      <p>
+        지금은 카드 넉 장이 각자 흰 면과 그림자를 갖고 떠 있습니다.
+        이걸 <b>상자 하나 안에 든 타일 넉 장</b>으로 바꾸면, 오른쪽 계산 옵션과 나란히 놓였을 때
+        "패널 둘" 로 읽힙니다. 대신 잃는 것이 있습니다 — 아래에 나란히 두었습니다.
+      </p>
+    </div>
+
+    <!-- A 지금 -->
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <div class="stage g-stage">
+          <div class="g-row">
+            <section class="overview">
+              <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,313일</p></div></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+            </section>
+            <section class="panel g-opt">
+              <p class="panel-title">계산 옵션</p>
+              <div><label>기준일</label><input type="text" value="2026-09-02" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
+              <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
+            </section>
+          </div>
+        </div>
+        <p class="stage-note">A · 지금 — 카드 넉 장이 각자 떠 있습니다</p>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">A · 지금 <span class="flag live">현재 화면</span></h3>
+        <p>카드마다 흰 면과 그림자를 갖고 본문 바탕 위에 떠 있습니다.</p>
+        <ul class="why">
+          <li><b>숫자 하나하나가 독립된 값으로 읽힙니다.</b> 넉 장이 서로 다른 것을 재고 있으니(경력 · 건수 · 일수 · 개수) 이 편이 정직합니다.</li>
+          <li><b>색이 넉 장에 고루 퍼집니다.</b> 카드가 각자 자기 색을 옅게 깔고 있어, 색이 한자리에 몰리지 않습니다.</li>
+          <li><b>다만 오른쪽 옵션과 무게가 다릅니다.</b> 오른쪽은 상자 하나, 왼쪽은 낱장 넷이라 한 줄인데도 두 종류가 섞여 보입니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- B 한 박스 · 타일에 옅은 색 면 -->
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <div class="stage g-stage">
+          <div class="g-row">
+            <section class="panel g-box">
+              <p class="panel-title">프로젝트 요약</p>
+              <div class="overview g-tiles">
+                <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,313일</p></div></div>
+                <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+                <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+                <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+              </div>
+            </section>
+            <section class="panel g-opt">
+              <p class="panel-title">계산 옵션</p>
+              <div><label>기준일</label><input type="text" value="2026-09-02" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
+              <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
+            </section>
+          </div>
+        </div>
+        <p class="stage-note">B · 한 박스 — 타일은 옅은 색 면, 그림자 없음</p>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">B · 한 박스, 타일에 옅은 색 면 <span class="flag live">추천</span></h3>
+        <p>상자 하나에 제목을 달고 그 안에 타일 넉 장을 넣습니다. 타일은 그림자를 버리고 옅은 색 면만 남깁니다.</p>
+        <ul class="why">
+          <li><b>한 줄이 패널 둘로 읽힙니다.</b> 왼쪽 "프로젝트 요약", 오른쪽 "계산 옵션". 지금처럼 낱장과 상자가 섞이지 않습니다.</li>
+          <li><b>제목을 달 자리가 생깁니다.</b> 지금 이 넉 장은 이름이 없습니다. 상자가 생기면 무엇을 요약한 것인지 한 줄로 말할 수 있습니다.</li>
+          <li><b>그림자를 반드시 버려야 합니다.</b> 상자에도 그림자, 타일에도 그림자면 두 겹이 되어 지저분해집니다. 타일은 면 색만으로 구분합니다.</li>
+          <li><b>색이 한자리에 모입니다.</b> 흰 상자 안에 파랑·보라·자주·분홍 네 면이 붙어 서니 지금보다 알록달록합니다. 그래서 면을 더 옅게 깔았습니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 이 줄 전체를 "요약과 설정" 한 덩어리로 보이게 하고 싶을 때.</p>
+      </div>
+    </div>
+
+    <!-- C 한 박스 · 선으로만 -->
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <div class="stage g-stage">
+          <div class="g-row">
+            <section class="panel g-box g-line">
+              <p class="panel-title">프로젝트 요약</p>
+              <div class="overview g-tiles">
+                <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,313일</p></div></div>
+                <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+                <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+                <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+              </div>
+            </section>
+            <section class="panel g-opt">
+              <p class="panel-title">계산 옵션</p>
+              <div><label>기준일</label><input type="text" value="2026-09-02" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
+              <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
+            </section>
+          </div>
+        </div>
+        <p class="stage-note">C · 한 박스 — 타일은 선으로만 나누고 색은 배지에만</p>
+      </div>
+
+      <div class="case-copy">
+        <h3 class="case-name">C · 한 박스, 색은 배지에만</h3>
+        <p>타일의 면 색을 아예 빼고 얇은 선으로만 나눕니다. 색은 아이콘 배지 넷이 전부 짊어집니다.</p>
+        <ul class="why">
+          <li><b>가장 조용합니다.</b> 흰 면 하나에 숫자 넷이 얹힌 모양이라, 숫자가 색보다 먼저 읽힙니다.</li>
+          <li><b>보내 주신 참고 화면에 가장 가깝습니다.</b> 그쪽도 타일마다 색을 깔지 않고 아이콘과 증감 문구에만 색을 씁니다.</li>
+          <li><b>대신 카드의 색 규칙을 거의 잃습니다.</b> 네 색을 정해 둔 것이 배지 지름 48px 안에서만 보입니다. 지금 화면에서 이 색들은 꽤 큰 몫을 하고 있습니다.</li>
+          <li><b>선이 하나 늘어납니다.</b> 앱에서 칸을 선으로 나누는 곳은 표뿐입니다. 여기에 선을 들이면 그 어법이 하나 더 생깁니다.</li>
+        </ul>
+        <p class="when"><b>이럴 때 씁니다.</b> 숫자를 더 앞세우고 색은 물러나게 하고 싶을 때.</p>
+      </div>
+    </div>
+
+    <!-- 정리 -->
+    <div class="case" style="grid-template-columns:1fr;">
+      <div class="case-copy">
+        <h3 class="case-name">고르실 때</h3>
+        <ul class="why">
+          <li><b>묶는 것 자체는 좋습니다.</b> 오른쪽이 이미 상자 하나라, 왼쪽만 낱장 넷인 지금이 오히려 어중간합니다. 묶으면 한 줄이 "패널 둘" 로 정리됩니다.</li>
+          <li><b>B 를 추천합니다.</b> 색 규칙을 지키면서 묶을 수 있습니다. 그림자만 버리면 됩니다.</li>
+          <li><b>참고하신 화면과 똑같이 가려면 C.</b> 다만 그 화면은 어두운 바탕이라 옅은 색 면이 안 먹혀서 그렇게 한 것이기도 합니다. 흰 바탕에서는 옅은 면이 잘 보입니다.</li>
+          <li><b>어느 쪽이든 카드 그림자는 사라집니다.</b> 지금 넉 장이 떠 보이는 느낌을 좋아하셨다면, 그건 A 에만 있습니다.</li>
         </ul>
       </div>
     </div>
