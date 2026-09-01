@@ -470,10 +470,15 @@ dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
    주면 닫힌 상태의 display:none 까지 덮어써서 창이 늘 떠 있게 된다.
    :has(.modal) 이라 폼 모달만 걸린다(확인창·로그인창은 원래 짧아서 그대로 둔다). */
 dialog:has(.modal)[open]{display:flex;flex-direction:column;overflow:hidden;}
-.modal{display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 44px 44px;}
+/* 아래 여백이 44 가 아니라 26 인 것은, 남은 18 을 저장 버튼 줄이 안쪽에 들고 있기 때문이다
+   (form .form-actions 의 padding-bottom). 합은 그대로 44 다 — 아래 설명을 볼 것. */
+.modal{display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 44px 26px;}
 .modal-head{display:flex;flex:none;justify-content:space-between;align-items:center;margin-bottom:28px;}
-/* 스크롤 되는 칸. min-height:0 이 없으면 flex 항목이 내용만큼 늘어나 스크롤이 안 생긴다. */
-.modal form{flex:1;min-height:0;overflow-y:auto;}
+/* 스크롤 되는 칸. min-height:0 이 없으면 flex 항목이 내용만큼 늘어나 스크롤이 안 생긴다.
+   스크롤 상자는 넘치는 것을 잘라 내는데, 그 대상에는 그림자도 들어간다. 그래서 저장 버튼의
+   후광(--shadow-brand)이 좌우에서 잘렸다. 음수 마진으로 상자만 10px 씩 넓히고 같은 만큼
+   안쪽 여백을 줘 내용은 제자리에 둔다 — 보이는 위치는 그대로면서 그림자 자리만 생긴다. */
+.modal form{flex:1;min-height:0;overflow-y:auto;margin:0 -10px;padding:0 10px;}
 .modal h2{font:800 1.25rem var(--font-head);}
 .close{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;color:var(--muted);background:var(--field);line-height:1;cursor:pointer;}
 .close .icon{font-size:21px;}
@@ -648,7 +653,10 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
 /* 폼 안에서는 마지막 필드와 버튼 줄 사이를 구분선으로 한 번 끊어 준다.
    sticky 로 스크롤 칸 바닥에 붙여 두어, 필드가 길어져도 버튼이 화면 밖으로 안 나간다.
    배경을 깔아야 밑으로 지나가는 필드가 비쳐 보이지 않는다. */
-form .form-actions{position:sticky;bottom:0;z-index:1;margin-top:6px;padding-top:28px;border-top:1px solid var(--line);background:var(--paper);}
+/* 아래 여백 18px 은 저장 버튼의 후광이 설 자리다. 이 줄은 스크롤 칸 바닥에 붙어 있어서,
+   여백을 스크롤 칸 쪽에 주면 줄이 그만큼 내려앉아 그림자가 또 잘린다. 그래서 줄이 직접
+   품는다(.modal 의 아래 여백에서 그만큼 뺐으니 창 아래 간격은 그대로 44px 이다). */
+form .form-actions{position:sticky;bottom:0;z-index:1;margin-top:6px;padding-top:28px;padding-bottom:18px;border-top:1px solid var(--line);background:var(--paper);}
 .form-actions button{display:inline-flex;gap:6px;align-items:center;justify-content:center;min-height:var(--btn-h);border:0;padding:0 26px;color:var(--ink);border-radius:var(--r-pill);background:var(--field);font:inherit;cursor:pointer;transition:.2s;}
 /* .save 는 제외한다. 그러지 않으면 이 규칙이 .form-actions .save 보다 특이도가 높아
    그라데이션 배경을 회색으로 덮어써서 흰 글자가 안 보인다. */
