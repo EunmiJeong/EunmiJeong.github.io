@@ -394,32 +394,27 @@
   .al-now .form-actions button{height:var(--btn-h);padding:0 22px;border:0;border-radius:var(--r-sm);background:var(--field);color:var(--ink-soft);font:600 .86rem var(--font);cursor:pointer;}
   .al-now .form-actions .save{color:#fff;background:var(--red);}
 
-  /* ── 계산 옵션 줄 시안 ────────────────────
-     무대는 넓게 써야 비율이 보인다. 안마다 .option-row 의 열 나누기만 바꾼다. */
+  /* ── 요약 카드 + 계산 옵션 한 줄 시안 ──────
+     요약을 2×2 로 접어 왼쪽에, 옵션을 세로로 쌓아 오른쪽에 둔다. 안마다 비율만 다르다. */
   #optrow .o-stage{display:block;padding:22px;}
-  #optrow .panel{margin:0;}
+  #optrow .overview, #optrow .panel{margin:0;}
   #optrow .option-row .helper{margin-top:7px;}
-  /* B · 개월 환산 3 : 기준일 1 */
-  #optrow .o-b .option-row{grid-template-columns:3fr 1fr;}
-  /* C · 기준일 1 : 개월 환산 3 */
-  #optrow .o-c .option-row{grid-template-columns:1fr 3fr;}
-  /* D · 각자 필요한 폭만 갖고 오른쪽으로 붙는다. 빈 자리는 왼쪽에 남는다. */
-  #optrow .o-d .option-row{grid-template-columns:auto auto;justify-content:end;}
-  #optrow .o-d input{width:190px;}
-  #optrow .o-d select{width:250px;}
-  /* E · 라벨을 옆에 눕히고 도움말을 걷어낸 한 줄. 제목이 왼쪽 빈자리를 받는다. */
-  #optrow .o-e{display:flex;gap:28px;align-items:center;flex-wrap:wrap;}
-  #optrow .o-e-title{flex:1;min-width:120px;margin:0;color:var(--label);font-size:.85rem;font-weight:600;}
-  #optrow .o-e .option-row{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
-  #optrow .o-e .option-row > div{display:flex;gap:10px;align-items:center;}
-  #optrow .o-e label{margin:0;white-space:nowrap;}
-  #optrow .o-e input{width:160px;}
-  #optrow .o-e select{width:230px;}
-  @media (max-width:700px){
-    /* 어느 안이든 좁아지면 A 로 돌아간다 — 한 줄에 하나씩 쌓는 것 말고는 답이 없다. */
-    #optrow .option-row{display:grid !important;grid-template-columns:1fr !important;justify-content:stretch !important;}
-    #optrow .option-row > div{display:block !important;}
-    #optrow input, #optrow select{width:100% !important;}
+
+  #optrow .o-row{display:grid;gap:26px;align-items:stretch;}
+  #optrow .o-73{grid-template-columns:7fr 3fr;}
+  #optrow .o-64{grid-template-columns:6fr 4fr;}
+  /* 한 줄에 넉 장이던 카드를 두 줄 두 칸으로 접는다. */
+  #optrow .o-row .overview{grid-template-columns:repeat(2, minmax(0, 1fr));}
+  /* 오른쪽 옵션 칸 — 위에서부터 쌓고 남는 자리는 아래에 둔다. */
+  #optrow .o-opt{display:flex;flex-direction:column;gap:20px;}
+  #optrow .o-title{margin:0;color:var(--label);font-size:.85rem;font-weight:600;}
+  /* D · 옵션도 요약과 같은 크기의 흰 카드 두 장. 높이가 왼쪽 두 줄에 저절로 맞는다. */
+  #optrow .o-cards{display:grid;grid-template-rows:1fr 1fr;gap:26px;}
+  #optrow .o-card{padding:24px 26px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);}
+
+  @media (max-width:820px){
+    /* 좁아지면 위아래로 나뉜다 — 카드 2열은 앱의 모바일 규칙 그대로다. */
+    #optrow .o-row{grid-template-columns:1fr;}
   }
 
   .sian footer{color:var(--muted);font-size:.82rem;}
@@ -1554,15 +1549,15 @@ window.addEventListener('popstate', pop);</pre>
 
   <hr>
 
-  <!-- ── 계산 옵션 줄 ──────────────────────── -->
+  <!-- ── 요약 카드 + 계산 옵션 한 줄 ────────── -->
   <section id="optrow">
     <div class="sian-title">
-      <h2>계산 옵션 — 기준일 상자가 이만큼 넓어야 하나</h2>
+      <h2>요약 카드와 계산 옵션을 한 줄에</h2>
       <p>
-        지금은 기준일과 개월 환산이 패널을 정확히 반씩 나눠 갖습니다.
-        그런데 기준일에 들어가는 글자는 <code>2026-09-01</code> 열 자뿐이라,
-        칸의 절반 넘게가 빈 채로 남습니다. 아래 다섯 안은 그 빈 자리를 어떻게 처리할지에 대한 것입니다.
-        <b>화면 폭을 줄여 가며</b> 보세요 — 좁아질 때 무너지는지가 안을 가르는 진짜 기준입니다.
+        지금은 요약 카드 넉 장이 한 줄로 늘어서고, 그 아래에 계산 옵션이 통째로 한 줄을 더 씁니다.
+        옵션에 든 것은 인풋 하나와 셀렉트 하나뿐인데 화면 한 줄을 다 가져갑니다.
+        아래 안들은 <b>카드를 2×2 로 접어 왼쪽에 두고, 남는 오른쪽에 옵션을 위아래로 쌓습니다.</b>
+        비율만 다릅니다. <b>화면 폭을 줄여 가며</b> 보세요.
       </p>
     </div>
 
@@ -1570,132 +1565,130 @@ window.addEventListener('popstate', pop);</pre>
     <div class="case" style="grid-template-columns:1fr;">
       <div>
         <div class="stage o-stage">
-          <div class="panel o-a">
+          <section class="overview">
+            <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,312일</p></div></div>
+            <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+            <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+            <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+          </section>
+          <section class="panel">
             <div class="option-row">
               <div><label>기준일</label><input type="text" value="2026-09-01" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
               <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
             </div>
-          </div>
+          </section>
         </div>
-        <p class="stage-note">A · 지금 — 1:1 로 꽉 채웁니다</p>
+        <p class="stage-note">A · 지금 — 카드 한 줄, 그 아래 옵션 한 줄</p>
       </div>
 
       <div class="case-copy">
         <h3 class="case-name">A · 지금 <span class="flag live">현재 화면</span></h3>
-        <p>두 칸이 패널을 반씩 나눠 갖고, 각 칸의 컨트롤이 그 폭을 끝까지 씁니다.</p>
+        <p>카드 넉 장이 가로로 늘어서고 옵션이 아래에 따로 한 층을 씁니다.</p>
         <ul class="why">
-          <li><b>줄이 흐트러지지 않습니다.</b> 좌우 끝이 위 요약 카드 · 아래 목록과 같은 선에서 맞습니다.</li>
-          <li><b>좁아져도 그냥 세로로 쌓입니다.</b> <code>auto-fit minmax(240px,1fr)</code> 라 폭이 모자라면 알아서 한 줄씩 됩니다. 손댈 데가 없습니다.</li>
-          <li><b>다만 기준일 칸이 헐겁습니다.</b> 열 자짜리 날짜가 500px 을 차지하니, 오른쪽 절반이 그냥 빕니다. 지금 걸리시는 지점입니다.</li>
+          <li><b>층이 둘입니다.</b> 목록이 시작되기까지 요약 한 층, 옵션 한 층을 지나야 합니다. 첫 화면에서 목록이 그만큼 밀립니다.</li>
+          <li><b>옵션 줄이 헐겁습니다.</b> 인풋 하나와 셀렉트 하나가 1060px 을 반씩 나눠 갖습니다. 기준일에 들어가는 글자는 열 자입니다.</li>
+          <li><b>카드도 좁습니다.</b> 넉 장을 한 줄에 넣으니 장당 230px 남짓입니다. "중복 제외된 기간" 같은 제목은 이미 아슬아슬합니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- B 3:1 -->
+    <!-- B 7:3 -->
     <div class="case" style="grid-template-columns:1fr;">
       <div>
         <div class="stage o-stage">
-          <div class="panel o-b">
-            <div class="option-row">
-              <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
-              <div><label>기준일</label><input type="text" value="2026-09-01" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
-            </div>
-          </div>
-        </div>
-        <p class="stage-note">B · 3:1 — 넓은 쪽을 왼쪽에, 기준일을 오른쪽 좁은 칸에</p>
-      </div>
-
-      <div class="case-copy">
-        <h3 class="case-name">B · 3:1, 기준일을 오른쪽으로</h3>
-        <p>글자가 긴 개월 환산이 왼쪽 3, 열 자짜리 기준일이 오른쪽 1 을 갖습니다. 줄의 좌우 끝은 A 그대로입니다.</p>
-        <ul class="why">
-          <li><b>칸 크기가 내용 길이를 따릅니다.</b> "30일 = 1개월 (통상)" 은 열일곱 자, 날짜는 열 자입니다. 3:1 이 그 비율에 가깝습니다.</li>
-          <li><b>줄 맞춤은 그대로입니다.</b> 여전히 패널을 가득 채우므로 위아래 블록과 좌우 끝이 어긋나지 않습니다.</li>
-          <li><b>순서가 바뀝니다.</b> 기준일이 오른쪽으로 갑니다. 읽는 순서로는 기준일이 먼저인 편이 자연스럽습니다 — "언제까지" 를 정하고 "어떻게 세는지" 를 정하니까요.</li>
-          <li><b>1 칸이 좁아지면 위험합니다.</b> 1200px 에서 1 칸은 약 240px 입니다. 그 아래로 가면 도움말 한 줄이 두 줄로 접힙니다.</li>
-        </ul>
-        <p class="when"><b>이럴 때 씁니다.</b> 줄의 좌우 끝을 지금처럼 유지하면서, 빈 자리만 줄이고 싶을 때.</p>
-      </div>
-    </div>
-
-    <!-- C 1:3 -->
-    <div class="case" style="grid-template-columns:1fr;">
-      <div>
-        <div class="stage o-stage">
-          <div class="panel o-c">
-            <div class="option-row">
+          <div class="o-row o-73">
+            <section class="overview">
+              <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,312일</p></div></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+            </section>
+            <section class="panel o-opt">
+              <p class="o-title">계산 옵션</p>
               <div><label>기준일</label><input type="text" value="2026-09-01" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
               <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
-            </div>
+            </section>
           </div>
         </div>
-        <p class="stage-note">C · 1:3 — 순서는 그대로 두고 기준일만 좁힙니다</p>
+        <p class="stage-note">B · 7 : 3 — 카드 2×2, 옵션은 오른쪽에 세로로</p>
       </div>
 
       <div class="case-copy">
-        <h3 class="case-name">C · 1:3, 순서는 그대로</h3>
-        <p>B 와 비율은 같고 자리만 안 바꿉니다. 기준일이 왼쪽에 좁게, 개월 환산이 오른쪽에 넓게 섭니다.</p>
+        <h3 class="case-name">B · 7 : 3 <span class="flag live">추천</span></h3>
+        <p>카드를 2×2 로 접어 왼쪽 7 에 두고, 오른쪽 3 에 옵션 둘을 위아래로 쌓습니다.</p>
         <ul class="why">
-          <li><b>읽는 순서를 안 건드립니다.</b> "기준일 → 개월 환산" 은 계산이 일어나는 순서 그대로입니다. B 의 유일한 약점을 지웁니다.</li>
-          <li><b>대신 좁은 칸이 왼쪽 끝에 옵니다.</b> 왼쪽 끝은 위 요약 카드의 첫 카드, 아래 목록의 첫 열과 같은 선입니다. 거기 짧은 인풋이 서면 그 선이 조금 헐거워 보입니다.</li>
-          <li><b>넓어지는 쪽이 셀렉트입니다.</b> 셀렉트는 화살표가 오른쪽 끝에 붙어 있어서, 폭이 남으면 글자와 화살표 사이가 멀어집니다. A 에서 이미 그런 상태입니다.</li>
+          <li><b>층이 하나로 줄어듭니다.</b> 요약과 옵션이 같은 높이에 나란히 서니, 목록이 한 층만큼 위로 올라옵니다. 첫 화면에서 프로젝트가 더 많이 보입니다.</li>
+          <li><b>카드가 오히려 넓어집니다.</b> 7할을 둘로 나누니 장당 350px 쯤 됩니다. 지금 230px 보다 넓어서 제목이 접힐 걱정이 사라집니다.</li>
+          <li><b>옵션 폭이 내용에 맞습니다.</b> 3할이면 300px 안팎입니다. 날짜 인풋과 셀렉트가 딱 그 정도를 쓰는 폭이라 남는 자리가 없습니다.</li>
+          <li><b>오른쪽 칸에 여유가 남습니다.</b> 카드 두 줄이 옵션 둘보다 100px 쯤 높습니다. 그 자리를 어떻게 쓸지가 이 안의 숙제입니다 — 지금은 위에 "계산 옵션" 제목을 넣어 두었습니다.</li>
         </ul>
-        <p class="when"><b>이럴 때 씁니다.</b> B 가 마음에 드는데 순서 바뀌는 것만 걸릴 때.</p>
+        <p class="when"><b>이럴 때 씁니다.</b> 목록을 한 줄이라도 더 보이게 하는 것이 우선일 때.</p>
       </div>
     </div>
 
-    <!-- D 내용 폭 + 오른쪽 정렬 -->
+    <!-- C 6:4 -->
     <div class="case" style="grid-template-columns:1fr;">
       <div>
         <div class="stage o-stage">
-          <div class="panel o-d">
-            <div class="option-row">
+          <div class="o-row o-64">
+            <section class="overview">
+              <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,312일</p></div></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+            </section>
+            <section class="panel o-opt">
+              <p class="o-title">계산 옵션</p>
               <div><label>기준일</label><input type="text" value="2026-09-01" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
               <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
-            </div>
+            </section>
           </div>
         </div>
-        <p class="stage-note">D · 필요한 폭만 쓰고 오른쪽에 붙습니다</p>
+        <p class="stage-note">C · 6 : 4 — 옵션 쪽을 더 넉넉하게</p>
       </div>
 
       <div class="case-copy">
-        <h3 class="case-name">D · 내용 폭 + 오른쪽 정렬</h3>
-        <p>두 칸이 각자 필요한 만큼만 차지하고, 남는 자리는 왼쪽에 빈 채로 둡니다. 5:5 로 두되 오른쪽에 몰아 두는 안입니다.</p>
+        <h3 class="case-name">C · 6 : 4</h3>
+        <p>같은 구조에서 오른쪽을 한 뼘 더 줍니다.</p>
         <ul class="why">
-          <li><b>헐거운 칸이 사라집니다.</b> 인풋도 셀렉트도 글자에 맞는 폭이 됩니다. 지금 걸리시는 문제를 가장 직접 없앱니다.</li>
-          <li><b>옵션이 오른쪽에 모입니다.</b> 목록 위 도구 줄(보기 전환 · 추가 버튼)도 오른쪽에 있습니다. "설정하는 것들은 오른쪽" 이라는 규칙이 하나 생깁니다.</li>
-          <li><b>대신 왼쪽이 크게 빕니다.</b> 1400px 에서는 패널의 절반 가까이가 빈 흰 면입니다. 위 요약 카드가 좌우로 꽉 차 있어서, 그 아래 이 줄만 오른쪽에 뭉쳐 있으면 비어 보입니다.</li>
-          <li><b>빈자리를 쓰면 살아납니다.</b> 왼쪽에 "계산 옵션" 같은 작은 제목이나 지금 설정 요약을 한 줄 넣으면 균형이 맞습니다. 아래 E 가 그 방향입니다.</li>
+          <li><b>도움말이 한 줄에 들어갑니다.</b> "진행 중인 프로젝트는 기준일까지만 계산합니다" 는 스물두 자입니다. 3할에서는 두 줄, 4할에서는 대체로 한 줄입니다.</li>
+          <li><b>대신 카드가 다시 좁아집니다.</b> 6할을 둘로 나누면 장당 300px 입니다. B 보다 50px 줄지만 지금(230px)보다는 넓습니다.</li>
+          <li><b>양쪽 무게가 비슷해집니다.</b> 6:4 는 "주와 부" 로 안 읽히고 두 덩어리로 읽힙니다. 요약이 주인공이길 바라면 B 쪽이 맞습니다.</li>
         </ul>
-        <p class="when"><b>이럴 때 씁니다.</b> 왼쪽 빈자리에 넣을 것이 함께 정해질 때.</p>
+        <p class="when"><b>이럴 때 씁니다.</b> B 에서 도움말이 두 줄로 접히는 것이 거슬릴 때.</p>
       </div>
     </div>
 
-    <!-- E 한 줄 인라인 -->
+    <!-- D 7:3 카드 두 장 -->
     <div class="case" style="grid-template-columns:1fr;">
       <div>
         <div class="stage o-stage">
-          <div class="panel o-e">
-            <p class="o-e-title">계산 옵션</p>
-            <div class="option-row">
-              <div><label>기준일</label><input type="text" value="2026-09-01" readonly></div>
-              <div><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select></div>
+          <div class="o-row o-73">
+            <section class="overview">
+              <div class="stat primary"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-workspace_premium"/></svg><p class="stat-title">총 경력</p><div class="stat-line"><p class="stat-value">14년 6개월</p><p class="stat-sub">총 5,312일</p></div></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-folder_open"/></svg><p class="stat-title">전체 프로젝트</p><p class="stat-value">45</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-layers"/></svg><p class="stat-title">중복 제외된 기간</p><p class="stat-value">136일</p></div>
+              <div class="stat"><svg class="icon stat-icon" aria-hidden="true"><use href="#i-bolt"/></svg><p class="stat-title">진행 중</p><p class="stat-value">1</p></div>
+            </section>
+            <div class="o-cards">
+              <div class="o-card"><label>기준일</label><input type="text" value="2026-09-01" readonly><p class="helper">진행 중인 프로젝트는 기준일까지만 계산합니다.</p></div>
+              <div class="o-card"><label>개월 환산</label><select><option>30일 = 1개월 (통상)</option></select><p class="helper">기관에 따라 산정 방식이 다릅니다.</p></div>
             </div>
           </div>
         </div>
-        <p class="stage-note">E · 라벨을 옆에 눕히고 한 줄로 — 패널 높이가 절반이 됩니다</p>
+        <p class="stage-note">D · 7 : 3, 옵션도 카드 두 장으로</p>
       </div>
 
       <div class="case-copy">
-        <h3 class="case-name">E · 한 줄 인라인</h3>
-        <p>라벨을 컨트롤 위가 아니라 옆에 눕히고, 도움말은 걷어냅니다. 왼쪽에는 이 줄이 무엇인지만 남깁니다.</p>
+        <h3 class="case-name">D · 7 : 3, 옵션을 카드 두 장으로</h3>
+        <p>옵션을 패널 하나로 묶지 않고, 왼쪽 카드와 같은 크기의 흰 카드 두 장으로 세웁니다.</p>
         <ul class="why">
-          <li><b>가장 많이 줄어듭니다.</b> 세 줄(라벨 · 컨트롤 · 도움말)이 한 줄이 되어 패널 높이가 반 이하가 됩니다. 요약 카드와 목록이 그만큼 가까워집니다.</li>
-          <li><b>이 줄의 무게가 내려갑니다.</b> 기준일과 환산 방식은 한 번 정해 두고 거의 안 건드리는 값입니다. 목록보다 커 보일 이유가 없습니다.</li>
-          <li><b>도움말을 잃습니다.</b> "진행 중인 프로젝트는 기준일까지만 계산합니다" 는 실제로 필요한 설명입니다. 없애기보다 <code>title</code> 이나 물음표 아이콘으로 옮겨야 합니다 — 그러면 눈에 잘 안 띕니다.</li>
-          <li><b>모바일에서 다시 쌓여야 합니다.</b> 라벨을 옆에 눕히는 건 넓은 화면에서만 성립합니다. 좁아지면 A 처럼 위아래로 돌아가야 하니, 규칙이 하나 늘어납니다.</li>
+          <li><b>격자가 하나로 읽힙니다.</b> 왼쪽 2×2 와 오른쪽 2×1 이 같은 리듬이 되어, 줄 전체가 여섯 칸짜리 한 판으로 보입니다.</li>
+          <li><b>높이가 저절로 맞습니다.</b> 카드 두 장이 왼쪽 두 줄과 같은 높이로 늘어나므로, B 에서 남던 아래쪽 여백 문제가 없습니다.</li>
+          <li><b>대신 옵션이 무거워집니다.</b> 카드 면과 그림자가 붙으면 요약 카드와 같은 급으로 보입니다. 읽는 값이 아니라 조작하는 값인데 존재감이 세집니다.</li>
+          <li><b>색을 안 줘야 합니다.</b> 요약 카드는 넉 장이 각자 색을 갖습니다. 여기에 색을 더하면 여섯 색이 되어 시끄러워집니다. 흰 면으로 두는 것이 전제입니다.</li>
         </ul>
-        <p class="when"><b>이럴 때 씁니다.</b> 이 패널을 "설정" 이 아니라 "지금 조건 표시" 로 낮춰 볼 때.</p>
+        <p class="when"><b>이럴 때 씁니다.</b> B 의 남는 여백이 끝내 안 풀릴 때.</p>
       </div>
     </div>
 
@@ -1704,10 +1697,11 @@ window.addEventListener('popstate', pop);</pre>
       <div class="case-copy">
         <h3 class="case-name">고르실 때</h3>
         <ul class="why">
-          <li><b>지금 문제만 정확히 없애려면 C 입니다.</b> 읽는 순서와 좌우 줄 맞춤을 둘 다 지키면서 빈 자리만 줄입니다. 바꾸는 것은 CSS 한 줄(<code>grid-template-columns</code>)뿐입니다.</li>
-          <li><b>가장 시원한 것은 E 입니다.</b> 다만 도움말을 어디로 옮길지 함께 정해야 하고, 모바일 규칙이 하나 늘어납니다.</li>
-          <li><b>D 는 왼쪽에 넣을 것이 정해진 뒤에.</b> 지금 상태로 넣으면 빈 흰 면이 그 자리를 대신합니다.</li>
-          <li><b>어느 안이든 모바일은 A 로 돌아갑니다.</b> 좁아지면 한 줄에 하나씩 쌓는 것 말고는 답이 없습니다.</li>
+          <li><b>B(7:3) 를 추천합니다.</b> 층이 하나 줄고, 카드는 오히려 넓어지고, 옵션 폭이 내용에 맞습니다. 남는 것은 오른쪽 아래 여백 하나뿐인데 제목 한 줄로 덮입니다.</li>
+          <li><b>도움말 두 줄이 걸리면 C(6:4).</b> 대신 요약이 주인공 자리를 조금 내줍니다.</li>
+          <li><b>여백이 끝내 거슬리면 D.</b> 격자는 가장 깔끔하지만 옵션의 무게가 올라갑니다.</li>
+          <li><b>좁은 화면은 전부 A 로 돌아갑니다.</b> 카드 2×2 와 옵션 세로 쌓기가 위아래로 나뉩니다. 지금 모바일 규칙(카드 2열)이 그대로 살아 있으니 따로 손댈 것이 없습니다.</li>
+          <li><b>바꾸는 곳은 index.html 한 군데입니다.</b> 요약 <code>&lt;section&gt;</code> 과 옵션 <code>&lt;section&gt;</code> 을 감싸는 <code>&lt;div&gt;</code> 하나를 두르고, CSS 에 그 격자를 더하면 됩니다.</li>
         </ul>
       </div>
     </div>
