@@ -184,6 +184,93 @@
   .rules h3{margin:0;font:700 .96rem var(--font-head);letter-spacing:-.01em;}
   .rules p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.7;}
 
+  /* ── 화면 전환(push) 시안 ─────────────────
+     하이브리드 앱 웹뷰에서 "왼쪽 화면 위로 새 화면이 밀려 올라오는" 느낌을 본다.
+     전부 .pu-* 시안 전용 클래스다 — 앱 클래스는 하나도 건드리지 않는다.
+     움직이는 값은 transform 과 opacity 뿐이다. width·left 를 건드리면 웹뷰에서
+     매 프레임 레이아웃을 다시 계산해 눈에 띄게 끊긴다. */
+  .pu{--d:340ms;--e:cubic-bezier(.32,.72,0,1);}
+
+  /* 속도 조절 막대 */
+  .pu-ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 4px;color:var(--muted);font-size:.8rem;}
+  .pu-ctrl button{padding:6px 14px;border:1px solid var(--field-line);border-radius:var(--r-pill);background:#fff;color:var(--ink-soft);font:inherit;font-size:.8rem;cursor:pointer;}
+  .pu-ctrl button[aria-pressed="true"]{border-color:transparent;background:var(--soft);color:var(--deep);font-weight:600;}
+
+  .pu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(212px,1fr));gap:clamp(18px,2.4vw,30px);}
+  .pu-one{display:flex;flex-direction:column;gap:10px;align-items:center;}
+  .pu-cap{margin:0;text-align:center;font:700 .9rem var(--font-head);letter-spacing:-.01em;}
+  .pu-cap span{display:block;margin-top:3px;color:var(--muted);font:400 .76rem/1.6 var(--font);}
+
+  /* 기기 틀 */
+  .ph{position:relative;width:100%;max-width:238px;aspect-ratio:9/17.4;border:7px solid #2f3040;border-radius:34px;background:#fff;box-shadow:var(--shadow-lift);overflow:hidden;}
+  .ph-vp{position:absolute;inset:0;overflow:hidden;background:#fff;}
+
+  /* 한 장의 화면 — 두 장을 겹쳐 두고 transform 으로만 오간다 */
+  .scr{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff;transition:transform var(--d) var(--e),opacity var(--d) var(--e);}
+  .scr.nxt{transform:translateX(100%);box-shadow:-10px 0 26px -6px #3a3b5c26;}
+  .ph[data-at="1"] .scr.nxt{transform:none;}
+  /* 지금 보이지 않는 화면은 손가락도 받지 않아야 한다. 투명하기만 한 판은 클릭을
+     그대로 가로챈다 — C 안처럼 화면 안쪽에 겹쳐 두는 방식이면 아래 목록이 통째로
+     안 눌린다. 화면 밖으로 밀어 둔 안들도 같은 규칙으로 묶어 둔다. */
+  .scr.nxt{pointer-events:none;}
+  .ph[data-at="1"] .scr.nxt{pointer-events:auto;}
+  .ph[data-at="1"] .scr.base{pointer-events:none;}
+
+  .pu-head{display:flex;align-items:center;gap:6px;flex:none;height:46px;padding:0 10px;border-bottom:1px solid var(--line);background:#fff;font:700 .82rem var(--font-head);}
+  .pu-head .icon{width:20px;height:20px;color:var(--ink-soft);}
+  .pu-head b{font-weight:700;}
+  .pu-body{flex:1;min-height:0;padding:12px 12px 0;overflow:hidden;background:#fbfbfe;}
+  .pu-row{display:flex;align-items:center;gap:9px;width:100%;margin-bottom:8px;padding:11px 12px;border:0;border-radius:var(--r-sm);background:#fff;box-shadow:0 1px 3px -1px #6a6c9d26;color:var(--ink-soft);font:inherit;font-size:.76rem;text-align:left;cursor:pointer;}
+  .pu-row .icon{width:17px;height:17px;color:var(--brand);}
+  .pu-row .go{margin-left:auto;width:15px;height:15px;color:var(--placeholder);}
+  .pu-back{display:flex;align-items:center;gap:2px;padding:0;border:0;background:none;color:var(--deep);font:inherit;font-size:.78rem;font-weight:600;cursor:pointer;}
+  .pu-back .icon{width:18px;height:18px;color:inherit;}
+  .pu-hero{height:74px;margin-bottom:9px;border-radius:var(--r-sm);background:var(--grad-soft);}
+  .pu-bar{height:9px;margin-bottom:7px;border-radius:99px;background:var(--field);}
+  .pu-bar.s{width:58%;}
+
+  /* A · iOS 정통형 — 아래 화면이 28% 만 따라 밀리고 어두워진다(시차) */
+  .v-ios .scr.base{will-change:transform;}
+  .v-ios[data-at="1"] .scr.base{transform:translateX(-28%);}
+  .v-ios .scr.base::after{content:"";position:absolute;inset:0;background:#191a2e;opacity:0;transition:opacity var(--d) var(--e);pointer-events:none;}
+  .v-ios[data-at="1"] .scr.base::after{opacity:.16;}
+
+  /* B · 통짜 슬라이드형 — 두 장이 한 몸처럼 같은 거리를 간다 */
+  .v-slide[data-at="1"] .scr.base{transform:translateX(-100%);}
+
+  /* C · 페이드 밀기형(머티리얼) — 짧게 밀면서 투명도로 교차한다 */
+  .v-fade .scr.nxt{transform:translateX(16%);opacity:0;box-shadow:none;}
+  .v-fade[data-at="1"] .scr.nxt{transform:none;opacity:1;}
+  .v-fade[data-at="1"] .scr.base{transform:translateX(-9%);opacity:0;}
+
+  /* D · 머리글 고정형 — 상단 바는 제자리에 두고 본문만 밀린다 */
+  .v-hold .pu-head{position:absolute;top:0;left:0;right:0;z-index:2;}
+  .v-hold .scr{top:46px;}
+  .v-hold .scr .pu-head{display:none;}
+  .v-hold[data-at="1"] .scr.base{transform:translateX(-28%);opacity:0;}
+  .v-hold .pu-fixhead{position:absolute;top:0;left:0;right:0;z-index:3;}
+  .v-hold .pu-ttl{position:relative;overflow:hidden;flex:1;height:1.3em;}
+  .v-hold .pu-ttl b{position:absolute;inset:0;transition:transform var(--d) var(--e),opacity var(--d) var(--e);}
+  .v-hold .pu-ttl b:nth-child(2){transform:translateX(24px);opacity:0;}
+  .v-hold[data-at="1"] .pu-ttl b:nth-child(1){transform:translateX(-24px);opacity:0;}
+  .v-hold[data-at="1"] .pu-ttl b:nth-child(2){transform:none;opacity:1;}
+  .v-hold .pu-back{opacity:0;transform:translateX(-6px);transition:opacity var(--d) var(--e),transform var(--d) var(--e);pointer-events:none;}
+  .v-hold[data-at="1"] .pu-back{opacity:1;transform:none;pointer-events:auto;}
+
+  /* 진짜 문서 이동 데모를 담는 틀 — 안쪽은 iframe 이라 실제 a.html→b.html 이다 */
+  .ph.live iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .pu-live{display:flex;flex-direction:column;gap:12px;align-items:center;}
+
+  /* 코드 조각 */
+  .snip{margin:0;padding:16px 18px;border-radius:var(--r-sm);background:#f7f7fc;border:1px solid var(--line);overflow-x:auto;color:var(--ink-soft);font:400 .8rem/1.75 ui-monospace,"Cascadia Mono",Consolas,monospace;white-space:pre;}
+  .snip b{color:var(--deep);font-weight:600;}
+  .snip i{color:var(--placeholder);font-style:normal;}
+
+  /* 움직임을 줄여 달라고 한 기기에서는 밀지 않는다 */
+  @media (prefers-reduced-motion:reduce){
+    .pu .scr,.pu .pu-ttl b,.pu .pu-back,.pu .scr.base::after{transition-duration:1ms;}
+  }
+
   /* ── 알림 팝업(alert) 시안 ────────────────
      여기 나오는 .al-* 는 전부 시안 전용 클래스다. 앱의 확인 모달은 아직
      .confirm-card 를 쓰고 있으므로, 무엇을 고르든 실제 화면에는 영향이 없다.
@@ -1164,6 +1251,281 @@
 
   <hr>
 
+  <!-- ═══ 화면 전환(push) ═══════════════════════════════════ -->
+  <section id="push" class="pu">
+    <div class="sian-title">
+      <h2>화면 전환 — 오른쪽에서 밀려 들어와 쌓이는 push</h2>
+      <p>
+        됩니다. 다만 조건이 하나 있습니다 — <b>문서를 통째로 갈아 끼우지 않아야</b> 합니다.
+        <code>location.href</code> 로 진짜 페이지를 넘기면 새 문서를 그리는 사이 웹뷰가 한 번 하얗게 비고,
+        그 깜빡임 위에는 어떤 애니메이션도 얹히지 않습니다.
+        아래 네 안은 전부 <b>한 문서 안에서 화면 두 장을 겹쳐 두고 <code>transform</code> 만 옮기는</b> 방식입니다.
+        카드를 눌러 보세요. 뒤로도 눌러 보세요.
+      </p>
+    </div>
+
+    <div class="pu-ctrl">
+      <span>속도</span>
+      <button type="button" data-d="240">빠르게 240ms</button>
+      <button type="button" data-d="340" aria-pressed="true">기본 340ms</button>
+      <button type="button" data-d="1100">천천히 1.1s</button>
+      <span>— 천천히로 두면 아래 화면이 어떻게 따라 밀리는지 보입니다.</span>
+    </div>
+
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <div class="pu-grid">
+
+          <!-- A · iOS 정통형 -->
+          <div class="pu-one">
+            <div class="ph v-ios" data-at="0">
+              <div class="ph-vp">
+                <div class="scr base">
+                  <div class="pu-head"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg><b>메뉴</b></div>
+                  <div class="pu-body">
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-folder_open"/></svg>프로젝트<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-badge"/></svg>경력<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>내 정보<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                  </div>
+                </div>
+                <div class="scr nxt">
+                  <div class="pu-head"><button class="pu-back" type="button" data-pop><svg class="icon" aria-hidden="true"><use href="#i-chevron_left"/></svg>메뉴</button></div>
+                  <div class="pu-body"><div class="pu-hero"></div><div class="pu-bar"></div><div class="pu-bar s"></div><div class="pu-hero"></div><div class="pu-bar"></div></div>
+                </div>
+              </div>
+            </div>
+            <p class="pu-cap">A · iOS 정통형 <span>아래 화면은 28%만 따라가고 살짝 어두워집니다. 두 장이 겹쳐 있다는 게 눈에 보입니다.</span></p>
+          </div>
+
+          <!-- B · 통짜 슬라이드형 -->
+          <div class="pu-one">
+            <div class="ph v-slide" data-at="0">
+              <div class="ph-vp">
+                <div class="scr base">
+                  <div class="pu-head"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg><b>메뉴</b></div>
+                  <div class="pu-body">
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-folder_open"/></svg>프로젝트<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-badge"/></svg>경력<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>내 정보<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                  </div>
+                </div>
+                <div class="scr nxt">
+                  <div class="pu-head"><button class="pu-back" type="button" data-pop><svg class="icon" aria-hidden="true"><use href="#i-chevron_left"/></svg>메뉴</button></div>
+                  <div class="pu-body"><div class="pu-hero"></div><div class="pu-bar"></div><div class="pu-bar s"></div><div class="pu-hero"></div><div class="pu-bar"></div></div>
+                </div>
+              </div>
+            </div>
+            <p class="pu-cap">B · 통짜 슬라이드형 <span>두 장이 같은 거리를 갑니다. 필름을 옆으로 감는 느낌이라 "쌓인다"기보다 "넘어간다"입니다.</span></p>
+          </div>
+
+          <!-- C · 페이드 밀기형 -->
+          <div class="pu-one">
+            <div class="ph v-fade" data-at="0">
+              <div class="ph-vp">
+                <div class="scr base">
+                  <div class="pu-head"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg><b>메뉴</b></div>
+                  <div class="pu-body">
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-folder_open"/></svg>프로젝트<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-badge"/></svg>경력<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>내 정보<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                  </div>
+                </div>
+                <div class="scr nxt">
+                  <div class="pu-head"><button class="pu-back" type="button" data-pop><svg class="icon" aria-hidden="true"><use href="#i-chevron_left"/></svg>메뉴</button></div>
+                  <div class="pu-body"><div class="pu-hero"></div><div class="pu-bar"></div><div class="pu-bar s"></div><div class="pu-hero"></div><div class="pu-bar"></div></div>
+                </div>
+              </div>
+            </div>
+            <p class="pu-cap">C · 페이드 밀기형 <span>짧게 밀면서 투명도로 바꿔칩니다. 안드로이드에 가깝고, 전환이 느린 기기에서 가장 잘 버팁니다.</span></p>
+          </div>
+
+          <!-- D · 머리글 고정형 -->
+          <div class="pu-one">
+            <div class="ph v-hold" data-at="0">
+              <div class="ph-vp">
+                <div class="pu-head pu-fixhead">
+                  <button class="pu-back" type="button" data-pop><svg class="icon" aria-hidden="true"><use href="#i-chevron_left"/></svg></button>
+                  <span class="pu-ttl"><b>메뉴</b><b>프로젝트</b></span>
+                </div>
+                <div class="scr base">
+                  <div class="pu-body">
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-folder_open"/></svg>프로젝트<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-badge"/></svg>경력<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                    <button class="pu-row" type="button" data-push><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>내 정보<svg class="icon go" aria-hidden="true"><use href="#i-chevron_right"/></svg></button>
+                  </div>
+                </div>
+                <div class="scr nxt">
+                  <div class="pu-body"><div class="pu-hero"></div><div class="pu-bar"></div><div class="pu-bar s"></div><div class="pu-hero"></div><div class="pu-bar"></div></div>
+                </div>
+              </div>
+            </div>
+            <p class="pu-cap">D · 머리글 고정형 <span>상단 바는 제자리에 있고 본문만 밀립니다. 제목과 뒤로 버튼만 교차합니다.</span></p>
+          </div>
+
+        </div>
+        <p class="stage-note">움직이는 값은 네 안 모두 <code>transform</code> 과 <code>opacity</code> 뿐입니다 — 웹뷰가 GPU에 넘길 수 있는 두 가지입니다.</p>
+      </div>
+    </div>
+
+    <!-- 어떻게 붙이나 -->
+    <div class="case">
+      <div>
+        <pre class="snip"><i>/* 1) 한 문서 안에서 화면을 쌓는 방식 — 위 시안이 이것입니다 */</i>
+&lt;div class="stack"&gt;
+  &lt;section class="scr" data-depth="0"&gt;…메뉴…&lt;/section&gt;
+  &lt;section class="scr" data-depth="1"&gt;…상세…&lt;/section&gt;
+&lt;/div&gt;
+
+<b>function</b> push(view) {
+  stack.append(view);              <i>// 오른쪽 밖에 세워 두고</i>
+  view.offsetWidth;                <i>// 한 프레임 강제 — 없으면 안 움직입니다</i>
+  root.dataset.at = depth + 1;     <i>// 클래스 한 줄로 transform 을 켭니다</i>
+  history.pushState({ depth }, '');<i>// 안드로이드 물리 뒤로가기와 짝을 맞춥니다</i>
+}
+window.addEventListener('popstate', pop);</pre>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">방법 1 · 한 문서, 화면 두 장 <span class="flag live">권장</span></h3>
+        <p>메뉴 이동을 페이지 이동이 아니라 <b>영역 교체</b>로 바꿉니다. 지금 <code>index.html</code> 한 장으로 되어 있는 구조와도 잘 맞습니다.</p>
+        <ul class="why">
+          <li><b>깜빡임이 없습니다.</b> 문서가 그대로라 흰 화면이 낄 자리가 없습니다.</li>
+          <li><b>뒤로가기를 반드시 물려야 합니다.</b> <code>history.pushState</code> 로 스택을 쌓고 <code>popstate</code> 에서 반대 방향으로 되돌립니다. 안드로이드 물리 뒤로 버튼이 앱을 그냥 종료해 버리는 사고가 여기서 납니다.</li>
+          <li><b>떠난 화면의 스크롤 위치를 기억합니다.</b> 뒤로 왔는데 목록이 맨 위로 올라가 있으면 push 느낌이 다 깨집니다.</li>
+          <li>화면이 계속 쌓이면 <b>세 장째부터는 지웁니다.</b> 웹뷰 메모리는 넉넉하지 않습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case">
+      <div>
+        <pre class="snip"><i>/* 2) 진짜 페이지 이동을 유지하면서 전환만 얹는 방식 */</i>
+<b>@view-transition</b> { navigation: auto; }   <i>/* 같은 출처의 문서끼리 */</i>
+
+::view-transition-old(root) { animation: slide-out .34s both; }
+::view-transition-new(root) { animation: slide-in  .34s both; }
+
+@keyframes slide-in  { from { transform: translateX(100%); } }
+@keyframes slide-out { to   { transform: translateX(-28%); opacity: .6; } }</pre>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">방법 2 · View Transition (문서 간)</h3>
+        <p>페이지 구조를 그대로 두고 CSS 몇 줄로 전환을 얹습니다. 다만 <b>웹뷰 버전에 기댑니다.</b></p>
+        <ul class="why">
+          <li>안드로이드는 기기에 깔린 <b>Android System WebView(크로미움)</b> 버전을, iOS는 <b>WKWebView(사파리)</b> 버전을 따라갑니다. 구형 단말이 섞인 사내 앱이면 실제 기기에서 먼저 확인해야 합니다.</li>
+          <li>지원하지 않는 웹뷰에서는 <b>그냥 예전처럼 즉시 전환</b>됩니다. 깨지지 않으니 넣어 두는 것 자체는 손해가 없습니다.</li>
+          <li><b>다음 문서를 받아오는 시간은 여전히 남습니다.</b> 로컬 자산이면 티가 안 나지만 서버에서 받아오면 전환 앞에 지연이 붙습니다.</li>
+          <li>방향은 <code>navigation.activation</code> 이나 직접 남긴 깊이 값으로 판단해 <b>앞으로 갈 때와 뒤로 갈 때를 뒤집어</b> 줘야 합니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 진짜 문서 이동 -->
+    <div class="case">
+      <div class="pu-live">
+        <div class="ph live">
+          <iframe src="demo/a.html" title="a.html → b.html 전환 데모" loading="lazy"></iframe>
+        </div>
+        <p class="stage-note">
+          안쪽은 iframe 이지만 <b>진짜 문서 이동</b>입니다 — 주소가 <code>a.html</code> 에서 <code>b.html</code> 로 바뀝니다.<br>
+          <a href="demo/a.html" target="_blank" rel="noopener">새 창에서 크게 보기</a>
+        </p>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">A 타입, 진짜 페이지 이동으로 <span class="flag live">동작함</span></h3>
+        <p>
+          파일 세 개가 전부입니다. 두 페이지가 <b>같은 CSS·JS를 함께 물어야</b> 합니다 —
+          한쪽에만 있으면 전환이 반쪽만 걸립니다.
+        </p>
+        <ul class="why">
+          <li><code>demo/push.css</code> — <code>@view-transition</code> 한 줄과 키프레임 네 개</li>
+          <li><code>demo/push.js</code> — 앞으로인지 뒤로인지 <b>방향만</b> 정합니다. 반드시 <code>&lt;head&gt;</code> 안에서 <code>defer</code> 없이 부릅니다 — 아래 원칙 참고</li>
+          <li><code>demo/a.html</code> · <code>demo/b.html</code> — 링크는 그냥 <code>&lt;a href&gt;</code> 입니다. 이동을 자바스크립트로 가로채지 않습니다</li>
+          <li><b>A와 B는 두 값 차이입니다.</b> <code>push.css</code> 위쪽의 <code>--push-trail</code>·<code>--push-dim</code> 을 <code>-100%</code>·<code>1</code> 로 바꾸면 그대로 B(통짜 슬라이드)가 됩니다. 어려운 부분은 두 안이 똑같이 씁니다.</li>
+        </ul>
+        <p class="when">
+          <b>먼저 확인할 것 —</b> 이 전환은 <b>같은 출처(origin)</b>끼리만 걸립니다.
+          앱이 <code>file:///android_asset/…</code> 처럼 파일 경로로 페이지를 연다면 출처가 없어 전환이 안 붙을 수 있습니다.
+          안드로이드는 <code>WebViewAssetLoader</code>, iOS는 커스텀 스킴 핸들러로 <code>https://…</code> 주소를 만들어 띄우는 쪽이 안전합니다.
+          실기에서 먼저 확인해 주세요.
+        </p>
+      </div>
+    </div>
+
+    <!-- 겪은 문제 기록 -->
+    <div class="case" style="grid-template-columns:1fr;">
+      <div class="case-copy">
+        <h3 class="case-name">겪은 문제 · 뒤로가 어떨 땐 오른쪽, 어떨 땐 왼쪽 <span class="flag old">2026-09-01 고침</span></h3>
+        <p>
+          <b>증상 —</b> 메뉴를 눌러 <code>b.html</code> 이 잘 밀려 들어옵니다. 그런데 상단 뒤로 버튼을 누르면
+          어떨 때는 오른쪽으로 잘 접히고, 어떨 때는 왼쪽에서 다시 쌓이는 모션이 나왔습니다.
+          같은 조작인데 결과가 갈렸습니다.
+        </p>
+        <ul class="why">
+          <li>
+            <b>원인 —</b> 문서 간 전환에서 <b>어느 쪽으로 밀지는 떠나는 문서가 아니라 새로 열린 문서가 정합니다.</b>
+            전환 애니메이션이 그려지는 무대(<code>::view-transition-*</code>)가 새 문서 쪽에 생기기 때문입니다.
+            떠나는 쪽에서 아무리 표시해 둬도 규칙을 읽는 것은 도착한 문서입니다.
+          </li>
+          <li>
+            그 판단 시점인 <code>pagereveal</code> 은 첫 프레임을 그리기 직전에 <b>딱 한 번</b> 지나갑니다.
+            <code>push.js</code> 가 <code>&lt;/body&gt;</code> 앞에 있으니, 문서가 한 번에 도착하는 날에는
+            <b>이벤트가 이미 지나간 뒤에 리스너가 붙었습니다.</b>
+          </li>
+          <li>
+            그러면 <code>.nav-back</code> 이 안 붙고, CSS 는 <code>html:not(.nav-back)</code> 쪽 —
+            즉 <b>앞으로 가는 규칙</b>을 고릅니다. 캐시 여부와 파싱 속도에 따라 갈리니
+            "될 때도 있고 안 될 때도 있는" 것처럼 보였습니다.
+          </li>
+        </ul>
+        <pre class="snip"><i>/* 고치기 전 — a.html · b.html 둘 다 */</i>
+  …
+  &lt;script src="push.js"&gt;&lt;/script&gt;   <i>← pagereveal 을 놓칠 수 있는 자리</i>
+&lt;/body&gt;
+
+<i>/* 고친 뒤 */</i>
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="push.css"&gt;
+  <b>&lt;script src="push.js"&gt;&lt;/script&gt;</b>   <i>← defer 없이. 첫 프레임보다 앞선다</i>
+&lt;/head&gt;</pre>
+        <ul class="why">
+          <li><b>스크립트를 <code>&lt;head&gt;</code> 로 올렸습니다.</b> <code>defer</code> 를 붙이면 다시 늦어지므로 붙이지 않습니다.</li>
+          <li><b><code>pagereveal</code> 을 기다리지 않습니다.</b> 스크립트가 도는 즉시 방향을 정하고, 이벤트는 확인 사살용으로만 남겼습니다 — 놓쳐도 이미 정해져 있습니다.</li>
+          <li><b>클래스를 떼는 데 타이머 뒷문을 뒀습니다.</b> <code>pagereveal</code> 을 모르는 구형 웹뷰에서 <code>.nav-back</code> 이 눌어붙어 그 다음 이동까지 뒤로 모션이 되는 것을 막습니다.</li>
+          <li><b><code>pagehide</code> 가 <code>pageswap</code> 의 결정을 덮어쓰던 것을 막았습니다.</b> <code>pagehide</code> 가 뒤에 오기 때문에, 물리 뒤로가기로 정해진 <code>back</code> 이 <code>forward</code> 로 되돌아가는 자리였습니다.</li>
+        </ul>
+        <p class="when">
+          <b>남는 교훈 —</b> 이 전환에서 자바스크립트가 하는 일은 <b>방향 한 글자를 정하는 것</b>뿐입니다.
+          그런데 그 한 글자를 <b>언제</b> 정하느냐가 전부입니다. 첫 프레임보다 늦으면 없는 것과 같습니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="rules">
+      <div>
+        <h3>방향이 곧 위계입니다</h3>
+        <p>들어갈 때 오른쪽에서 오면, 나올 때는 반드시 오른쪽으로 나가야 합니다. 같은 화면이 어떤 날은 왼쪽에서 오면 사용자는 자기가 어디 있는지 놓칩니다. 같은 층끼리의 탭 이동에는 push 를 쓰지 않습니다 — 페이드나 좌우 짧은 밀기가 맞습니다.</p>
+      </div>
+      <div>
+        <h3>240~350ms 를 넘기지 않습니다</h3>
+        <p>느린 전환은 처음 한 번만 멋있고 그 다음부터는 기다림입니다. 하루에 수십 번 누르는 메뉴라면 300ms 아래로 둡니다. 위 시안의 1.1초는 구조를 보기 위한 값이지 실제 값이 아닙니다.</p>
+      </div>
+      <div>
+        <h3>가장자리 쓸어넘김도 같이 봅니다</h3>
+        <p>iOS 사용자는 화면 왼쪽 끝에서 손가락으로 밀어 뒤로 갑니다. push 를 흉내 내면 이 제스처까지 기대하게 됩니다. 손가락을 따라 화면이 따라오게 하려면 <code>touchmove</code> 로 진행률을 직접 잡아야 합니다 — 넣을지 말지는 별도로 정하는 게 좋습니다.</p>
+      </div>
+      <div>
+        <h3>방향은 도착한 문서가 정합니다</h3>
+        <p>떠나는 문서가 아무리 표시해 둬도, 실제로 미는 규칙은 <b>새로 열린 문서</b>가 읽습니다. 그래서 방향 스크립트는 <code>&lt;head&gt;</code> 에서 <code>defer</code> 없이 돌아야 합니다. <code>&lt;/body&gt;</code> 앞에 두면 <code>pagereveal</code> 이 이미 지나간 뒤에 붙는 일이 생겨, <b>뒤로 나오는데 앞으로 쌓이는 모션</b>이 됩니다 — 될 때도 있고 안 될 때도 있는 그 증상입니다.</p>
+      </div>
+      <div>
+        <h3>움직임 줄이기를 존중합니다</h3>
+        <p><code>prefers-reduced-motion</code> 을 켠 기기에서는 밀지 않고 바로 바꿉니다. 멀미를 느끼는 분들이 실제로 있고, 접근성 점검에서도 걸리는 항목입니다. 이 시안에도 이미 넣어 두었습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
   <footer>
     시안 보드입니다. 앞으로 새 디자인 제안은 이 페이지에 쌓습니다 —
     <a href="index.html">앱으로 돌아가기</a>
@@ -1209,6 +1571,30 @@
   /* 웹폰트가 늦게 오면 칸 폭이 한 번 더 바뀐다 — 그때 다시 잰다. */
   if (document.fonts) document.fonts.ready.then(fit);
   fit();
+})();
+
+/* 화면 전환 시안 — 상태는 .ph 의 data-at 하나뿐이다.
+   0 이면 메뉴, 1 이면 상세. 나머지는 전부 CSS 가 한다. 실제 앱에서도 이 구조가
+   좋다 — 자바스크립트로 좌표를 직접 옮기기 시작하면 뒤로가기와 어긋난다. */
+(function () {
+  var pu = document.getElementById('push');
+  if (!pu) return;
+
+  pu.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-push],[data-pop]');
+    if (!btn) return;
+    var ph = btn.closest('.ph');
+    if (ph) ph.dataset.at = btn.hasAttribute('data-push') ? '1' : '0';
+  });
+
+  pu.querySelectorAll('.pu-ctrl button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      pu.querySelectorAll('.pu-ctrl button').forEach(function (o) {
+        o.setAttribute('aria-pressed', String(o === btn));
+      });
+      pu.style.setProperty('--d', btn.dataset.d + 'ms');
+    });
+  });
 })();
 </script>
 

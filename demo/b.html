@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>b.html — 프로젝트</title>
+<!-- 전환은 두 문서가 같은 규칙을 갖고 있어야 걸린다. a.html 과 같은 파일이다. -->
+<link rel="stylesheet" href="push.css">
+<!-- head 안에서, defer 없이. 첫 프레임보다 먼저 방향이 정해져야 한다. -->
+<script src="push.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#fbfbfe;color:#363842;
+       font:400 15px/1.7 "Pretendard Variable","Malgun Gothic",sans-serif;letter-spacing:-.01em;}
+  header{display:flex;align-items:center;gap:6px;height:52px;padding:0 12px;
+         border-bottom:1px solid #e7e9f2;background:#fff;font:700 15px "Malgun Gothic",sans-serif;}
+  header a{display:flex;align-items:center;gap:3px;color:#7d5fb2;font-size:14px;text-decoration:none;}
+  main{padding:16px;}
+  .hero{height:110px;margin-bottom:12px;border-radius:10px;
+        background:linear-gradient(135deg,#fdeaf4,#f2e9fb 55%,#e9e8fb);}
+  .bar{height:11px;margin-bottom:9px;border-radius:99px;background:#f1f2f9;}
+  .bar.s{width:58%;}
+  .note{margin:22px 4px 0;color:#a7aabc;font-size:12px;line-height:1.8;}
+  .note b{color:#7d5fb2;}
+</style>
+</head>
+<body>
+
+<header>
+  <!-- data-dir="back" 하나가 방향을 뒤집는다. 이게 없으면 뒤로 나올 때도
+       오른쪽에서 들어와, 사용자는 계속 앞으로 가는 줄 안다.
+
+       다만 이건 "뒤로 보이는 앞으로 이동"이라 방문 기록이 계속 쌓인다.
+       기록을 늘리고 싶지 않으면 href 대신 history.back() 을 쓴다 — 그때는
+       navigationType 이 traverse 라 data-dir 없이도 방향이 맞는다. -->
+
+  <a href="a.html" data-dir="back">‹ 메뉴</a>
+</header>
+
+<main>
+  <div class="hero"></div>
+  <div class="bar"></div>
+  <div class="bar s"></div>
+  <div class="hero"></div>
+  <div class="bar"></div>
+
+  <p class="note">
+    여기는 <b>b.html</b> 입니다. 브라우저 뒤로가기(안드로이드 물리 버튼)로 나가도
+    방향이 맞습니다 — <b>traverse</b> 로 잡아 두었습니다.
+  </p>
+</main>
+
+</body>
+</html>

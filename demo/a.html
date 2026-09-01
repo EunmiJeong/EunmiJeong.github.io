@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a.html — 메뉴</title>
+<link rel="stylesheet" href="push.css">
+<!-- head 안에서, defer 없이. 첫 프레임보다 먼저 방향이 정해져야 한다. -->
+<script src="push.js"></script>
+<style>
+  /* 데모용 껍데기다. 전환과는 상관없다. */
+  *{box-sizing:border-box;}
+  body{margin:0;background:#fbfbfe;color:#363842;
+       font:400 15px/1.7 "Pretendard Variable","Malgun Gothic",sans-serif;letter-spacing:-.01em;}
+  header{display:flex;align-items:center;gap:8px;height:52px;padding:0 16px;
+         border-bottom:1px solid #e7e9f2;background:#fff;font:700 15px "Malgun Gothic",sans-serif;}
+  main{padding:16px;}
+  a.row{display:flex;align-items:center;gap:10px;margin-bottom:9px;padding:15px 16px;
+        border-radius:10px;background:#fff;box-shadow:0 1px 3px -1px #6a6c9d26;
+        color:#78788e;font-size:14px;text-decoration:none;}
+  a.row::after{content:"›";margin-left:auto;color:#aeb3c6;font-size:19px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#f89dc8,#a6a3e8);}
+  .note{margin:22px 4px 0;color:#a7aabc;font-size:12px;line-height:1.8;}
+  .note b{color:#7d5fb2;}
+</style>
+</head>
+<body>
+
+<header>메뉴</header>
+
+<main>
+  <!-- 평범한 링크다. 전환을 위해 자바스크립트로 이동을 가로채지 않는다. -->
+  <a class="row" href="b.html"><span class="dot"></span>프로젝트</a>
+  <a class="row" href="b.html"><span class="dot"></span>경력</a>
+  <a class="row" href="b.html"><span class="dot"></span>내 정보</a>
+
+  <p class="note">
+    여기는 <b>a.html</b> 입니다. 위 항목은 진짜 링크라 문서가 통째로 바뀝니다.<br>
+    그 순간에 A 타입 전환이 얹힙니다.
+  </p>
+</main>
+
+</body>
+</html>
