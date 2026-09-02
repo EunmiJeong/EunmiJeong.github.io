@@ -466,7 +466,8 @@ export function mountLayout(options) {
 
   setupNavDrawer($);
 
-  document.querySelectorAll('input[type="date"]').forEach(upgradeDateInput);
+  // TODO 임시. 브라우저 기본 날짜 인풋을 보려고 잠시 꺼 둔다. 확인 끝나면 되살릴 것.
+  // document.querySelectorAll('input[type="date"]').forEach(upgradeDateInput);
   document.querySelectorAll('form').forEach(watchValidity);
 
   applyView(location.hash.slice(1));
