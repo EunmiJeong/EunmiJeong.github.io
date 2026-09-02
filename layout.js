@@ -18,11 +18,13 @@ const NAV = [
     kicker: 'PROJECT', title: '프로젝트 관리',
     subtext: '진행 중인 프로젝트와 주요 정보를 한눈에 관리하세요.',
   },
-  {
-    key: 'resume', icon: 'badge', label: '이력서',
-    kicker: 'RESUME', title: '이력서',
-    subtext: '개인이력카드와 학력·경력사항입니다. 전체경력은 경력사항에서 자동으로 계산됩니다.',
-  },
+  // TODO 임시. 이력서 메뉴를 잠시 내려 둔다. 이 항목만 되살리면 그대로 돌아온다
+  // (본문의 <div class="view" data-view="resume"> 와 관련 코드는 그대로 남아 있다).
+  // {
+  //   key: 'resume', icon: 'badge', label: '이력서',
+  //   kicker: 'RESUME', title: '이력서',
+  //   subtext: '개인이력카드와 학력·경력사항입니다. 전체경력은 경력사항에서 자동으로 계산됩니다.',
+  // },
 ];
 
 const esc = value => String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
