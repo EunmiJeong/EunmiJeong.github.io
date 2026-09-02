@@ -411,7 +411,7 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
    테두리를 아예 쓰지 않는 이유: 카드에도 표 안에도 테두리를 가진 요소가 달리 없어서,
    선을 두르면 이 버튼이 화면에서 상자를 가진 유일한 것이 된다. 선 대신 면으로 간다.
    네모가 아니라 원인 것도 같은 맥락이다 — 카드 모서리(--r-lg)의 곡선과 덜 부딪힌다. */
-.row-button, .card-button{display:grid;place-items:center;width:32px;height:32px;border:0;padding:0;border-radius:50%;color:var(--muted);font:inherit;cursor:pointer;transition:.2s;}
+.row-button, .card-button{display:grid;place-items:center;width:28px;height:28px;border:0;padding:0;border-radius:50%;color:var(--muted);font:inherit;cursor:pointer;transition:.2s;}
 .row-button .icon, .card-button .icon{font-size:19px;pointer-events:none;}
 .row-button:hover, .card-button:hover{color:var(--deep);background:var(--soft);}
 .row-button[data-delete]:hover, .card-button[data-delete]:hover{color:var(--red);background:var(--red-soft);}
@@ -420,13 +420,13 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 /* 카드는 평상시에도 면을 깐다. 카드는 홀로 선 물건이라 기댈 패턴이 없어서, 글리프만
    두면 바로 아래 발주처·기술 아이콘(같은 크기에 더 옅은 색)과 구분이 되지 않는다 —
    그 둘은 누를 수 없는 표시인데도. --field 한 톤이면 "누를 수 있다"는 말에 충분하다. */
-.card-button{background:var(--field);}
+.card-button{background:#fff}
 /* 사이는 6px. 면이 생겼으니 2px 로는 두 원이 붙은 하나로 읽힌다.
    위치는 당기지 않는다 — 원이 보이는 면이 된 뒤로는 그 가장자리가 곧 버튼의
    가장자리라, 오른쪽은 카드 안쪽선에 그대로 맞추면 된다. 위쪽도 제목 줄 윗선이다.
    원 중심을 제목 글자의 시각적 중심에 맞추려면 5px 쯤 올려야 하지만, 그러면 원이
    제목 줄 위로 삐져나와 버튼이 제목보다 떠 보인다. */
-.card-top .row-actions{position:absolute;top:0;right:0;gap:6px;}
+.card-top .row-actions{position:absolute;top:-3px;right:0;gap:0;}
 
 /* 표는 평상시 면을 뺀다. 맨 오른쪽 칸에서 모든 행이 같은 자리에 같은 글리프 두 개를
    반복하니, 그 반복이 카드에서 면이 하던 일을 대신한다. 게다가 th 가 이미 --field 라
@@ -440,7 +440,7 @@ td .row-actions{gap:2px;margin-right:-6px;}
 .empty{padding:60px 20px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);color:var(--muted);text-align:center;line-height:1.7;}
 
 /* ── 카드 뷰 ───────────────────────────── */
-.project-card{padding:32px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);transition:.25s;} /* linear-gradient(149deg, var(--paper) 0%, #ffffff00 120%) */
+.project-card{padding:32px 24px 32px 32px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);transition:.25s;} /* linear-gradient(149deg, var(--paper) 0%, #ffffff00 120%) */
 .project-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift);}
 /* 버튼은 흐름에서 빼서 절대 배치한다.
    흐름에 두면 .card-top 의 높이가 [제목, 버튼] 중 큰 쪽으로 정해진다. 버튼은 32px,
@@ -451,8 +451,8 @@ td .row-actions{gap:2px;margin-right:-6px;}
    margin-top 이 줄 수와 상관없이 그대로 지켜진다.
    padding-right 는 버튼 자리(32×2 + 사이 6) 에 제목과의 최소 간격 12px 을 더한 값이다 —
    제목은 이 선에 닿으면 줄을 바꾸므로 버튼과 겹치지 않는다. */
-.card-top{position:relative;padding-right:82px;}
-.card-title{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:800;}
+.card-top{position:relative;padding-right:60px;}
+.card-title{margin:0;font-family:var(--font-head);font-size:1rem;font-weight:800;letter-spacing:-0.85px;}
 /* 카드는 두 덩어리로 읽힌다 — [제목 + 기간] 과 [발주처 + 스킬]. 덩어리 안은 8px,
    덩어리 사이는 22px 로 벌려 간격만으로 묶음이 보이게 한다. */
 /* 카드는 두 덩어리다 — 위의 [제목 + 기간]이 프로젝트의 정체(무엇을 · 언제)이고,
@@ -730,21 +730,22 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   .appbar{gap:8px;margin-bottom:16px;}
   h1{font-size:1.85rem;}
   .main{padding:24px 18px 40px;}
-  .main::before{height:308px;}
+  .main::before{height:245px;}
   .topbar{gap:16px;flex-direction:column;margin-bottom:26px;}
   /* auto-fit + minmax(190px) 는 좁은 화면에서 한 줄에 한 칸만 남아 카드가 세로로
      길게 늘어선다. 여기서는 칸 수를 둘로 못박고 최소 폭을 0 으로 풀어 2단을 유지한다. */
   .overview{grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px;}
   /* 좁은 칸에 배지와 글을 나란히 두면 숫자가 앉을 자리가 없다. 여기서는 다시 위아래로
      쌓는다 — 배지가 위, 글이 아래. 정렬은 오른쪽 그대로 두어 위아래 카드끼리 맞춘다. */
-  .stat{grid-template-columns:minmax(0, 1fr);row-gap:10px;padding:18px 16px;border-radius:var(--r-md);}
+  .stat{grid-template-columns:minmax(0, 1fr);row-gap:4px;padding:18px 16px;border-radius:var(--r-md);}
   .stat-icon{grid-row:auto;justify-self:start;width:40px;height:40px;padding:9px;}
   .stat-title, .stat-value, .stat-line{grid-column:1;}
-  .stat-title{font-size:.68rem;}
+  .stat-title{margin-top:-16px;font-size:.68rem;}
   .stat-value{font-size:1.5rem;}
   .field-row, .option-row, .info-grid{grid-template-columns:1fr;}
   .stat.primary .stat-value{font-size:1.4rem;}
   .panel{padding:20px;border-radius:var(--r-md);}
+  .content-head{margin-bottom:12px}
   /* 이력카드는 판 여백을 띠와 표가 나눠 갖는다(위 .profile-panel 주석 참고). */
   .profile-panel{padding:0;}
   .profile-head{gap:15px;padding:20px;}
@@ -753,19 +754,22 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   .avatar span{font-size:.9rem;}
   .profile-head h2{font-size:1.3rem;}
   .project-card, .table-wrap, .empty{border-radius:var(--r-md);}
+  .project-card {padding: 24px 16px 24px 24px}
+  .card-title{font-size:0.9rem}
   /* 좁은 화면에서는 "프로젝트 추가" 대신 "추가"만 남긴다. 바로 위가 목록 제목이라
      무엇을 더하는지는 이미 드러난다. 읽어 주는 이름(aria-label)은 그대로 전체 문장이다. */
   .add-what{display:none;}
   .auth-card{padding:24px;}
   /* 폼 모달은 좌우 여백을 안쪽 세 줄이 나눠 갖는다(--pad). 위 .modal 설명 참고. */
   .modal{--pad:24px;padding:24px 0;}
-  form, .form-body{gap:20px;}
+  .modal form{gap:0}
+  .form-body{padding-bottom:24px}
   .field-row{gap:20px;}
   .view-tools{gap:8px;align-items:flex-end}
 }
 
 @media (max-width:768px){
-  .card-list{grid-template-columns:1fr;}
+  .card-list{grid-template-columns:1fr;gap:16px}
 }
 
 
