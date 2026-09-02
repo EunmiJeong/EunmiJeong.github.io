@@ -759,9 +759,10 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   /* 좁은 화면에서는 "프로젝트 추가" 대신 "추가"만 남긴다. 바로 위가 목록 제목이라
      무엇을 더하는지는 이미 드러난다. 읽어 주는 이름(aria-label)은 그대로 전체 문장이다. */
   .add-what{display:none;}
-  .auth-card{padding:24px;}
+  .auth-card{padding:24px;gap:20px}
   /* 폼 모달은 좌우 여백을 안쪽 세 줄이 나눠 갖는다(--pad). 위 .modal 설명 참고. */
   .modal{--pad:24px;padding:24px 0;}
+  form, .form-body{gap:20px}
   .modal form{gap:0}
   .form-body{padding-bottom:24px}
   .field-row{gap:20px;}
