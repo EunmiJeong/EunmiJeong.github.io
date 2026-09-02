@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login · project.desk</title>
+  <meta name="color-scheme" content="light">
+  <link rel="modulepreload" href="supabase.js">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+  /* ── 유리 시안 (밝은 판) ──
+     login.html 이 "그라데이션 면 + 흰 카드" 라면 이 화면은 카드까지 전부 유리다.
+     밝은 바탕에서 유리를 유리로 보이게 하는 요령은 어둡게 까는 게 아니라, 판 뒤에서
+     색이 진하게 흐르게 두는 것이다 — 그래서 바탕의 색덩이는 브랜드 3색을 옅히지 않고
+     그대로 쓰고(투명도만 낮춘다), 판은 saturate 를 올려 그 색을 끌어올린다.
+     글자는 style.css 와 같은 먹색(--ink)이라 다른 화면과 톤이 어긋나지 않는다. */
+  :root{
+    --ink:#363842;
+    --ink-soft:#6c6c86;
+    --label:#4a3a66;
+    --muted:#9b93b4;
+    --pink:#f89dc8;
+    --violet:#a6a3e8;
+    --brand:#c08cd8;
+    --deep:#7d5fb2;
+    --grad:linear-gradient(135deg, #f89dc8 0%, #c99ce2 52%, #a6a3e8 100%);
+    --grad-soft:linear-gradient(135deg, #fdeaf4 0%, #f2e9fb 55%, #e9e8fb 100%);
+
+    /* 유리 한 벌. 면 · 테두리 · 하이라이트 · 그림자가 늘 같이 움직인다.
+       밝은 배경에서는 면을 흰색 쪽으로 올리고(0.44) 테두리를 거의 불투명한 흰색으로
+       둔다 — 이 테두리 한 줄이 판의 가장자리를 만들어 준다. */
+    --glass:#ffffff85;
+    --glass-strong:#ffffffb8;
+    --glass-line:#ffffffe6;
+    --glass-shadow:0 44px 90px -30px #5a3b8c73, 0 8px 20px -10px #5a3b8c47;
+
+    --red-soft:#fff0f5;
+    --red-line:#f7c9dc;
+    --red-deep:#b5416c;
+
+    --font:"Pretendard Variable", "Malgun Gothic", sans-serif;
+    --font-head:"NanumSquareNeo", "Malgun Gothic", sans-serif;
+    --r-xl:32px;
+    --r-lg:22px;
+    --r-md:16px;
+    --r-pill:999px;
+    --btn-h:52px;
+  }
+
+  @font-face{
+    font-family:"Pretendard Variable";
+    font-weight:45 920;font-style:normal;font-display:swap;
+    src:url("fonts/PretendardVariable.woff2") format("woff2-variations");
+  }
+  @font-face{font-family:"NanumSquareNeo";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");}
+  @font-face{font-family:"NanumSquareNeo";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");}
+  @font-face{font-family:"NanumSquareNeo";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");}
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;font-family:var(--font);color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    display:grid;place-items:center;padding:32px 20px;
+    /* login.html 왼쪽 면과 같은 그라데이션을 화면 전체에 깐다. */
+    background:var(--grad);
+    background-attachment:fixed;
+    overflow:hidden;
+  }
+
+  /* ── 바탕 · 떠다니는 색덩이 ──
+     유리는 제 색이 없다. 뒤에서 이 덩이들이 움직여 주어야 판 위로 색이 흐르는 게 보인다.
+     이 화면에서는 배경 애니메이션이 장식이 아니라 재료다. */
+  .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;}
+  .bg i{
+    position:absolute;display:block;border-radius:50%;filter:blur(70px);
+    will-change:transform;
+  }
+  .bg i:nth-child(1){width:620px;height:620px;left:-140px;top:-160px;background:#ffd0e6;opacity:.7;animation:o1 24s ease-in-out infinite;}
+  .bg i:nth-child(2){width:560px;height:560px;right:-160px;top:-80px;background:#bfbcf5;opacity:.6;animation:o2 28s ease-in-out infinite;}
+  .bg i:nth-child(3){width:520px;height:520px;left:24%;bottom:-200px;background:#f8a9d2;opacity:.55;animation:o3 32s ease-in-out infinite;}
+  .bg i:nth-child(4){width:400px;height:400px;right:12%;bottom:-130px;background:#a9dcf8;opacity:.45;animation:o4 26s ease-in-out infinite;}
+
+  @keyframes o1{50%{transform:translate3d(120px,90px,0) scale(1.14);}}
+  @keyframes o2{50%{transform:translate3d(-100px,110px,0) scale(1.1);}}
+  @keyframes o3{50%{transform:translate3d(90px,-120px,0) scale(1.16);}}
+  @keyframes o4{50%{transform:translate3d(-120px,-70px,0) scale(1.12);}}
+
+  /* 카드가 놓일 가운데만 흰 안개로 한 겹 들어 올린다. 화면 전체에 깔면 모처럼의
+     분홍이 다 씻겨 나가므로, 가장자리의 그라데이션은 진한 채로 남겨 둔다. */
+  .bg::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(80% 65% at 50% 48%, #ffffff9e 0%, #ffffff42 42%, transparent 76%);
+  }
+
+  @media (prefers-reduced-motion:reduce){.bg i{animation:none;}}
+
+  /* ── 유리 카드 ── */
+  .card{
+    position:relative;width:100%;max-width:440px;
+    padding:44px 40px 36px;border-radius:var(--r-xl);
+    background:var(--glass);
+    border:1px solid var(--glass-line);
+    box-shadow:var(--glass-shadow);
+    backdrop-filter:blur(30px) saturate(1.8);
+    -webkit-backdrop-filter:blur(30px) saturate(1.8);
+    animation:rise .55s cubic-bezier(.2,.7,.3,1) both;
+  }
+  /* 위 모서리를 따라 흐르는 빛. 진짜 유리의 가장자리 반사를 흉내 낸 것으로,
+     이것 하나로 판이 "떠 있는 면"처럼 읽힌다. */
+  .card::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:linear-gradient(150deg, #ffffffe6 0%, #ffffff3d 26%, transparent 52%);
+    mix-blend-mode:overlay;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(18px) scale(.985);}}
+  @media (prefers-reduced-motion:reduce){.card{animation:none;}}
+
+  /* backdrop-filter 를 못 쓰는 브라우저에서는 유리가 그냥 반투명 흰 판이 되어
+     뒤의 색덩이가 글자에 비쳐 든다. 그때는 면을 거의 불투명하게 올린다. */
+  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    .card{background:#fffffff2;}
+  }
+
+  .mark{
+    display:inline-flex;align-items:center;gap:10px;margin:0 0 26px;
+    font-family:var(--font-head);font-weight:800;font-size:19px;letter-spacing:-.4px;
+    color:var(--deep);
+  }
+  .mark i{
+    width:10px;height:10px;border-radius:50%;background:var(--grad);
+    box-shadow:0 0 0 6px #ffffff8f, 0 0 16px #f89dc899;
+  }
+
+  .head{margin-bottom:28px;}
+  .head h1{
+    font-family:var(--font-head);font-weight:800;font-size:32px;letter-spacing:-.8px;
+    margin:0 0 10px;color:var(--ink);
+  }
+  .head p{margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);}
+
+  form{display:grid;gap:16px;}
+  .field{display:grid;gap:8px;}
+  label{font-size:12px;font-weight:700;letter-spacing:.3px;color:var(--label);}
+
+  /* 인풋도 유리다. 다만 카드보다 흰 쪽으로 한 겹 더 올려야 판 위에 얹힌 칸으로 읽힌다
+     (어두운 시안에서는 반대로 눌렀다 — 밝은 바탕에서 더 어둡게 파면 그늘처럼 탁해진다). */
+  input[type=email],input[type=password],input[type=text]{
+    font:inherit;color:var(--ink);width:100%;height:var(--btn-h);
+    padding:0 16px;border-radius:var(--r-md);
+    background:#ffffff8f;border:1px solid #ffffffd9;
+    box-shadow:inset 0 1px 2px #5a3b8c14;
+    transition:background .18s, border-color .18s, box-shadow .18s;
+  }
+  input::placeholder{color:var(--muted);}
+  input:hover{background:#ffffffb8;}
+  input:focus{
+    outline:none;background:#fff;border-color:var(--brand);
+    box-shadow:0 0 0 4px #c08cd82e;
+  }
+  input:-webkit-autofill,input:-webkit-autofill:focus{
+    -webkit-box-shadow:0 0 0 60px #fbf7fe inset;
+    -webkit-text-fill-color:var(--ink);caret-color:var(--ink);
+  }
+
+  .pw{position:relative;}
+  .pw input{padding-right:64px;}
+  .pw button{
+    position:absolute;right:6px;top:6px;height:calc(var(--btn-h) - 12px);
+    border:0;background:none;cursor:pointer;padding:0 12px;border-radius:10px;
+    font:inherit;font-size:12px;font-weight:700;color:var(--ink-soft);
+  }
+  .pw button:hover{color:var(--deep);background:#ffffffcc;}
+
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .check{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);cursor:pointer;user-select:none;}
+  .check input{width:16px;height:16px;accent-color:var(--brand);cursor:pointer;}
+  .link{font-size:13px;font-weight:600;color:var(--deep);text-decoration:none;}
+  .link:hover{text-decoration:underline;}
+
+  /* 버튼만 불투명한 브랜드 그라데이션이다. 유리 화면에서 눌러야 할 곳은 하나뿐이니
+     그것만 "실체"로 두면 어디를 누를지 헤맬 일이 없다. */
+  .submit{
+    height:var(--btn-h);border:0;border-radius:var(--r-pill);cursor:pointer;
+    font:inherit;font-weight:700;font-size:15px;color:#fff;letter-spacing:-.2px;
+    background:var(--grad);
+    box-shadow:0 16px 32px -14px #c08cd8b3, inset 0 1px 0 #ffffff59;
+    transition:transform .18s, box-shadow .18s, filter .18s;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    margin-top:4px;
+  }
+  .submit:hover{transform:translateY(-2px);box-shadow:0 22px 40px -14px #c08cd8cc, inset 0 1px 0 #ffffff8f;filter:saturate(1.06);}
+  .submit:active{transform:translateY(0);}
+  .submit:disabled{cursor:progress;filter:grayscale(.15) saturate(.85);transform:none;}
+
+  .spinner{
+    width:16px;height:16px;border-radius:50%;
+    border:2px solid #ffffff59;border-top-color:#fff;animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .message{
+    margin:0;padding:12px 16px;border-radius:var(--r-md);
+    font-size:13px;line-height:1.6;white-space:pre-line;
+    background:var(--red-soft);border:1px solid var(--red-line);color:var(--red-deep);
+  }
+  .message.ok{background:#effaf5;border-color:#bfe9d8;color:#1f7d5e;}
+
+  .divider{
+    display:flex;align-items:center;gap:14px;margin:2px 0;
+    color:var(--muted);font-size:12px;letter-spacing:.4px;
+  }
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:#ffffffcc;}
+
+  .ghost{
+    height:46px;width:100%;border-radius:var(--r-pill);cursor:pointer;
+    font:inherit;font-size:14px;font-weight:600;color:var(--deep);
+    background:var(--glass-strong);border:1px solid var(--glass-line);
+    backdrop-filter:blur(6px);
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    transition:background .18s, border-color .18s, transform .18s;
+  }
+  .ghost:hover{background:#fff;border-color:#fff;transform:translateY(-1px);}
+
+  .foot{margin:24px 0 0;text-align:center;font-size:13px;color:var(--ink-soft);}
+  .foot a{color:var(--deep);font-weight:600;text-decoration:none;}
+  .foot a:hover{text-decoration:underline;}
+
+  /* 키보드로 넘어다닐 때만 보이는 초점 테두리. */
+  :focus-visible{outline:2px solid var(--deep);outline-offset:2px;}
+
+  @media (max-width:420px){
+    body{padding:20px 14px;}
+    .card{padding:32px 24px 28px;border-radius:var(--r-lg);}
+    .head h1{font-size:27px;}
+  }
+  /* 세로가 아주 짧은 창(노트북 가로 회전 등)에서는 카드가 잘리지 않게 스크롤을 허용한다. */
+  @media (max-height:720px){
+    body{overflow:auto;align-items:start;}
+  }
+  </style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<main class="card">
+  <p class="mark"><i></i>project.desk</p>
+
+  <header class="head">
+    <h1>다시 오셨네요</h1>
+    <p>이메일과 비밀번호를 넣으면 쓰던 자리에서 그대로 이어집니다.</p>
+  </header>
+
+  <form id="login-form" novalidate>
+    <div class="field">
+      <label for="email">이메일</label>
+      <input id="email" name="email" type="email" autocomplete="username"
+             placeholder="you@example.com" required autofocus>
+    </div>
+
+    <div class="field">
+      <label for="password">비밀번호</label>
+      <div class="pw">
+        <input id="password" name="password" type="password" autocomplete="current-password"
+               placeholder="••••••••" minlength="6" required>
+        <button type="button" id="toggle-pw" aria-pressed="false" aria-label="비밀번호 보기">보기</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="check"><input type="checkbox" id="remember" checked>로그인 상태 유지</label>
+      <a class="link" href="#" id="forgot">비밀번호를 잊으셨나요?</a>
+    </div>
+
+    <p class="message" id="message" hidden></p>
+
+    <button class="submit" type="submit" id="submit">로그인</button>
+
+    <p class="divider">또는</p>
+
+    <button class="ghost" type="button" id="guest">둘러보기로 들어가기</button>
+  </form>
+
+  <p class="foot">계정이 없으신가요? <a href="mailto:claude_ux_03@inswave.com">관리자에게 요청하기</a></p>
+</main>
+
+<script type="module">
+  const $ = id => document.getElementById(id);
+  const form = $('login-form'), submit = $('submit'), box = $('message');
+
+  function say(text, ok) {
+    box.hidden = !text;
+    box.classList.toggle('ok', !!ok);
+    box.textContent = text || '';
+  }
+
+  $('toggle-pw').addEventListener('click', event => {
+    const input = $('password'), shown = input.type === 'text';
+    input.type = shown ? 'password' : 'text';
+    event.currentTarget.textContent = shown ? '보기' : '숨기기';
+    event.currentTarget.setAttribute('aria-pressed', String(!shown));
+    event.currentTarget.setAttribute('aria-label', shown ? '비밀번호 보기' : '비밀번호 숨기기');
+    input.focus();
+  });
+
+  $('guest').addEventListener('click', () => location.href = 'index.html');
+
+  $('forgot').addEventListener('click', event => {
+    event.preventDefault();
+    say('비밀번호 재설정은 아직 준비 중입니다.\n관리자에게 요청해 주세요.');
+  });
+
+  /* supabase 는 CDN 이라 처음 누를 때 한 번만 받는다. */
+  let clientPromise;
+  const client = () => (clientPromise ??= import('./supabase.js').then(m => m.supabase));
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const email = $('email').value.trim(), password = $('password').value;
+
+    if (!email || !password) return say('이메일과 비밀번호를 모두 입력하세요.');
+
+    say('');
+    submit.disabled = true;
+    submit.innerHTML = '<span class="spinner"></span>확인하는 중…';
+
+    try {
+      const supabase = await client();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      say('로그인했습니다. 잠시만요…', true);
+      location.href = 'index.html';
+    } catch {
+      // 실패 사실과 대처법은 다른 문장이라 줄을 나눈다(.message 가 pre-line).
+      say('로그인에 실패했습니다.\n이메일과 비밀번호를 확인하세요.');
+      submit.disabled = false;
+      submit.textContent = '로그인';
+      $('password').focus();
+      $('password').select();
+    }
+  });
+</script>
+</body>
+</html>

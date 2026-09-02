@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login · project.desk</title>
+  <meta name="color-scheme" content="light">
+  <link rel="modulepreload" href="supabase.js">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+  /* ── 이 화면만 쓰는 스타일 ──
+     style.css 를 끌어오지 않는다. 저기에는 사이드바·표·모달까지 한 벌로 묶여 있는데
+     이 페이지에는 카드 하나뿐이라 쓰지 않을 규칙이 대부분이다. 대신 색·폰트·둥근 정도는
+     style.css 의 :root 에서 그대로 베껴 왔다 — 브랜드 그라데이션(--grad)이 이 화면의 주인공이다. */
+  :root{
+    --ink:#363842;
+    --ink-soft:#78788e;
+    --muted:#a7aabc;
+    --paper:#fff;
+    --line:#e7e9f2;
+    --field:#f1f2f9;
+    --field-line:#dcdfeb;
+    --placeholder:#aeb3c6;
+    --label:#32325d;
+    --pink:#f89dc8;
+    --violet:#a6a3e8;
+    --brand:#c08cd8;
+    --deep:#7d5fb2;
+    --grad:linear-gradient(135deg, #f89dc8 0%, #c99ce2 52%, #a6a3e8 100%);
+    --grad-soft:linear-gradient(135deg, #fdeaf4 0%, #f2e9fb 55%, #e9e8fb 100%);
+    --red-soft:#fdedf3;
+    --red-deep:#b5416c;
+    --font:"Pretendard Variable", "Malgun Gothic", sans-serif;
+    --font-head:"NanumSquareNeo", "Malgun Gothic", sans-serif;
+    --r-lg:25px;
+    --r-md:18px;
+    --r-sm:8px;
+    --r-pill:999px;
+    --btn-h:52px;
+    --shadow:0 18px 40px -24px #6a6c9d4d, 0 2px 6px -2px #7061891a;
+    --shadow-card:0 40px 80px -40px #5f4a7f59, 0 8px 24px -12px #6a6c9d33;
+    --shadow-brand:0 14px 30px -12px #c08cd899;
+  }
+
+  @font-face{
+    font-family:"Pretendard Variable";
+    font-weight:45 920;font-style:normal;font-display:swap;
+    src:url("fonts/PretendardVariable.woff2") format("woff2-variations");
+  }
+  @font-face{font-family:"NanumSquareNeo";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");}
+  @font-face{font-family:"NanumSquareNeo";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");}
+  @font-face{font-family:"NanumSquareNeo";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");}
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;font-family:var(--font);color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    background:var(--grad-soft);
+  }
+
+  /* ── 전체 틀 ──
+     왼쪽은 브랜드 면(그라데이션), 오른쪽은 카드. 좁아지면 왼쪽이 위로 접히는 게 아니라
+     아예 사라지고 배경만 남는다 — 작은 화면에서 로그인 전에 스크롤을 시키지 않기 위해서다. */
+  .auth{
+    min-height:100dvh;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+  }
+
+  /* ── 왼쪽 · 브랜드 면 ── */
+  .stage{
+    position:relative;overflow:hidden;isolation:isolate;
+    display:flex;flex-direction:column;justify-content:space-between;
+    padding:56px 60px;background:var(--grad);color:#fff;
+  }
+  /* 그라데이션 위를 아주 느리게 도는 빛무리 세 덩이. 배경이 단색 띠로 굳지 않게 한다. */
+  .stage::before,.stage::after,.stage .glow{
+    content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(60px);pointer-events:none;
+  }
+  .stage::before{width:520px;height:520px;left:-120px;top:-90px;background:#ffd6ea;opacity:.55;animation:drift-a 22s ease-in-out infinite;}
+  .stage::after{width:460px;height:460px;right:-140px;bottom:-120px;background:#9fb6f5;opacity:.5;animation:drift-b 26s ease-in-out infinite;}
+  .stage .glow{width:380px;height:380px;left:38%;top:42%;background:#f7f0ff;opacity:.42;animation:drift-c 30s ease-in-out infinite;}
+
+  @keyframes drift-a{50%{transform:translate3d(70px,50px,0) scale(1.12);}}
+  @keyframes drift-b{50%{transform:translate3d(-60px,-70px,0) scale(1.08);}}
+  @keyframes drift-c{50%{transform:translate3d(-90px,60px,0) scale(1.15);}}
+  @media (prefers-reduced-motion:reduce){
+    .stage::before,.stage::after,.stage .glow{animation:none;}
+  }
+
+  .mark{
+    font-family:var(--font-head);font-weight:800;font-size:22px;letter-spacing:-.4px;
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .mark span{
+    width:9px;height:9px;border-radius:50%;background:#fff;
+    box-shadow:0 0 0 6px #ffffff2e;
+  }
+
+  .stage-copy{max-width:26ch;}
+  .stage-copy h1{
+    font-family:var(--font-head);font-weight:800;font-size:clamp(34px,3.4vw,52px);
+    line-height:1.24;letter-spacing:-1px;margin:0 0 18px;
+    text-shadow:0 12px 30px #6b4a8c33;
+  }
+  .stage-copy p{margin:0;font-size:16px;line-height:1.75;color:#ffffffdb;}
+
+  /* 아래 줄의 작은 지표 셋. 유리판 위에 얹힌 것처럼 보이게 한다. */
+  .facts{display:flex;gap:10px;flex-wrap:wrap;}
+  .fact{
+    padding:12px 18px;border-radius:var(--r-pill);
+    background:#ffffff26;border:1px solid #ffffff40;backdrop-filter:blur(8px);
+    font-size:13px;font-weight:600;letter-spacing:.2px;color:#fff;
+  }
+  .fact b{font-family:var(--font-head);font-weight:800;font-size:15px;margin-right:6px;}
+
+  /* ── 오른쪽 · 카드 ── */
+  .panel{
+    display:flex;align-items:center;justify-content:center;padding:48px 40px;
+    position:relative;
+  }
+  .card{
+    width:100%;max-width:420px;
+    background:#fffffff2;border:1px solid #ffffffcc;border-radius:var(--r-lg);
+    padding:44px 40px 40px;box-shadow:var(--shadow-card);backdrop-filter:blur(14px);
+    animation:rise .5s cubic-bezier(.2,.7,.3,1) both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}}
+  @media (prefers-reduced-motion:reduce){.card{animation:none;}}
+
+  .card-head{margin-bottom:30px;}
+  .eyebrow{
+    display:inline-block;margin:0 0 12px;padding:5px 12px;border-radius:var(--r-pill);
+    background:var(--grad-soft);color:var(--deep);
+    font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  }
+  .card-head h2{
+    font-family:var(--font-head);font-weight:800;font-size:30px;letter-spacing:-.6px;
+    margin:0 0 8px;
+    /* 제목만 그라데이션 글자. 면과 같은 각도라 카드가 왼쪽 면의 조각처럼 읽힌다. */
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .card-head p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.6;}
+
+  form{display:grid;gap:18px;}
+  .field{display:grid;gap:8px;}
+  label{font-size:13px;font-weight:700;color:var(--label);letter-spacing:-.2px;}
+
+  /* 인풋은 테두리 대신 옅은 면으로 두고, 포커스에서만 브랜드색 테두리와 후광을 켠다.
+     그래야 쉬고 있을 때 화면이 조용하고, 지금 어디를 쓰는지는 확실히 보인다. */
+  input{
+    font:inherit;color:var(--ink);width:100%;height:var(--btn-h);
+    padding:0 16px;border:1px solid transparent;border-radius:var(--r-md);
+    background:var(--field);transition:border-color .18s, box-shadow .18s, background .18s;
+  }
+  input::placeholder{color:var(--placeholder);}
+  input:hover{background:#eceef7;}
+  input:focus{
+    outline:none;background:var(--paper);
+    border-color:var(--brand);box-shadow:0 0 0 4px #c08cd826;
+  }
+  input:-webkit-autofill{-webkit-box-shadow:0 0 0 60px #f3f1fb inset;-webkit-text-fill-color:var(--ink);}
+
+  /* 비밀번호 칸 오른쪽의 보기/숨기기 */
+  .pw{position:relative;}
+  .pw input{padding-right:60px;}
+  .pw button{
+    position:absolute;right:6px;top:6px;height:calc(var(--btn-h) - 12px);
+    border:0;background:none;cursor:pointer;padding:0 12px;border-radius:var(--r-sm);
+    font:inherit;font-size:12px;font-weight:700;color:var(--ink-soft);
+  }
+  .pw button:hover{color:var(--deep);background:var(--field);}
+
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:-2px;}
+  .check{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);cursor:pointer;user-select:none;}
+  .check input{width:17px;height:17px;accent-color:var(--brand);cursor:pointer;}
+  .link{font-size:13px;font-weight:600;color:var(--deep);text-decoration:none;}
+  .link:hover{text-decoration:underline;}
+
+  .submit{
+    height:var(--btn-h);border:0;border-radius:var(--r-pill);cursor:pointer;
+    font:inherit;font-weight:700;font-size:15px;color:#fff;letter-spacing:-.2px;
+    background:var(--grad);box-shadow:var(--shadow-brand);
+    transition:transform .18s, box-shadow .18s, filter .18s;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  }
+  .submit:hover{transform:translateY(-2px);box-shadow:0 20px 36px -14px #c08cd8b3;filter:saturate(1.06);}
+  .submit:active{transform:translateY(0);}
+  .submit:disabled{cursor:progress;filter:grayscale(.15) saturate(.85);transform:none;}
+
+  /* 보내는 동안 도는 고리. 글자를 "..." 로 바꾸는 것보다 상태가 분명하다. */
+  .spinner{
+    width:16px;height:16px;border-radius:50%;
+    border:2px solid #ffffff59;border-top-color:#fff;animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .message{
+    margin:0;padding:12px 16px;border-radius:var(--r-md);
+    font-size:13px;line-height:1.6;white-space:pre-line;
+    background:var(--red-soft);color:var(--red-deep);
+  }
+  .message.ok{background:#e9f7f1;color:#1f7d5e;}
+
+  .divider{
+    display:flex;align-items:center;gap:14px;
+    color:var(--muted);font-size:12px;letter-spacing:.4px;
+  }
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  .ghost{
+    height:46px;border:1px solid var(--field-line);border-radius:var(--r-pill);
+    background:var(--paper);cursor:pointer;font:inherit;font-size:14px;font-weight:600;color:var(--ink);
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    transition:background .18s, border-color .18s;
+  }
+  .ghost:hover{background:var(--field);border-color:#cfd3e4;}
+
+  .foot{margin:26px 0 0;text-align:center;font-size:13px;color:var(--ink-soft);}
+  .foot a{color:var(--deep);font-weight:600;text-decoration:none;}
+  .foot a:hover{text-decoration:underline;}
+
+  /* ── 좁은 화면 ──
+     1000px 아래에서 왼쪽 면을 접고, 대신 카드 위에 같은 그라데이션의 작은 머리를 남긴다. */
+  .card-mark{display:none;}
+  @media (max-width:1000px){
+    .auth{grid-template-columns:1fr;}
+    .stage{display:none;}
+    .panel{padding:32px 20px;}
+    .card{max-width:440px;padding:36px 28px 32px;}
+    .card-mark{
+      display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;
+      font-family:var(--font-head);font-weight:800;font-size:19px;letter-spacing:-.4px;
+      background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .card-mark i{width:9px;height:9px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 5px #c08cd82e;}
+  }
+  @media (max-width:420px){
+    .card{padding:30px 22px 26px;border-radius:var(--r-md);}
+    .card-head h2{font-size:26px;}
+  }
+  </style>
+</head>
+<body>
+<main class="auth">
+
+  <!-- 왼쪽 · 브랜드 면 -->
+  <section class="stage" aria-hidden="true">
+    <div class="glow"></div>
+    <p class="mark">project<span></span>desk</p>
+
+    <div class="stage-copy">
+      <h1>오늘의 일을<br>한 화면에 모아 둡니다.</h1>
+      <p>프로젝트와 경력, 그날그날의 기록까지. 로그인하면 이어서 쓰던 자리에서 그대로 시작합니다.</p>
+    </div>
+
+    <div class="facts">
+      <span class="fact"><b>12</b>프로젝트</span>
+      <span class="fact"><b>5</b>년의 기록</span>
+      <span class="fact"><b>∞</b>다듬는 중</span>
+    </div>
+  </section>
+
+  <!-- 오른쪽 · 로그인 카드 -->
+  <section class="panel">
+    <div class="card">
+      <p class="card-mark"><i></i>project.desk</p>
+
+      <header class="card-head">
+        <p class="eyebrow">Welcome back</p>
+        <h2>다시 오셨네요</h2>
+        <p>이메일과 비밀번호를 넣으면 바로 들어갑니다.</p>
+      </header>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">이메일</label>
+          <input id="email" name="email" type="email" autocomplete="username"
+                 placeholder="you@example.com" required autofocus>
+        </div>
+
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <div class="pw">
+            <input id="password" name="password" type="password" autocomplete="current-password"
+                   placeholder="••••••••" minlength="6" required>
+            <button type="button" id="toggle-pw" aria-pressed="false" aria-label="비밀번호 보기">보기</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="check"><input type="checkbox" id="remember" checked>로그인 상태 유지</label>
+          <a class="link" href="#" id="forgot">비밀번호를 잊으셨나요?</a>
+        </div>
+
+        <p class="message" id="message" hidden></p>
+
+        <button class="submit" type="submit" id="submit">로그인</button>
+
+        <p class="divider">또는</p>
+
+        <button class="ghost" type="button" id="guest">둘러보기로 들어가기</button>
+      </form>
+
+      <p class="foot">계정이 없으신가요? <a href="mailto:claude_ux_03@inswave.com">관리자에게 요청하기</a></p>
+    </div>
+  </section>
+
+</main>
+
+<script type="module">
+  const $ = id => document.getElementById(id);
+  const form = $('login-form'), submit = $('submit'), box = $('message');
+
+  /* 메시지 한 줄. 실패는 붉게, 성공은 초록으로 둔다. */
+  function say(text, ok) {
+    box.hidden = !text;
+    box.classList.toggle('ok', !!ok);
+    box.textContent = text || '';
+  }
+
+  $('toggle-pw').addEventListener('click', event => {
+    const input = $('password'), shown = input.type === 'text';
+    input.type = shown ? 'password' : 'text';
+    event.currentTarget.textContent = shown ? '보기' : '숨기기';
+    event.currentTarget.setAttribute('aria-pressed', String(!shown));
+    event.currentTarget.setAttribute('aria-label', shown ? '비밀번호 보기' : '비밀번호 숨기기');
+    input.focus();
+  });
+
+  $('guest').addEventListener('click', () => location.href = 'index.html');
+
+  $('forgot').addEventListener('click', event => {
+    event.preventDefault();
+    say('비밀번호 재설정은 아직 준비 중입니다.\n관리자에게 요청해 주세요.');
+  });
+
+  /* supabase 는 CDN 에서 받아 오므로 처음 누를 때 한 번만 부른다.
+     페이지가 뜨자마자 받으면 로그인하지 않고 지나가는 사람에게도 값을 치르게 된다. */
+  let clientPromise;
+  const client = () => (clientPromise ??= import('./supabase.js').then(m => m.supabase));
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const email = $('email').value.trim(), password = $('password').value;
+
+    if (!email || !password) return say('이메일과 비밀번호를 모두 입력하세요.');
+
+    say('');
+    submit.disabled = true;
+    submit.innerHTML = '<span class="spinner"></span>확인하는 중…';
+
+    try {
+      const supabase = await client();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      say('로그인했습니다. 잠시만요…', true);
+      location.href = 'index.html';
+    } catch {
+      // 실패 사실과 대처법은 다른 문장이라 줄을 나눈다(.message 가 pre-line).
+      say('로그인에 실패했습니다.\n이메일과 비밀번호를 확인하세요.');
+      submit.disabled = false;
+      submit.textContent = '로그인';
+      $('password').focus();
+      $('password').select();
+    }
+  });
+</script>
+</body>
+</html>
