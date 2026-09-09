@@ -418,7 +418,7 @@ h1{margin:0;color:#fff;font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
    남는 높이를 그 빈 줄이 혼자 삼키므로, 제목과 값은 아래에 붙고 둘 사이는 벌어지지 않는다.
    배지는 세 줄에 걸쳐 서되 위에 붙으므로(align-self:start) 글이 내려가도 따라가지 않는다 —
    왼쪽 배지와 오른쪽 글이 서로 줄을 안 맞춰도 되는 이유다. */
-.stat{display:grid;grid-template-columns:auto minmax(0, 1fr);grid-template-rows:1fr auto auto;column-gap:18px;row-gap:4px;padding:24px 26px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);}
+.stat{display:grid;grid-template-columns:auto minmax(0, 1fr);grid-template-rows:1fr auto auto;column-gap:18px;row-gap:4px;padding:24px 26px;border-radius:var(--r-lg);background:linear-gradient(135deg, var(--accent-soft) 0%, var(--paper) 75%);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);}
 /* 4n 으로 도는 이유는 카드가 늘어나도 색이 이어지게 하기 위해서다(지금은 정확히 네 장). */
 .stat:nth-child(4n+1){--accent:var(--card-blue);--accent-soft:var(--card-blue-soft);--accent-ink:var(--card-blue-ink);}
 .stat:nth-child(4n+2){--accent:var(--card-violet);--accent-soft:var(--card-violet-soft);--accent-ink:var(--card-violet-ink);}
