@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 :root{
   --ink:#363842;
   --muted:#a7aabc;
@@ -52,12 +53,14 @@
      옅게 깐다. 배지(진한 값) · 면(--*-soft) · 배지 그림자(--*-ink) 세 짝이 한 벌로 움직인다.
      라벤더·보라·분홍은 이미 있는 브랜드색(--violet · --brand · --pink)과 같은 값이고
      파랑만 새로 들였다 — 네 장이 파랑→라벤더→보라→분홍 순으로 돈다. */
+  --card-bg:#fff;
   --card-blue:#8ec7ee;--card-blue-soft:#edf5fc;--card-blue-ink:#4b8fc2;
   --card-violet:#a6a3e8;--card-violet-soft:#efeefc;--card-violet-ink:#6a66c6;
   --card-purple:#c08cd8;--card-purple-soft:#f6ecfa;--card-purple-ink:#8b57ae;
   --card-pink:#f89dc8;--card-pink-soft:#fdeef6;--card-pink-ink:#d1608f;
-  --font:"Pretendard Variable", "Malgun Gothic", sans-serif;/* 본문 */
-  --font-head:"NanumSquareNeo", "Malgun Gothic", sans-serif;/* 제목 */
+  --font:"A2z","Pretendard Variable", "Malgun Gothic", sans-serif;/* 본문 */
+  --font-head:"Lato","A2z", "Malgun Gothic", sans-serif;/* 제목 */
+  --font-en:"Lato","A2z", "Malgun Gothic", sans-serif;/* 영어 */
   /* 본문 내용의 최대 폭. 사이드바를 뺀 영역 안에서 이 폭으로 묶고 가운데로 모은다. */
   --page-max:1440px;
   /* 모달 안에서 누르는 것들의 공통 높이. 인풋(12px 패딩 + 1.4 줄높이 + 테두리)과 같은
@@ -75,6 +78,46 @@
   --shadow-brand:0 14px 30px -12px #c08cd899;
 }
 
+/* ── type1: 자연 톤 팔레트 ──────────────── */
+:root.type1{
+  --ink:#6E775C;/* 올리브 그로브 */
+  --muted:#A7B59C;/* 세이지 위스퍼 */
+  --line:#E0D5CE;/* 밝은 테라코타 */
+  --paper:#F2EDE2;/* 오트밀 */
+  --field:#FAF5F1;/* 오트밀 (따뜻함) */
+  --field-hover:#F0E8E0;/* 필드 호버 */
+  --field-line:#DDD0C6;/* 필드 테두리 */
+  --head:#ECDED0;/* 표 머리글 */
+  --placeholder:#B8A99B;/* 플레이스홀더 */
+  --autofill:#FAF1E6;/* 자동완성 */
+  --ink-soft:#8B9283;/* 옅은 텍스트 */
+  --label:#5C6B55;/* 라벨 */
+  --pink:#E7B9B2;/* 블러시 펫 */
+  --violet:#B7C6D6;/* 미스티 스카이 */
+  --brand:#C47A5C;/* 테라코타 클레이 */
+  --deep:#6E775C;/* 올리브 그로브 */
+  --req:#C47A5C;/* 테라코타 */
+  --soft:#FAF1E6;/* 부드러운 배경 */
+  --grad:linear-gradient(135deg, #E7B9B2 0%, #C47A5C 52%, #A7B59C 100%);
+  --grad-soft:linear-gradient(135deg, #FFF0E6 0%, #FAF1E6 55%, #F5EFE8 100%);
+  --red:#C47A5C;
+  --red-soft:#FFF0E6;
+  --red-deep:#996644;
+  --amber:#C47A5C;
+  --green:#3fb890;
+  --chip-blue:#E8F0EB;--chip-blue-ink:#6BA78F;
+  --chip-violet:#F0EBE5;--chip-violet-ink:#B8A99B;
+  --chip-pink:#FFF0E6;--chip-pink-ink:#D4907D;
+  --card-bg:rgba(242, 237, 226, 0.85);
+  --card-blue:#B7C6D6;--card-blue-soft:#E8EFF5;--card-blue-ink:#7A99B3;
+  --card-violet:#A7B59C;--card-violet-soft:#EEF2E9;--card-violet-ink:#738367;
+  --card-purple:#C47A5C;--card-purple-soft:#F5EEE8;--card-purple-ink:#9B5F47;
+  --card-pink:#E7B9B2;--card-pink-soft:#FCEAE2;--card-pink-ink:#B8876F;
+  --shadow:0 18px 40px -24px #6E775C4d, 0 2px 6px -2px #A7B59C1a;
+  --shadow-lift:0 26px 44px -30px #A7B59C82, 0 3px 10px -3px #C47A5C26;
+  --shadow-brand:0 14px 30px -12px #C47A5C99;
+}
+
 /* ── 프리텐다드 (SIL OFL 1.1 · 가변 폰트 한 파일로 45~920 전 굵기) ── */
 @font-face{
   font-family:"Pretendard Variable";
@@ -89,6 +132,70 @@
 @font-face{font-family:"NanumSquareNeo";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");}
 @font-face{font-family:"NanumSquareNeo";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");}
 @font-face{font-family:"NanumSquareNeo";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-1Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-2ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-3Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-4Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-5Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-6SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-7Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-9Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+
 
 /* ── 아이콘 (Material Symbols Rounded · 굵기 400 · Apache 2.0) ──
    폰트가 아니라 그림이다. 예전에는 아이콘 폰트를 썼는데, 그 폰트는 edit·delete 같은
@@ -148,7 +255,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 #auth-dialog{width:min(400px, calc(100% - 24px));}
 .auth-card{display:grid;gap:22px;padding:40px;}
 .auth-card .modal-head{margin-bottom:0;}
-.auth-title{display:flex;gap:9px;align-items:center;margin:0;font:800 1.35rem var(--font-head);letter-spacing:-.02em;}
+.auth-title{display:flex;gap:9px;align-items:center;margin:0;font:600 1.35rem var(--font-head);letter-spacing:-.02em;}
 .auth-title .icon{font-size:27px;color:var(--brand);}
 .auth-lead{margin:-8px 0 2px;color:var(--muted);font-size:.84rem;}
 /* 기본은 일반 안내. 실패 메시지는 .error 를 함께 준다. */
@@ -176,11 +283,11 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* ── 계정 바 / 알림 ────────────────────── */
 /* 본문 맨 위, 그라데이션 밴드 위에 얹히는 줄. 오른쪽 끝에 이메일과 로그인/로그아웃. */
 .appbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;min-height:42px;margin-bottom:22px;}
-.account-mail{margin:0 8px 0 0;max-width:280px;overflow:hidden;white-space:nowrap;color:#ffffffeb;font-size:.8rem;font-weight:600;text-overflow:ellipsis;}
+.account-mail{margin:0 8px 0 0;max-width:280px;overflow:hidden;white-space:nowrap;font-family:var(--font-en);color:#ffffffeb;font-size:.8rem;font-weight:600;text-overflow:ellipsis;}
 .appbar button{display:flex;gap:5px;align-items:center;border:0;padding:9px 16px;border-radius:var(--r-pill);color:#fff;background:#ffffff2e;font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;transition:.2s;}
 .appbar button:hover{background:#ffffff47;}
 .appbar .icon{font-size:17px;}
-.notice{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 20px;padding:15px 20px;border-radius:var(--r-md);background:var(--paper);box-shadow:var(--shadow);font-size:.82rem;}
+.notice{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 20px;padding:15px 20px;border-radius:var(--r-md);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);font-size:.82rem;}
 .notice button{border:0;padding:7px 15px;border-radius:var(--r-pill);background:var(--soft);color:var(--deep);font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;}
 .notice.error{color:var(--red);background:#fdeef4;}
 
@@ -216,7 +323,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* 본문 위쪽에 그라데이션 밴드를 깔고, 그 위에 흰 제목을 얹는다. 첫 카드 줄이 밴드 끝을
    조금 물고 내려오면서 Argon 스타일의 겹침이 생긴다. z-index:-1 이라 내용 뒤에 깔린다. */
 .main{position:relative;flex:1;min-width:0;width:100%;padding:34px 40px 60px;}
-.main::before{content:"";position:absolute;top:0;left:0;right:0;height:298px;background:var(--grad);z-index:-1;}
+.main::before{content:"";position:absolute;top:0;left:0;right:0;height:298px;background:url('images/bg.jpg') bottom left/cover no-repeat;z-index:-1;}
 /* 넓은 모니터에서 본문이 화면 끝까지 늘어나지 않게 폭을 묶고 가운데로 모은다.
    묶는 것은 내용뿐이고 위 밴드는 ::before 라 여기 걸리지 않는다 — 색은 화면의 것,
    폭 제한은 글의 것이다. 밴드까지 좁히면 화면 양끝에 흰 띠가 생겨 창이 덜 열린 것처럼 보인다.
@@ -226,8 +333,8 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 section{margin-bottom:34px;}
 /* 제목은 그라데이션 밴드 위에 놓인다 — 글자는 흰색 계열. */
 .topbar{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:36px;}
-.kicker{margin:0 0 6px;color:#ffffffc4;font-family:var(--font-head);font-size:.72rem;font-weight:800;letter-spacing:.13em;}
-h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
+.kicker{margin:0 0 6px;color:#ffffffc4;font-family:var(--font-head);font-size:.72rem;font-weight:600;letter-spacing:.13em;}
+h1{margin:0;color:#fff;font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
 .subtext{margin:9px 0 0;color:#ffffffdb;font-size:.88rem;}
 /* 추가 버튼. 헤더 밴드가 아니라 각 목록 머리(.content-head)에 놓이므로
    흰 바탕 위에서 눈에 띄도록 그라데이션으로 채운다.
@@ -240,7 +347,7 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
 .add-button:hover{transform:translateY(-1px);filter:brightness(1.05);}
 
 /* ── 경력계산기 ─────────────────────────── */
-.panel{padding:26px 28px;margin-bottom:34px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);}
+.panel{padding:26px 28px;margin-bottom:34px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);}
 .panel h2{margin-bottom:4px;}
 .panel > .helper{margin:0 0 18px;}
 .option-row{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px;align-items:start;}
@@ -253,13 +360,13 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    그라데이션 띠로 덮고 사진·이름·소속을 이름표처럼 얹는다. 띠가 카드 폭을 꽉 채워야 해서
    판의 안쪽 여백은 걷고(padding:0) 띠와 표가 각자 여백을 갖는다 — 음수 마진으로 되무는
    방법도 있지만, 좁은 화면에서 판 여백이 20px 로 줄면 되물 값도 따라 고쳐야 한다. */
-.profile-panel{padding:0;overflow:hidden;}
-.profile-head{display:flex;gap:20px;align-items:center;padding:26px 28px;border-bottom:1px solid var(--line);background:var(--grad-soft);}
+.profile-panel{padding:0;overflow:hidden;background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);}
+.profile-head{display:flex;gap:20px;align-items:center;padding:26px 28px;border-bottom:1px solid rgba(255, 255, 255, 0.2);background:linear-gradient(135deg, rgba(230, 183, 178, 0.3), rgba(167, 181, 156, 0.2));backdrop-filter:blur(8px);}
 /* 사진이 없으면 이름 글자가 그 자리에 선다. 흰 테두리는 그라데이션 띠 위에서 원을
    띄우는 노릇을 한다 — 같은 보라 계열이라 테두리가 없으면 배경에 눌어붙는다. */
 .avatar{display:grid;flex:none;place-items:center;overflow:hidden;width:74px;height:74px;border:3px solid var(--paper);border-radius:50%;color:#fff;background:var(--grad);box-shadow:0 8px 18px -8px #7d5fb299;}
 .avatar img{width:100%;height:100%;object-fit:cover;}
-.avatar span{font:800 1.05rem/1 var(--font-head);letter-spacing:-.04em;}
+.avatar span{font:600 1.05rem/1 var(--font-head);letter-spacing:-.04em;}
 .profile-id{min-width:0;}
 .eyebrow{margin:0 0 5px;color:var(--deep);font-size:.7rem;font-weight:700;}
 .profile-head h2{margin:0;font-size:1.5rem;letter-spacing:-.04em;}
@@ -311,7 +418,7 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    남는 높이를 그 빈 줄이 혼자 삼키므로, 제목과 값은 아래에 붙고 둘 사이는 벌어지지 않는다.
    배지는 세 줄에 걸쳐 서되 위에 붙으므로(align-self:start) 글이 내려가도 따라가지 않는다 —
    왼쪽 배지와 오른쪽 글이 서로 줄을 안 맞춰도 되는 이유다. */
-.stat{display:grid;grid-template-columns:auto minmax(0, 1fr);grid-template-rows:1fr auto auto;column-gap:18px;row-gap:4px;padding:24px 26px;border-radius:var(--r-lg);background:linear-gradient(135deg, var(--accent-soft) 0%, var(--paper) 75%);box-shadow:var(--shadow);}
+.stat{display:grid;grid-template-columns:auto minmax(0, 1fr);grid-template-rows:1fr auto auto;column-gap:18px;row-gap:4px;padding:24px 26px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);}
 /* 4n 으로 도는 이유는 카드가 늘어나도 색이 이어지게 하기 위해서다(지금은 정확히 네 장). */
 .stat:nth-child(4n+1){--accent:var(--card-blue);--accent-soft:var(--card-blue-soft);--accent-ink:var(--card-blue-ink);}
 .stat:nth-child(4n+2){--accent:var(--card-violet);--accent-soft:var(--card-violet-soft);--accent-ink:var(--card-violet-ink);}
@@ -323,7 +430,7 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    세 줄 전체에 걸쳐 서되 위에 붙는다 — 카드 왼쪽 위 모서리에 걸리는 자리다. */
 .stat-icon{grid-row:1 / 4;align-self:start;width:48px;height:48px;padding:11px;border-radius:50%;color:#fff;background:var(--accent);}
 .stat-title{grid-row:2;grid-column:2;margin:0;color:var(--muted);font-size:.78rem;text-align:right;}
-.stat-value{grid-row:3;grid-column:2;margin:0;font:800 2rem var(--font-head);text-align:right;}
+.stat-value{grid-row:3;grid-column:2;margin:0;font:600 2rem var(--font-head);text-align:right;}
 /* 총 경력. 색은 다른 카드와 같은 규칙을 따르고, 이 줄의 대표 숫자라는 것은
    글자 크기(값 + 총 일수 한 줄)로만 표시한다. */
 .stat.primary .stat-value{font-size:1.9rem;letter-spacing:-.03em;}
@@ -351,7 +458,7 @@ h1{margin:0;color:#fff;font:800 2.2rem var(--font-head);letter-spacing:-.04em;}
    baseline 정렬이라 .8rem 짜리 작은 글자가 제목의 밑선에 앉는다 — 가운데로 맞추면
    글자 크기가 두 배 가까이 차이 나 어중간하게 뜬다. */
 .head-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;min-width:0;}
-h2, h3{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:800;}
+h2, h3{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:600;}
 .count{color:var(--deep);font-size:.8rem;font-weight:600;}
 /* flex:none 이라야 좁은 화면에서 제목에 밀려 줄어들지 않는다. 이 줄이 줄어들면
    안쪽 추가 버튼이 부모 폭에 갇혀 글자가 두 줄로 깨진다(제목 쪽이 대신 줄어든다). */
@@ -368,7 +475,7 @@ h2, h3{margin:0;font-family:var(--font-head);font-size:1.05rem;font-weight:800;}
 .view-toggle:hover{border-color:var(--brand);color:var(--deep);background:var(--soft);}
 
 /* ── 테이블 뷰 ─────────────────────────── */
-.table-wrap{overflow:auto;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);}
+.table-wrap{overflow:auto;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);}
 .card-list{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:26px;}
 .card-list[hidden], .table-wrap[hidden]{display:none !important;}
 table{width:100%;min-width:760px;border-collapse:collapse;text-align:left;}
@@ -398,7 +505,7 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 .skill-list{display:flex;flex-wrap:wrap;gap:6px;}
 /* 스킬 칩. 파랑·라벤더·분홍이 순서대로 돌아가며 붙는다(파스텔 면 + 진한 글자).
    nth-child 라 목록·카드 어느 쪽에서도 이웃한 칩끼리 색이 겹치지 않는다. */
-.skill{padding:5px 12px;border-radius:var(--r-pill);color:var(--deep);background:var(--soft);font-size:.7rem;font-weight:600;}
+.skill{padding:5px 12px;font-family:var(--font-en);border-radius:var(--r-pill);color:var(--deep);background:var(--soft);font-size:.7rem;font-weight:600;}
 .skill:nth-child(3n+1){color:var(--chip-blue-ink);background:var(--chip-blue);}
 .skill:nth-child(3n+2){color:var(--chip-violet-ink);background:var(--chip-violet);}
 .skill:nth-child(3n){color:var(--chip-pink-ink);background:var(--chip-pink);}
@@ -437,10 +544,10 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
    밀려 보인다. 오른쪽만 그만큼 되밀어 칸의 안쪽선에 맞추고, 사이는 2px 로 좁힌다 —
    붙여도 서로 뭉쳐 보이지 않는 건 면이 없기 때문이다. */
 td .row-actions{gap:2px;margin-right:-6px;}
-.empty{padding:60px 20px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);color:var(--muted);text-align:center;line-height:1.7;}
+.empty{padding:60px 20px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);color:var(--muted);text-align:center;line-height:1.7;}
 
 /* ── 카드 뷰 ───────────────────────────── */
-.project-card{padding:32px 24px 32px 32px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--shadow);transition:.25s;} /* linear-gradient(149deg, var(--paper) 0%, #ffffff00 120%) */
+.project-card{padding:32px 24px 32px 32px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.1);transition:.25s;}
 .project-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift);}
 /* 버튼은 흐름에서 빼서 절대 배치한다.
    흐름에 두면 .card-top 의 높이가 [제목, 버튼] 중 큰 쪽으로 정해진다. 버튼은 32px,
@@ -452,7 +559,7 @@ td .row-actions{gap:2px;margin-right:-6px;}
    padding-right 는 버튼 자리(32×2 + 사이 6) 에 제목과의 최소 간격 12px 을 더한 값이다 —
    제목은 이 선에 닿으면 줄을 바꾸므로 버튼과 겹치지 않는다. */
 .card-top{position:relative;padding-right:60px;}
-.card-title{margin:0;font-family:var(--font-head);font-size:1rem;font-weight:800;letter-spacing:-0.85px;}
+.card-title{margin:0;font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:-0.85px;}
 /* 카드는 두 덩어리로 읽힌다 — [제목 + 기간] 과 [발주처 + 스킬]. 덩어리 안은 8px,
    덩어리 사이는 22px 로 벌려 간격만으로 묶음이 보이게 한다. */
 /* 카드는 두 덩어리다 — 위의 [제목 + 기간]이 프로젝트의 정체(무엇을 · 언제)이고,
@@ -491,8 +598,8 @@ td .row-actions{gap:2px;margin-right:-6px;}
 /* ── 모달 ──────────────────────────────── */
 /* dvh 는 모바일 주소창이 접혔다 펴져도 실제 보이는 높이를 따라간다. vh 는 못 읽는
    브라우저용 예비값이라 순서를 바꾸면 안 된다. */
-dialog{width:min(680px, calc(100% - 32px));max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow:auto;padding:0;border:0;border-radius:var(--r-lg);color:var(--ink);background:var(--paper);box-shadow:0 40px 90px -30px #3d4d6e73;}
-dialog::backdrop{background:#3d4d6e4d;backdrop-filter:blur(6px);}
+dialog{width:min(680px, calc(100% - 32px));max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow:auto;padding:0;border:0;border-radius:var(--r-lg);color:var(--ink);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.15);}
+dialog::backdrop{background:rgba(61, 77, 110, 0.3);backdrop-filter:blur(6px);}
 /* 창이 길어지면 다이얼로그 전체가 아니라 가운데(폼)만 스크롤된다. 제목 줄과 버튼 줄은
    자리에 남고 필드만 넘어간다. [open] 을 반드시 함께 준다 — 그냥 dialog 에 display 를
    주면 닫힌 상태의 display:none 까지 덮어써서 창이 늘 떠 있게 된다.
@@ -511,7 +618,7 @@ dialog:has(.modal)[open]{display:flex;flex-direction:column;overflow:hidden;}
    min-height:0 이 없으면 flex 항목이 내용만큼 늘어나 스크롤이 아예 안 생긴다. */
 .modal form{display:flex;flex-direction:column;flex:1;min-height:0;}
 .form-body{display:grid;gap:22px;flex:1;min-height:0;overflow-y:auto;padding:0 var(--pad);}
-.modal h2{font:800 1.25rem var(--font-head);}
+.modal h2{font:600 1.25rem var(--font-head);}
 .close{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;color:var(--muted);background:var(--field);line-height:1;cursor:pointer;}
 .close .icon{font-size:21px;}
 .close:hover{color:var(--ink);background:var(--field-hover);}
@@ -569,7 +676,7 @@ dialog:has(.modal)[open]{display:flex;flex-direction:column;overflow:hidden;}
 .confirm-card.danger .confirm-badge .icon{color:var(--red);}
 .confirm-card.warn .confirm-badge .icon{color:var(--amber);}
 .confirm-card.ok .confirm-badge .icon{color:var(--green);}
-.confirm-card h2{font:800 1.06rem/1.45 var(--font-head);letter-spacing:-.02em;}
+.confirm-card h2{font:600 1.06rem/1.45 var(--font-head);letter-spacing:-.02em;}
 .confirm-message{margin:9px 0 0;color:var(--ink-soft);font-size:.83rem;line-height:1.7;white-space:pre-line;}
 /* 알약 둘을 반반. 폼 모달의 우하단 버튼과 달리, 물음이 하나라 선택지도 대등하게 놓는다. */
 .confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px;}
@@ -598,7 +705,7 @@ label{display:block;margin-bottom:9px;color:var(--label);font-size:.85rem;font-w
    쓰고 있어, 아직 틀리지도 않은 칸이 틀린 것처럼 읽힌다. 대신 계열에서 가장 쨍한
    보라(--req)로 띄운다. 별표는 작은 글리프 하나뿐이라 굵기도 한 단계 올린다.
    별표 자체는 aria-hidden 이다. 스크린리더에는 인풋의 required 속성이 이미 알린다. */
-.req{color:var(--brand);font-weight:800;}
+.req{color:var(--brand);font-weight:600;}
 /* line-height 를 반드시 못박는다. normal 로 두면 브라우저가 input 과 select 의 내부
    줄 높이를 각각 다르게 잡아, padding·font 가 같아도 두 컨트롤 높이가 어긋난다. */
 /* 인풋의 자연 높이는 45.6px(패딩 24 + 줄높이 19.6 + 테두리 2)이라 46px 로 못박은 버튼과
@@ -651,7 +758,7 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
    머리의 라벨을 누르면 월 화면(.cal-cells) → 연도 화면으로 넓어진다. */
 .calendar{position:absolute;z-index:7;/* 에러 말풍선(.field-error, 6)보다 위 */top:calc(100% + 8px);left:0;width:min(290px, 100%);padding:14px;border-radius:var(--r-md);background:#fff;box-shadow:0 0 0 1px var(--line), 0 22px 45px -18px #3d4d6e4d;}
 .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.cal-label{border:0;padding:4px 10px;border-radius:var(--r-pill);color:var(--label);background:transparent;font:800 .9rem var(--font-head);cursor:pointer;transition:.2s;}
+.cal-label{border:0;padding:4px 10px;border-radius:var(--r-pill);color:var(--label);background:transparent;font:600 .9rem var(--font-head);cursor:pointer;transition:.2s;}
 .cal-label:hover:not(:disabled){color:var(--deep);background:var(--soft);}
 .cal-label:disabled{cursor:default;}/* 연도 화면에서는 더 넓힐 단계가 없다 */
 .cal-nav{display:grid;place-items:center;width:28px;height:28px;border:0;padding:0;border-radius:50%;color:var(--muted);background:transparent;cursor:pointer;transition:.2s;}
@@ -677,7 +784,7 @@ textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
 .skill-add{display:flex;gap:4px;align-items:center;justify-content:center;min-height:var(--btn-h);border:0;padding:0 18px;border-radius:var(--r-sm);color:var(--deep);background:var(--soft);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
 .skill-add .icon{font-size:19px;}
 .skill-add:hover{background:#eddcf7;}
-.selected-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.selected-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-family:var(--font-en)}
 .selected-skills button{display:inline-flex;gap:3px;align-items:center;border:0;padding:6px 10px 6px 13px;border-radius:var(--r-pill);color:var(--deep);background:var(--soft);font:inherit;font-size:.74rem;cursor:pointer;}
 .selected-skills .icon{font-size:16px;pointer-events:none;}
 .selected-skills button:hover{background:#eddcf7;}
