@@ -22,7 +22,7 @@
   --ink-soft:#78788e;/* 본문보다 한 톤 옅은 글자 */
   --label:#32325d;/* 폼 라벨 */
   --pink:#f89dc8;
-  --violet:#a6a3e8;
+  --sage:#a6a3e8;
   --brand:#c08cd8;
   --deep:#7d5fb2;
   /* 필수 표시 별표. --brand 와 같은 색상(285도)이되 채도를 크게 올리고 밝기를 낮췄다.
@@ -49,16 +49,16 @@
      글자는 --card-*-ink 보다 한 톤 밝다(칩 글자는 작아도 무겁지 않아야 한다).
      글자 셋은 서로 같은 밝기·채도로 맞춰 나란히 놓여도 하나만 튀지 않는다.
      칩과 카드가 같은 색상환을 쓰니 한 화면에 색이 여섯 가지로 늘어나지 않는다. */
-  --chip-blue:#e3f0fb;--chip-blue-ink:#74b3e2;
-  --chip-violet:#e9e8fa;--chip-violet-ink:#9793e0;
+  --chip-yellow:#e3f0fb;--chip-yellow-ink:#74b3e2;
+  --chip-sage:#e9e8fa;--chip-sage-ink:#9793e0;
   --chip-pink:#fce4ef;--chip-pink-ink:#ea92b5;
   /* 통계 카드 4장의 강조색. 아이콘 배지를 이 색으로 채우고, 카드 면은 같은 색을 아주
      옅게 깐다. 배지(진한 값) · 면(--*-soft) · 배지 그림자(--*-ink) 세 짝이 한 벌로 움직인다.
-     라벤더·보라·분홍은 이미 있는 브랜드색(--violet · --brand · --pink)과 같은 값이고
+     라벤더·보라·분홍은 이미 있는 브랜드색(--sage · --brand · --pink)과 같은 값이고
      파랑만 새로 들였다 — 네 장이 파랑→라벤더→보라→분홍 순으로 돈다. */
   /* 페이지 바탕. 카드(--paper, 흰색)가 그 위에 놓이므로 흰색보다 한 톤 낮되,
      --field(인풋)보다는 밝다 — 바탕 < 인풋 < 카드 순으로 세 단계가 벌어진다. */
-  --bg:#F5f0e6;
+  --bg:#f4ebe2;
   /* 사이드바 면. 기본은 흰 판이라 바탕(--bg)에서 저절로 떨어져 나온다.
      --sidebar-hover 는 그 위에 얹히는 메뉴 hover 띠다 — 면이 바뀌면 같이 바뀌어야
      해서 --field 를 직접 쓰지 않고 한 번 거친다. */
@@ -69,8 +69,8 @@
   --band:#aabcd2;
   --card-bg:#fff;
   --card-blue:#8ec7ee;--card-blue-soft:#edf5fc;--card-blue-ink:#4b8fc2;
-  --card-violet:#a6a3e8;--card-violet-soft:#efeefc;--card-violet-ink:#6a66c6;
-  --card-purple:#c08cd8;--card-purple-soft:#f6ecfa;--card-purple-ink:#8b57ae;
+  --card-sage:#a6a3e8;--card-sage-soft:#efeefc;--card-sage-ink:#6a66c6;
+  --card-yellow:#c08cd8;--card-yellow-soft:#f6ecfa;--card-yellow-ink:#8b57ae;
   --card-pink:#f89dc8;--card-pink-soft:#fdeef6;--card-pink-ink:#d1608f;
   --font:"A2z","Pretendard Variable", "Malgun Gothic", sans-serif;/* 본문 */
   --font-head:"Lato","A2z", "Malgun Gothic", sans-serif;/* 제목 */
@@ -120,10 +120,10 @@
    다섯 색이 원본이다 — 아이보리 #F5F0E6 · 세이지 #A7B99C · 더스티 로즈 #D9A7A7 ·
    샌드스톤 #D2B48C · 더스티 블루 #6D8CA6. 나머지 값은 이 다섯에서 밝기만 옮겨 뽑았다.
    기본 팔레트의 보라 자리는 색상환이 아니라 역할로 갈아 끼웠다 —
-   강조(--brand)는 더스티 블루, 부드러운 강조(--pink)는 로즈, --violet 자리는 세이지다. */
+   강조(--brand)는 더스티 블루, 부드러운 강조(--pink)는 로즈다. */
 :root.type1{
-  --ink:#3F4F5C;/* 더스티 블루를 본문 글자까지 어둡게 내린 값 */
-  --muted:#93A5B2;
+  --ink:#5a534e;
+  --muted:#adacaa;
   --line:#E2DBCC;/* 아이보리보다 한 톤 진한 선 */
   --paper:#FFFDF8;/* 카드 면. 아이보리 바탕 위에서 카드가 떠 보이도록 반 톤 밝다 */
   --field:#F5F0E6;/* 아이보리 원본 */
@@ -132,10 +132,10 @@
   --head:#E6DECC;/* 표 머리글. 흰 td 와 벌어지도록 --field 보다 두 단계 진하다 */
   --placeholder:#AAA697;
   --autofill:#EEF3F7;/* 로즈 계열(--red-soft)과 헷갈리지 않게 파랑 쪽으로 둔다 */
-  --ink-soft:#67788A;
-  --label:#4A5F70;
+  --ink-soft:#6E6862;
+  --label:#45403B;
   --pink:#D9A7A7;/* 더스티 로즈 */
-  --violet:#A7B99C;/* 세이지 */
+  --sage:#A7B99C;/* 세이지 */
   --brand:#6D8CA6;/* 더스티 블루 */
   --deep:#4C6A83;
   /* 필수 표시 별표. 로즈를 채도만 올려 잡았다 — 라벨(--label, 청회색) 옆에서 혼자 붉다 */
@@ -149,7 +149,7 @@
      세 값 모두 --brand · --peach 원본보다 한 단계 밝다 — 버튼은 면적이 작아도 색이 꽉
      차기 때문에, 원본 밝기 그대로 채우면 파스텔 화면에서 그 알약만 무거워 보인다.
      흰 글자가 얹히므로 여기서 더 밝히면 글자가 날아간다 — 이 줄이 밝기의 아래 끝이다. */
-  --grad:linear-gradient(135deg, #8FA9C0 0%, #C0A0AB 50%, #EBB29B 100%);
+  --grad:linear-gradient(135deg, #6d8ca6 0%, #a3c0c8 100%);
   /* 같은 길을 아주 옅게 편 것. 큰 면(모달 배경 · 빈 화면)에 깐다. */
   --grad-soft:linear-gradient(135deg, #E9F0F5 0%, #F6EDE9 52%, #FBE7DC 100%);
   --grad-head:linear-gradient(135deg, #DDA08C40, #6D8CA626);
@@ -159,12 +159,12 @@
   /* 경고 · 완료도 팔레트 안에서 뽑는다 — 샌드스톤과 세이지를 각각 한 톤 내렸다 */
   --amber:#C79A5B;
   --green:#7F9A70;
-  --chip-blue:#E4EDF3;--chip-blue-ink:#5C7E99;
-  --chip-violet:#E9EFE3;--chip-violet-ink:#7C9070;
+  --chip-yellow:#F7EFDF;--chip-yellow-ink:#A98A55;
+  --chip-sage:#E9EFE3;--chip-sage-ink:#7C9070;
   --chip-pink:#F6E7E6;--chip-pink-ink:#B4787C;
   /* 바탕은 아이보리(--field)에서 밝기만 반 톤 올린 값이다. 이미지의 파란 하늘을
      바탕까지 끌고 오면 화면이 차가워지고 카드가 묻힌다 — 파랑은 강조에만 남긴다. */
-  --bg:#FAF6EE;
+  --bg:#F5f0e6;
   /* 사이드바만 위에서 아래로 아이보리 → 샌드스톤 → 로즈로 물든다. 세 정거장 모두
      팔레트 원본 색을 옅게 편 값이라 본문과 같은 계열로 읽히고, 흰 판이던 때보다
      화면 왼쪽에 무게가 실린다. 세로(180deg)로 흘리는 건 사이드바가 화면 높이만큼
@@ -175,8 +175,8 @@
   --sidebar-hover:#ffffff8c;
   --card-bg:rgba(255, 253, 248, 0.85);
   --card-blue:#6D8CA6;--card-blue-soft:#EAF0F5;--card-blue-ink:#4C6A83;
-  --card-violet:#A7B99C;--card-violet-soft:#EEF2E9;--card-violet-ink:#6F8560;
-  --card-purple:#D2B48C;--card-purple-soft:#F7F0E4;--card-purple-ink:#A07C4B;
+  --card-sage:#A7B99C;--card-sage-soft:#EEF2E9;--card-sage-ink:#6F8560;
+  --card-yellow:#D2B48C;--card-yellow-soft:#F7F0E4;--card-yellow-ink:#A07C4B;
   --card-pink:#D9A7A7;--card-pink-soft:#F8ECEC;--card-pink-ink:#A96B6E;
   /* 그림자는 파랑이 아니라 따뜻한 갈회색(#6B5A45, 샌드스톤을 어둡게 내린 값)이다.
      아이보리 바탕 위에 파란 그림자를 깔면 카드 밑에만 찬 기가 돌아 면과 어긋난다. */
@@ -321,7 +321,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 .loader-dots span{position:absolute;width:13px;height:13px;border-radius:50%;}
 .loader-dots span:nth-child(1){top:0;left:50%;margin-left:-6.5px;background:var(--pink);}
 .loader-dots span:nth-child(2){top:50%;right:0;margin-top:-6.5px;background:var(--brand);}
-.loader-dots span:nth-child(3){bottom:0;left:50%;margin-left:-6.5px;background:var(--violet);}
+.loader-dots span:nth-child(3){bottom:0;left:50%;margin-left:-6.5px;background:var(--sage);}
 .loader-dots span:nth-child(4){top:50%;left:0;margin-top:-6.5px;background:var(--deep);}
 @keyframes loader-spin{25%{transform:rotate(90deg)} 50%{transform:rotate(180deg)} 75%{transform:rotate(270deg)} to{transform:rotate(360deg)}}
 .loader-text{margin:0;color:var(--ink-soft);font-size:.78rem;}
@@ -403,7 +403,10 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
    조금 물고 내려오면서 Argon 스타일의 겹침이 생긴다. z-index:-1 이라 내용 뒤에 깔린다. */
 .main{position:relative;flex:1;min-width:0;width:100%;padding:34px 40px 60px;}
 /* 밴드는 사진 대신 단색이다. 사진은 아래 줄에 남겨 두었으니 되돌릴 때 바꿔 끼우면 된다. */
-.main::before{content:"";position:absolute;top:0;left:0;right:0;height:298px;background:var(--band);z-index:-1;}
+/* 왼쪽으로 사이드바 라운드(25px)만큼 더 나간다. 그러지 않으면 사이드바 오른쪽 위
+   모서리가 파먹은 자리에 밴드가 닿지 않아 그 홈으로 body 바탕이 드러난다.
+   삐져나온 나머지는 사이드바가 불투명이라 그대로 가린다(밴드는 z-index:-1). */
+.main::before{content:"";position:absolute;top:0;left:-25px;right:0;height:298px;background:var(--grad);z-index:-1;}
 /* .main::before{background:url('images/bg.jpg') bottom left/cover no-repeat;} */
 /* 넓은 모니터에서 본문이 화면 끝까지 늘어나지 않게 폭을 묶고 가운데로 모은다.
    묶는 것은 내용뿐이고 위 밴드는 ::before 라 여기 걸리지 않는다 — 색은 화면의 것,
@@ -428,7 +431,11 @@ h1{margin:0;color:#fff;font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
 .add-button:hover{transform:translateY(-1px);filter:brightness(1.05);}
 
 /* ── 경력계산기 ─────────────────────────── */
-.panel{padding:26px 28px;margin-bottom:34px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:var(--shadow-card);}
+/* backdrop-filter 는 그 자체로 쌓임 맥락을 만든다. 그래서 아래 목록의 카드들이
+   전부 z-index:0 짜리 맥락이 되어, 문서 순서상 뒤에 있다는 이유만으로 이 판보다
+   위에 그려진다 — 판 안에서 흘러넘치는 달력(.calendar, z-index:7)은 그 값이
+   판 안에 갇혀 있어 카드 밑에 깔린다. 판을 한 단 올려 그 순서를 뒤집는다. */
+.panel{position:relative;z-index:2;padding:26px 28px;margin-bottom:34px;border-radius:var(--r-lg);background:var(--card-bg);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:var(--shadow-card);}
 .panel h2{margin-bottom:4px;}
 .panel > .helper{margin:0 0 18px;}
 .option-row{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px;align-items:start;}
@@ -502,8 +509,8 @@ h1{margin:0;color:#fff;font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
 .stat{display:grid;grid-template-columns:auto minmax(0, 1fr);grid-template-rows:1fr auto auto;column-gap:18px;row-gap:4px;padding:24px 26px;border-radius:var(--r-lg);background:linear-gradient(135deg, var(--accent-soft) 0%, var(--paper) 75%);backdrop-filter:blur(8px);border:1px solid rgba(255, 255, 255, 0.3);box-shadow:var(--shadow-card);}
 /* 4n 으로 도는 이유는 카드가 늘어나도 색이 이어지게 하기 위해서다(지금은 정확히 네 장). */
 .stat:nth-child(4n+1){--accent:var(--card-blue);--accent-soft:var(--card-blue-soft);--accent-ink:var(--card-blue-ink);}
-.stat:nth-child(4n+2){--accent:var(--card-violet);--accent-soft:var(--card-violet-soft);--accent-ink:var(--card-violet-ink);}
-.stat:nth-child(4n+3){--accent:var(--card-purple);--accent-soft:var(--card-purple-soft);--accent-ink:var(--card-purple-ink);}
+.stat:nth-child(4n+2){--accent:var(--card-sage);--accent-soft:var(--card-sage-soft);--accent-ink:var(--card-sage-ink);}
+.stat:nth-child(4n+3){--accent:var(--card-yellow);--accent-soft:var(--card-yellow-soft);--accent-ink:var(--card-yellow-ink);}
 .stat:nth-child(4n){--accent:var(--card-pink);--accent-soft:var(--card-pink-soft);--accent-ink:var(--card-pink-ink);}
 /* 배지가 이 카드의 색 그 자체다 — 강조색 단색으로 채우고 글리프만 흰색으로 뺀다.
    이 배지가 곧 아이콘 그림 자체다. 그림은 안쪽 여백을 뺀 자리에만 그려지므로,
@@ -587,9 +594,9 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 /* 스킬 칩. 파랑·라벤더·분홍이 순서대로 돌아가며 붙는다(파스텔 면 + 진한 글자).
    nth-child 라 목록·카드 어느 쪽에서도 이웃한 칩끼리 색이 겹치지 않는다. */
 .skill{padding:5px 12px;font-family:var(--font-en);border-radius:var(--r-pill);color:var(--deep);background:var(--soft);font-size:.7rem;font-weight:600;}
-.skill:nth-child(3n+1){color:var(--chip-blue-ink);background:var(--chip-blue);}
-.skill:nth-child(3n+2){color:var(--chip-violet-ink);background:var(--chip-violet);}
-.skill:nth-child(3n){color:var(--chip-pink-ink);background:var(--chip-pink);}
+.skill:nth-child(3n+1){color:#fff;background:var(--card-sage);}
+.skill:nth-child(3n+2){color:#fff;background:var(--card-yellow);}
+.skill:nth-child(3n){color:#fff;background:var(--card-pink);}
 .notes{max-width:260px;color:var(--muted);font-size:.8rem;}
 /* ── 수정·삭제 버튼 (표 뷰 .row-button · 카드 뷰 .card-button) ──
    두 뷰는 같은 기록에 대고 같은 일을 하므로 버튼도 한 벌로 둔다. 32px 원, 테두리
