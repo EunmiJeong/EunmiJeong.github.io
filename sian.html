@@ -64,7 +64,7 @@
   .when b{color:var(--deep);font-weight:600;}
 
   /* 미리보기 무대 — 앱의 본문 바탕색을 그대로 깐다 */
-  .stage{display:flex;justify-content:center;padding:26px 20px;border-radius:var(--r-md);background:#f5f6fe;}
+  .stage{display:flex;justify-content:center;padding:26px 20px;border-radius:var(--r-md);background:var(--bg);}
   .stage > .project-card{max-width:340px;padding:26px;}
   .stage-note{margin:9px 0 0;color:var(--muted);font-size:.74rem;text-align:center;}
 
@@ -148,14 +148,14 @@
   .wcase .why{margin-top:2px;}
 
   /* 모니터 틀 */
-  .mon{overflow:hidden;border-radius:var(--r-md);border:1px solid var(--line);background:#f5f6fe;}
+  .mon{overflow:hidden;border-radius:var(--r-md);border:1px solid var(--line);background:var(--bg);}
   .mon-vp{position:relative;height:calc(var(--h) * var(--s));}
   .mon-vp > .mock{position:absolute;top:0;left:0;transform:scale(var(--s));transform-origin:0 0;}
   .mon-read{display:flex;gap:8px;align-items:baseline;justify-content:center;margin:9px 0 0;color:var(--muted);font-size:.76rem;font-variant-numeric:tabular-nums;}
   .mon-read b{color:var(--deep);font-weight:600;}
 
   /* 틀 안쪽 — 전부 실제 픽셀이다 */
-  .mock{display:flex;width:var(--mw);height:var(--h);background:#f5f6fe;}
+  .mock{display:flex;width:var(--mw);height:var(--h);background:var(--bg);}
   .mock-side{display:flex;flex-direction:column;gap:20px;flex:none;width:246px;padding:30px 20px;background:#fff;border-right:1px solid var(--line);}
   .mock-side i{display:block;height:40px;border-radius:var(--r-pill);background:var(--field);}
   .mock-side i:first-child{width:150px;height:26px;margin-bottom:10px;border-radius:7px;}
