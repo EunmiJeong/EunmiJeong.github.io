@@ -142,17 +142,20 @@
   --req:#C2707A;
   --soft:#E9F0F4;/* 더스티 블루의 가장 옅은 면 */
   --peach:#DDA08C;/* 살구. 팔레트 다섯 색 밖에서 하나만 들인 색이다 — 그라데이션의 따뜻한 끝 */
-  /* 더스티 블루에서 살구로 건너간다. 중간의 모브(#C0A0AB)가 없으면 파랑과 살구가 만나는
-     자리에서 회색이 돌아 색이 죽는다 — 두 끝의 색상(hue)이 반 바퀴 가까이 떨어져 있어
-     직선으로 섞으면 채도가 0 을 지나기 때문이다. 로즈 → 샌드스톤 → 블루로 돌던 앞의 것은
-     따뜻한 두 색을 지난 뒤 마지막에만 차가워져, 한 알약 안에서 방향이 두 번 꺾였다.
-     세 값 모두 --brand · --peach 원본보다 한 단계 밝다 — 버튼은 면적이 작아도 색이 꽉
-     차기 때문에, 원본 밝기 그대로 채우면 파스텔 화면에서 그 알약만 무거워 보인다.
-     흰 글자가 얹히므로 여기서 더 밝히면 글자가 날아간다 — 이 줄이 밝기의 아래 끝이다. */
+
   --grad:linear-gradient(135deg, #6d8ca6 0%, #a3c0c8 100%);
-  /* 같은 길을 아주 옅게 편 것. 큰 면(모달 배경 · 빈 화면)에 깐다. */
-  --grad-soft:linear-gradient(135deg, #E9F0F5 0%, #F6EDE9 52%, #FBE7DC 100%);
+  --grad:var(--card-sage-ink);
+
   --grad-head:linear-gradient(135deg, #DDA08C40, #6D8CA626);
+  --grad-soft:linear-gradient(135deg, #E9F0F5 0%, #F6EDE9 52%, #FBE7DC 100%);
+  --grad-peach:linear-gradient(135deg, #f8e9d6 0%, #f7e6d2 52%, #efdac9 100%);
+  --grad-green:linear-gradient(135deg, #b6d7c4 0%, #86bba9 100%);
+  --grad-green-light:linear-gradient(180deg, #c1ddcd 0%, #a2c8b9 100%);
+  /* 상단 사진 위에 얹는 연두 막. 반투명이라 사진 결은 남고 색만 연두로 물든다. */
+  --overlay-green:linear-gradient(135deg, rgb(182 215 196) 0%, rgb(86 156 132 / 53%) 100%);
+  --grad-sky:linear-gradient(180deg, #dbe7e6 0%, #a9c6d4 100%);
+  --grad-blue:linear-gradient(180deg, #88b5ca 0%, #56859f 100%);
+
   --red:#C4787A;
   --red-soft:#F8ECEA;
   --red-deep:#9A4F52;
@@ -165,19 +168,18 @@
   /* 바탕은 아이보리(--field)에서 밝기만 반 톤 올린 값이다. 이미지의 파란 하늘을
      바탕까지 끌고 오면 화면이 차가워지고 카드가 묻힌다 — 파랑은 강조에만 남긴다. */
   --bg:#F5f0e6;
-  /* 사이드바만 위에서 아래로 아이보리 → 샌드스톤 → 로즈로 물든다. 세 정거장 모두
-     팔레트 원본 색을 옅게 편 값이라 본문과 같은 계열로 읽히고, 흰 판이던 때보다
-     화면 왼쪽에 무게가 실린다. 세로(180deg)로 흘리는 건 사이드바가 화면 높이만큼
-     서 있어서다 — 대각선으로 흘리면 246px 폭 안에서 색이 다 안 돈다. */
+  --bg:linear-gradient(135deg, #fcf2e2 0%, #f1e8dd 100%);
   --sidebar-bg:linear-gradient(180deg, #F9F1E6 0%, #F1DCC8 46%, #E5BBAB 100%);
+  --sidebar-bg:var(--grad-sky);
   /* 그라데이션 위 hover 띠. 아이보리(--field)로 채우면 위쪽에서는 면과 붙어 안 보이고
      아래쪽에서는 혼자 뜬다 — 반투명 흰색은 어느 높이에서든 같은 만큼만 밝아진다. */
   --sidebar-hover:#ffffff8c;
   --card-bg:rgba(255, 253, 248, 0.85);
-  --card-blue:#6D8CA6;--card-blue-soft:#EAF0F5;--card-blue-ink:#4C6A83;
-  --card-sage:#A7B99C;--card-sage-soft:#EEF2E9;--card-sage-ink:#6F8560;
-  --card-yellow:#D2B48C;--card-yellow-soft:#F7F0E4;--card-yellow-ink:#A07C4B;
-  --card-pink:#D9A7A7;--card-pink-soft:#F8ECEC;--card-pink-ink:#A96B6E;
+  --card-blue:#96bec7;--card-blue-soft:#EAF0F5;--card-blue-ink:#4C6A83;
+  --card-sage:#b3ccb3;--card-sage-soft:#EEF2E9;--card-sage-ink:#6F8560;
+  --card-yellow:#efca90;--card-yellow-soft:#F7F0E4;--card-yellow-ink:#A07C4B;
+  --card-pink:#e1afac;--card-pink-soft:#F8ECEC;--card-pink-ink:#A96B6E;
+
   /* 그림자는 파랑이 아니라 따뜻한 갈회색(#6B5A45, 샌드스톤을 어둡게 내린 값)이다.
      아이보리 바탕 위에 파란 그림자를 깔면 카드 밑에만 찬 기가 돌아 면과 어긋난다. */
   --shadow:0 18px 40px -24px #6B5A4559, 0 2px 6px -2px #6B5A4522;
@@ -297,7 +299,7 @@
 
 *{box-sizing:border-box;}
 /* 색은 본문 위쪽 헤더 밴드(.main::before)가 담당한다. 바탕은 카드가 떠 보이게 아주 옅게만. */
-body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-height:1.4;color:var(--ink);letter-spacing:-.5px;background:var(--bg)}
+body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-height:1.4;color:var(--ink);letter-spacing:-.5px;background:var(--bg);background-attachment:fixed;}
 /* 왼쪽 사이드바 + 오른쪽 본문. align-items:flex-start 라야 sticky 사이드바가 늘어나지 않는다. */
 .app{display:flex;align-items:flex-start;min-height:100vh;}
 [hidden]{display:none !important;}
@@ -406,7 +408,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* 왼쪽으로 사이드바 라운드(25px)만큼 더 나간다. 그러지 않으면 사이드바 오른쪽 위
    모서리가 파먹은 자리에 밴드가 닿지 않아 그 홈으로 body 바탕이 드러난다.
    삐져나온 나머지는 사이드바가 불투명이라 그대로 가린다(밴드는 z-index:-1). */
-.main::before{content:"";position:absolute;top:0;left:-25px;right:0;height:298px;background:var(--grad);z-index:-1;}
+.main::before{content:"";position:absolute;top:0;left:-25px;right:0;height:298px;background:var(--overlay-green), url(images/bg1.jpg) bottom 40% left / cover no-repeat;z-index:-1;}
 /* .main::before{background:url('images/bg.jpg') bottom left/cover no-repeat;} */
 /* 넓은 모니터에서 본문이 화면 끝까지 늘어나지 않게 폭을 묶고 가운데로 모은다.
    묶는 것은 내용뿐이고 위 밴드는 ::before 라 여기 걸리지 않는다 — 색은 화면의 것,
@@ -415,7 +417,6 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 .main > *{max-width:var(--page-max);margin-inline:auto;}
 /* 섹션 기본 간격. .overview / .panel 처럼 자체 여백이 있는 것은 그 값이 이긴다. */
 section{margin-bottom:34px;}
-/* 제목은 그라데이션 밴드 위에 놓인다 — 글자는 흰색 계열. */
 .topbar{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:36px;}
 .kicker{margin:0 0 6px;color:#ffffffc4;font-family:var(--font-head);font-size:.72rem;font-weight:600;letter-spacing:.13em;}
 h1{margin:0;color:#fff;font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
@@ -611,22 +612,8 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 .row-button:hover, .card-button:hover{color:var(--deep);background:var(--soft);}
 .row-button[data-delete]:hover, .card-button[data-delete]:hover{color:var(--red);background:var(--red-soft);}
 .row-actions{display:flex;gap:4px;align-items:center;justify-content:flex-end;}
-
-/* 카드는 평상시에도 면을 깐다. 카드는 홀로 선 물건이라 기댈 패턴이 없어서, 글리프만
-   두면 바로 아래 발주처·기술 아이콘(같은 크기에 더 옅은 색)과 구분이 되지 않는다 —
-   그 둘은 누를 수 없는 표시인데도. --field 한 톤이면 "누를 수 있다"는 말에 충분하다. */
 .card-button{background:#fff}
-/* 사이는 6px. 면이 생겼으니 2px 로는 두 원이 붙은 하나로 읽힌다.
-   위치는 당기지 않는다 — 원이 보이는 면이 된 뒤로는 그 가장자리가 곧 버튼의
-   가장자리라, 오른쪽은 카드 안쪽선에 그대로 맞추면 된다. 위쪽도 제목 줄 윗선이다.
-   원 중심을 제목 글자의 시각적 중심에 맞추려면 5px 쯤 올려야 하지만, 그러면 원이
-   제목 줄 위로 삐져나와 버튼이 제목보다 떠 보인다. */
 .card-top .row-actions{position:absolute;top:-3px;right:0;gap:0;}
-
-/* 표는 평상시 면을 뺀다. 맨 오른쪽 칸에서 모든 행이 같은 자리에 같은 글리프 두 개를
-   반복하니, 그 반복이 카드에서 면이 하던 일을 대신한다. 게다가 th 가 이미 --field 라
-   같은 색 원을 깔면 한 표 안에서 그 색의 역할이 둘로 갈리고, td 는 이미 여덟 칸이
-   들어찬 화면에서 가장 조밀한 줄이다 — 매 행에 채운 면을 둘씩 더할 자리가 아니다. */
 .row-button{background:transparent;}
 /* 면이 없으면 32px 상자 안 19px 글리프 둘레의 빈 공간이 그대로 여백으로 남아 안쪽으로
    밀려 보인다. 오른쪽만 그만큼 되밀어 칸의 안쪽선에 맞추고, 사이는 2px 로 좁힌다 —

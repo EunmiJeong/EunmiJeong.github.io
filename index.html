@@ -252,11 +252,20 @@
     /* 불러오기는 여러 번 겹칠 수 있다(로그인 직후, 저장 직후 …).
        늦게 도착한 예전 응답이 방금 그린 화면이나 알림 줄을 덮지 않도록 차수를 매겨 둔다. */
     let projectLoad = 0, careerLoad = 0;
+    /* 첫 진입 때 만료된 세션을 갱신하면 갓 발급된 토큰으로 곧장 요청하게 되는데, 발급 서버와
+       DB 서버의 시계가 한두 초 어긋나면 DB 가 'JWT issued at future' 로 거절한다.
+       그 오류일 때만 잠깐 기다렸다 한 번 더 묻는다. */
+    async function query(run) {
+      const result = await run();
+      if (!/issued at future/i.test(result.error?.message || '')) return result;
+      await new Promise(done => setTimeout(done, 1500));
+      return run();
+    }
     async function loadProjects() {
       const turn = ++projectLoad;
-      const { data, error } = await supabase.from('projects').select('*')
+      const { data, error } = await query(() => supabase.from('projects').select('*')
         .order('start_date', { ascending: false, nullsFirst: false })
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }));
       if (turn !== projectLoad) return; // 뒤이은 호출이 이미 끝냈다.
       if (error) showError('프로젝트를 불러오지 못했습니다.', error, 'projects');
       else { showError('', null, 'projects'); projects = data; renderProjects() }
@@ -542,7 +551,7 @@
 
     async function loadCareers() {
       const turn = ++careerLoad;
-      const { data, error } = await supabase.from('resume_careers').select('*').order('start_date', { ascending: false });
+      const { data, error } = await query(() => supabase.from('resume_careers').select('*').order('start_date', { ascending: false }));
       if (turn !== careerLoad) return; // 늦게 온 예전 응답은 버린다(loadProjects 와 같다).
       if (error) { careers = []; showError('경력사항을 불러오지 못했습니다. SETUP.md 의 resume_careers 테이블을 만들었는지 확인하세요.', error, 'careers') }
       else { showError('', null, 'careers'); careers = data }
