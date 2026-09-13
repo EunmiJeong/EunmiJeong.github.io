@@ -1,5 +1,84 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+/* ── 프리텐다드 (SIL OFL 1.1 · 가변 폰트 한 파일로 45~920 전 굵기) ── */
+@font-face{
+  font-family:"Pretendard Variable";
+  font-weight:45 920;
+  font-style:normal;
+  font-display:swap;
+  src:url("fonts/PretendardVariable.woff2") format("woff2-variations");
+}
+
+/* ── 나눔스퀘어 네오 (Naver, 무료 상업용 · 재배포 허용) ── */
+@font-face{font-family:"NanumSquareNeo";font-weight:300;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-aLt.woff2") format("woff2");}
+@font-face{font-family:"NanumSquareNeo";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");}
+@font-face{font-family:"NanumSquareNeo";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");}
+@font-face{font-family:"NanumSquareNeo";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-1Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-2ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-3Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-4Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-5Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-6SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-7Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'A2z';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-9Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+
 :root{
   --ink:#363842;
   --muted:#a7aabc;
@@ -150,12 +229,11 @@
   --grad-soft:linear-gradient(135deg, #E9F0F5 0%, #F6EDE9 52%, #FBE7DC 100%);
   --grad-peach:linear-gradient(135deg, #f8e9d6 0%, #f7e6d2 52%, #efdac9 100%);
   --grad-green:linear-gradient(135deg, #b6d7c4 0%, #86bba9 100%);
-  --grad-green-light:linear-gradient(180deg, #c1ddcd 0%, #a2c8b9 100%);
-  /* 상단 사진 위에 얹는 연두 막. 반투명이라 사진 결은 남고 색만 연두로 물든다. */
+  --grad-green-light:linear-gradient(180deg, #d5e2ce 0%, #afc0ac 100%);
   --overlay-green:linear-gradient(135deg, rgb(182 215 196) 0%, rgb(86 156 132 / 53%) 100%);
   --grad-sky:linear-gradient(180deg, #dbe7e6 0%, #a9c6d4 100%);
   --grad-blue:linear-gradient(180deg, #88b5ca 0%, #56859f 100%);
-
+  --grad-sage:linear-gradient(135deg, #d5e2ce 0%, #b6c7b1 100%);
   --red:#C4787A;
   --red-soft:#F8ECEA;
   --red-deep:#9A4F52;
@@ -170,7 +248,8 @@
   --bg:#F5f0e6;
   --bg:linear-gradient(135deg, #fcf2e2 0%, #f1e8dd 100%);
   --sidebar-bg:linear-gradient(180deg, #F9F1E6 0%, #F1DCC8 46%, #E5BBAB 100%);
-  --sidebar-bg:var(--grad-sky);
+  --sidebar-bg:#faf4e8;
+  --sidebar-bg:var(--grad-green-light);
   /* 그라데이션 위 hover 띠. 아이보리(--field)로 채우면 위쪽에서는 면과 붙어 안 보이고
      아래쪽에서는 혼자 뜬다 — 반투명 흰색은 어느 높이에서든 같은 만큼만 밝아진다. */
   --sidebar-hover:#ffffff8c;
@@ -187,7 +266,7 @@
   /* 버튼이 밝아진 만큼 글로우도 같이 눅인다 — 알약은 옅은데 그 밑만 진하면 버튼이
      떠 있는 게 아니라 얼룩이 진 것처럼 보인다. */
   --shadow-brand:0 14px 30px -12px #6D8CA666;
-  --shadow-brand-sm:0 8px 18px -8px #6D8CA680;
+  --shadow-brand-sm:0 8px 18px -8px #9c9c9c70;
   --shadow-card:0 8px 32px 0 #6B5A4524;
   --shadow-modal:0 8px 32px 0 #6B5A4536;
   --shadow-rail:0 0 2rem 0 #6B5A4530;
@@ -197,84 +276,6 @@
   --shadow-focus-err:0 3px 9px #C4787A00,3px 4px 8px #C4787A2e;
   --scrim:#5C4B3A5c;
   --soft-hover:#DCE7EE;
-}
-
-/* ── 프리텐다드 (SIL OFL 1.1 · 가변 폰트 한 파일로 45~920 전 굵기) ── */
-@font-face{
-  font-family:"Pretendard Variable";
-  font-weight:45 920;
-  font-style:normal;
-  font-display:swap;
-  src:url("fonts/PretendardVariable.woff2") format("woff2-variations");
-}
-
-/* ── 나눔스퀘어 네오 (Naver, 무료 상업용 · 재배포 허용) ── */
-@font-face{font-family:"NanumSquareNeo";font-weight:300;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-aLt.woff2") format("woff2");}
-@font-face{font-family:"NanumSquareNeo";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");}
-@font-face{font-family:"NanumSquareNeo";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");}
-@font-face{font-family:"NanumSquareNeo";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-1Thin.woff2') format('woff2');
-    font-weight: 100;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-2ExtraLight.woff2') format('woff2');
-    font-weight: 200;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-3Light.woff2') format('woff2');
-    font-weight: 300;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-4Regular.woff2') format('woff2');
-    font-weight: 400;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-5Medium.woff2') format('woff2');
-    font-weight: 500;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-6SemiBold.woff2') format('woff2');
-    font-weight: 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-7Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-8ExtraBold.woff2') format('woff2');
-    font-weight: 800;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'A2z';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/에이투지체-9Black.woff2') format('woff2');
-    font-weight: 900;
-    font-display: swap;
 }
 
 
@@ -387,8 +388,8 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
    화면이라 그라데이션이 뭘 가리키는지 헷갈릴 일이 없다(본문 쪽 뷰 전환 탭은 바로 옆에
    그라데이션 액션 버튼이 서므로 다른 표시를 쓴다). 예전의 inset 막대는 라운드 코너를 따라 휘어서
    초승달처럼 보였다. :hover 규칙과 특이도가 같으므로 반드시 그 뒤에 와야 한다. */
-.nav-link.active, .nav-link.active:hover{color:#fff;background:var(--grad);box-shadow:var(--shadow-brand-sm);}
-.nav-link.active .icon{color:#fff;}
+.nav-link.active, .nav-link.active:hover{color:var(--ink);background:linear-gradient(135deg, #faf4e8, #faf5e9);box-shadow:var(--shadow-brand-sm);border-top: 1px solid #fff;}
+.nav-link.active .icon{color:#ee936e;}
 .nav-link .icon{font-size:19px;}
 /* 서랍을 여는 버거 버튼(계정 바 왼쪽 끝)과 서랍 안의 닫기 버튼. 둘 다 좁은 화면 전용이라
    기본은 감춰 두고 아래 반응형 블록에서만 꺼낸다. .appbar button 을 이기려면
@@ -594,10 +595,13 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 .skill-list{display:flex;flex-wrap:wrap;gap:6px;}
 /* 스킬 칩. 파랑·라벤더·분홍이 순서대로 돌아가며 붙는다(파스텔 면 + 진한 글자).
    nth-child 라 목록·카드 어느 쪽에서도 이웃한 칩끼리 색이 겹치지 않는다. */
-.skill{padding:5px 12px;font-family:var(--font-en);border-radius:var(--r-pill);color:var(--deep);background:var(--soft);font-size:.7rem;font-weight:600;}
-.skill:nth-child(3n+1){color:#fff;background:var(--card-sage);}
-.skill:nth-child(3n+2){color:#fff;background:var(--card-yellow);}
-.skill:nth-child(3n){color:#fff;background:var(--card-pink);}
+/* 옅은 면 + 같은 계열의 진한 글자 + 그 중간 밝기의 테두리. 흰 글자를 파스텔에 얹던
+   앞의 것은 노랑 칩에서 글자가 거의 안 읽혔고, 꽉 찬 알약이라 누를 수 있는 것처럼도 보였다.
+   테두리는 --chip-*-ink 를 옅게 편 값이라 선만 따로 튀지 않는다. */
+.skill{padding:4px 11px;font-family:var(--font-en);border:1px solid transparent;border-radius:var(--r-pill);color:var(--deep);background:var(--soft);font-size:.7rem;font-weight:600;}
+.skill:nth-child(3n+1){color:var(--chip-sage-ink);border-color:color-mix(in srgb, var(--chip-sage-ink) 30%, transparent);background:var(--chip-sage);}
+.skill:nth-child(3n+2){color:var(--chip-yellow-ink);border-color:color-mix(in srgb, var(--chip-yellow-ink) 30%, transparent);background:var(--chip-yellow);}
+.skill:nth-child(3n){color:var(--chip-pink-ink);border-color:color-mix(in srgb, var(--chip-pink-ink) 30%, transparent);background:var(--chip-pink);}
 .notes{max-width:260px;color:var(--muted);font-size:.8rem;}
 /* ── 수정·삭제 버튼 (표 뷰 .row-button · 카드 뷰 .card-button) ──
    두 뷰는 같은 기록에 대고 같은 일을 하므로 버튼도 한 벌로 둔다. 32px 원, 테두리

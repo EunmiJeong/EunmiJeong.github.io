@@ -1856,6 +1856,386 @@ window.addEventListener('popstate', pop);</pre>
     </div>
   </section>
 
+  <section id="primary">
+    <style>
+      /* 주 컬러 시안. 둘레(아이보리 바탕 · 하늘 사이드바 · 연두 밴드 · 파스텔 카드)는 지금 type1 값 그대로 두고,
+         주 컬러 네 짝(--p · --p2 · --p-soft · --p-ink)만 안마다 갈아 끼운다. */
+      .pc-app{display:flex;height:236px;border-radius:14px;overflow:hidden;background:#f5f0e6;box-shadow:0 0 0 1px #0000000f;font-size:11px;line-height:1.4;color:#5a534e;}
+      .pc-side{position:relative;z-index:1;flex:0 0 96px;display:flex;flex-direction:column;gap:5px;padding:14px 8px;border-radius:0 12px 12px 0;background:linear-gradient(180deg,#dbe7e6,#a9c6d4);}
+      .pc-logo{margin:0 0 8px 6px;color:var(--p-ink);font:13px Georgia,serif;}
+      .pc-logo span{color:var(--p);}
+      .pc-nav{padding:6px 9px;border-radius:99px;font-weight:600;}
+      .pc-nav.on{color:#fff;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 6px 12px -6px var(--p);}
+      .pc-main{flex:1;min-width:0;}
+      .pc-band{height:88px;margin-left:-12px;padding:13px 16px 0 28px;color:#fff;background:linear-gradient(135deg,rgb(182 215 196),rgb(86 156 132 / 53%)),url(images/bg1.jpg) center/cover;}
+      .pc-band p{margin:0;}
+      .pc-kicker{font-size:8px;letter-spacing:.15em;opacity:.85;}
+      .pc-h{margin-top:2px !important;font-size:15px;font-weight:800;}
+      .pc-body{display:flex;flex-direction:column;gap:9px;margin-top:-28px;padding:0 14px;}
+      .pc-row{display:grid;grid-template-columns:1fr 1.25fr;gap:8px;}
+      .pc-card{padding:9px 10px;border-radius:12px;background:#fffdf8;box-shadow:0 6px 16px -8px #6B5A4540;}
+      .pc-stat{display:flex;gap:8px;align-items:center;}
+      .pc-stat i{flex:none;width:22px;height:22px;border-radius:50%;background:#b3ccb3;}
+      .pc-stat b{margin-left:auto;font-size:17px;}
+      .pc-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;}
+      .pc-days span{padding:3px 0;border-radius:50%;}
+      .pc-days .on{color:#fff;font-weight:700;background:linear-gradient(135deg,var(--p),var(--p2));}
+      .pc-acts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+      .pc-btn{padding:6px 11px;border-radius:99px;color:#fff;font-weight:600;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 8px 14px -8px var(--p);}
+      .pc-ghost{padding:6px 11px;border-radius:99px;color:var(--p-ink);font-weight:600;background:var(--p-soft);}
+      .pc-chip{padding:3px 8px;border-radius:99px;color:#fff;font-size:9px;font-weight:600;}
+      .pc-input{padding:6px 10px;border:1px solid var(--p);border-radius:8px;background:#fff;box-shadow:0 0 0 3px var(--p-soft);}
+      .pc-sw{display:flex;gap:6px;margin-top:10px;}
+      .pc-sw span{flex:1;padding:18px 6px 5px;border-radius:8px;font-size:.68rem;font-weight:600;text-align:center;}
+    </style>
+    <div class="sian-title">
+      <h2>주 컬러 — 파스텔 사이에서 무엇이 버튼을 맡을까</h2>
+      <p>
+        type1 의 둘레(아이보리 바탕, 하늘 사이드바, 연두 밴드, 파스텔 카드)는 그대로 두고 <b>주 컬러만</b> 바꿔 끼웠습니다.
+        주 컬러가 닿는 곳은 사이드바 현재 메뉴, 추가 버튼, 달력 선택일, 인풋 포커스, 보조 버튼 면입니다.
+        코드에서는 <code>--brand</code> · <code>--deep</code> · <code>--soft</code> · <code>--grad</code> · <code>--shadow-brand</code> 다섯이 이 역할입니다.
+      </p>
+    </div>
+
+    <!-- 지금 -->
+    <div class="case">
+      <div class="pc" style="--p:#6F8560;--p2:#6F8560;--p-soft:#EEF2E9;--p-ink:#5A6E4E;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#EEF2E9;color:#5A6E4E">#EEF2E9</span><span style="background:#6F8560;color:#fff">#6F8560</span><span style="background:#5A6E4E;color:#fff">#5A6E4E</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">지금 · 진녹색 <span class="flag old">어색한 이유</span></h3>
+        <p>지금 <code>--grad</code> 는 <code>var(--card-sage-ink)</code> 입니다. 세이지 카드의 <b>작은 글자</b>용으로 뽑은 색을 넓은 면에 채운 셈입니다.</p>
+        <ul class="why">
+          <li><b>화면에서 혼자 무겁습니다.</b> 둘레가 전부 밝기 80% 이상의 파스텔인데, 이 색만 50% 아래로 떨어져 구멍처럼 보입니다.</li>
+          <li><b>그라데이션이 없는 단색입니다.</b> 다른 면은 모두 부드럽게 흐르는데 버튼만 평평합니다.</li>
+          <li><b>탁한 올리브 쪽입니다.</b> 참고 이미지의 초록은 맑은 세이지·민트인데, 이 색은 노랑·회색이 섞여 흙빛이 돕니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- A 딥 민트 -->
+    <div class="case">
+      <div class="pc" style="--p:#4E8B7F;--p2:#86BFB0;--p-soft:#E3F1EC;--p-ink:#3C7166;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#E3F1EC;color:#3C7166">#E3F1EC</span><span style="background:#4E8B7F;color:#fff">#4E8B7F</span><span style="background:#86BFB0;color:#fff">#86BFB0</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">A · 딥 민트 <span class="flag live">추천</span></h3>
+        <p>참고 이미지 가운데 있는 민트 조약돌을 버튼이 쓸 수 있을 만큼 진하게 내린 색입니다.</p>
+        <ul class="why">
+          <li><b>둘레와 한 식구입니다.</b> 연두 밴드와 하늘 사이드바 사이의 색이라, 새로운 색을 들이지 않고도 강조가 됩니다.</li>
+          <li><b>초록을 원하시던 방향 그대로입니다.</b> 진녹색의 흙빛을 빼고 푸른 기를 더해 맑아졌습니다.</li>
+          <li><b>흰 글자가 읽힙니다.</b> 그라데이션의 진한 쪽이 글자 뒤에 오게 두면 버튼 글씨가 날아가지 않습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- B 더스티 블루 -->
+    <div class="case">
+      <div class="pc" style="--p:#5F7F9C;--p2:#9DB8CE;--p-soft:#E6EEF4;--p-ink:#4C6A83;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#E6EEF4;color:#4C6A83">#E6EEF4</span><span style="background:#5F7F9C;color:#fff">#5F7F9C</span><span style="background:#9DB8CE;color:#fff">#9DB8CE</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">B · 더스티 블루</h3>
+        <p>type1 이 처음 잡았던 <code>--brand</code> 입니다. 참고 이미지 왼쪽 아래의 파우더 블루를 진하게 내린 색입니다.</p>
+        <ul class="why">
+          <li><b>가장 차분합니다.</b> 업무용 화면으로 가장 무난하고 오래 봐도 피곤하지 않습니다.</li>
+          <li><b>사이드바와 겹칩니다.</b> 사이드바가 이미 하늘색이라 현재 메뉴 알약이 바탕에 조금 녹아듭니다.</li>
+          <li><b>초록 밴드와는 온도가 갈립니다.</b> 위는 연두, 버튼은 파랑이라 화면에 주인공 색이 둘로 보일 수 있습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- C 살구 -->
+    <div class="case">
+      <div class="pc" style="--p:#D07A52;--p2:#EBA887;--p-soft:#FBEAE0;--p-ink:#A95E3D;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#FBEAE0;color:#A95E3D">#FBEAE0</span><span style="background:#D07A52;color:#fff">#D07A52</span><span style="background:#EBA887;color:#fff">#EBA887</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">C · 살구</h3>
+        <p>참고 이미지에서 <b>실제로 버튼 노릇을 하는 색</b>입니다. 토글 알약과 동그란 공들이 전부 이 살구색입니다.</p>
+        <ul class="why">
+          <li><b>눈에 가장 잘 띕니다.</b> 초록·파랑 둘레의 보색 쪽이라 누를 곳이 한눈에 보입니다.</li>
+          <li><b>따뜻해집니다.</b> 아이보리 바탕과 잘 붙어서 화면 전체가 한결 부드러워집니다.</li>
+          <li><b>로즈·노랑 칩과 가깝습니다.</b> 칩과 버튼이 같은 따뜻한 계열이라 칩이 버튼처럼 보일 여지가 있습니다. 에러 색(로즈)과도 거리가 짧습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- D 세이지 -->
+    <div class="case">
+      <div class="pc" style="--p:#7C9F7E;--p2:#AFCBAE;--p-soft:#EAF2E8;--p-ink:#5E7E60;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#EAF2E8;color:#5E7E60">#EAF2E8</span><span style="background:#7C9F7E;color:#fff">#7C9F7E</span><span style="background:#AFCBAE;color:#fff">#AFCBAE</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">D · 맑은 세이지</h3>
+        <p>지금 진녹색의 방향은 유지하되, 밝기를 올리고 흙빛을 뺀 색입니다. 참고 이미지 왼쪽 위의 큰 초록 면에서 뽑았습니다.</p>
+        <ul class="why">
+          <li><b>지금과 가장 가깝게 고칠 수 있습니다.</b> 초록을 유지하면서 무거운 느낌만 걷힙니다.</li>
+          <li><b>흰 글자가 약합니다.</b> 버튼이 옅어진 만큼 흰 글씨가 흐려집니다. 글자를 굵게 하거나 그라데이션 진한 쪽을 더 내려야 합니다.</li>
+          <li><b>세이지 카드·칩과 붙습니다.</b> HTML 칩과 버튼이 거의 같은 색이라, 강조와 장식이 구분되지 않습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- E 차콜 -->
+    <div class="case">
+      <div class="pc" style="--p:#4F5553;--p2:#7A817E;--p-soft:#ECEDEA;--p-ink:#3A3F3D;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#ECEDEA;color:#3A3F3D">#ECEDEA</span><span style="background:#4F5553;color:#fff">#4F5553</span><span style="background:#7A817E;color:#fff">#7A817E</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">E · 차콜</h3>
+        <p>색으로 강조하지 않는 안입니다. 파스텔은 전부 장식으로 두고, 누르는 것만 먹색으로 뺍니다.</p>
+        <ul class="why">
+          <li><b>파스텔이 가장 예쁘게 삽니다.</b> 버튼이 색을 다투지 않으니 카드·칩·밴드 색이 온전히 보입니다.</li>
+          <li><b>흰 글자가 가장 또렷합니다.</b> 다섯 안 중 대비가 가장 높습니다.</li>
+          <li><b>차갑고 딱딱해질 수 있습니다.</b> 지금 진녹색처럼 "혼자 무거운" 문제가 다시 생길 수 있어, 그라데이션으로 끝을 꼭 풀어 줘야 합니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case" style="grid-template-columns:1fr;">
+      <div class="case-copy">
+        <h3 class="case-name">고르실 때</h3>
+        <ul class="why">
+          <li><b>A 딥 민트를 추천합니다.</b> 원하시던 초록 방향을 지키면서 진녹색이 무거웠던 이유(흙빛, 단색, 너무 낮은 밝기)를 셋 다 걷어 냅니다. 밴드·사이드바와도 한 식구입니다.</li>
+          <li><b>눈에 띄는 게 먼저라면 C 살구.</b> 참고 이미지가 실제로 쓰는 강조색입니다. 다만 에러 색과 가까워 삭제 버튼 등은 따로 챙겨야 합니다.</li>
+          <li><b>고르시면 바꿀 곳은 여섯 줄입니다.</b> type1 의 <code>--brand</code> · <code>--deep</code> · <code>--soft</code> · <code>--grad</code> · <code>--shadow-brand</code> · <code>--shadow-brand-sm</code>, 그리고 포커스 그림자 색입니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="primary-side">
+    <style>
+      /* 2차 — 위 미리보기(.pc-*)를 그대로 쓰되 사이드바도 안마다 바꾼다. */
+      .ps .pc-side{background:var(--side);box-shadow:0 0 18px -6px #6B5A4540;}
+      .ps .pc-nav{color:var(--side-ink);}
+    </style>
+    <div class="sian-title">
+      <h2>주 컬러 2차 — 사이드바도 함께 바꾸면</h2>
+      <p>
+        하늘색 사이드바가 어울리지 않았던 이유는, 참고 이미지에서 파랑이 <b>작은 조각</b>으로만 나오기 때문입니다.
+        이미지의 큰 면은 대부분 <b>크림, 연한 세이지, 블러시</b>이고, 파랑·민트·살구는 그 위에 얹힌 포인트입니다.
+        그래서 사이드바는 큰 면의 색에서, 주 컬러는 포인트 색에서 골라 짝을 지었습니다. 밴드(연두 사진), 바탕, 카드는 그대로입니다.
+      </p>
+    </div>
+
+    <!-- 1 크림 + 딥 민트 -->
+    <div class="case">
+      <div class="pc ps" style="--side:linear-gradient(180deg,#FDFAF4,#F1E9DA);--side-ink:#6E6862;--p:#4E8B7F;--p2:#86BFB0;--p-soft:#E3F1EC;--p-ink:#3C7166;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#F1E9DA;color:#6E6862">사이드 #F1E9DA</span><span style="background:#4E8B7F;color:#fff">주 #4E8B7F</span><span style="background:#86BFB0;color:#fff">#86BFB0</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">1 · 크림 사이드바 + 딥 민트 <span class="flag live">추천</span></h3>
+        <p>이미지 속 카드들의 크림색 몸통을 사이드바로 씁니다. 색은 민트 버튼 하나만 냅니다.</p>
+        <ul class="why">
+          <li><b>가장 조용하게 어우러집니다.</b> 사이드바가 색을 내지 않으니 연두 밴드와 민트 버튼이 한 줄기로 이어집니다.</li>
+          <li><b>현재 메뉴가 가장 또렷합니다.</b> 크림 위의 민트 알약은 다른 어느 짝보다 잘 보입니다.</li>
+          <li><b>바탕과 붙을 수 있습니다.</b> 바탕도 아이보리라, 사이드바가 떠 보이려면 지금 있는 그림자(<code>--shadow-rail</code>)가 꼭 필요합니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2 세이지 + 살구 -->
+    <div class="case">
+      <div class="pc ps" style="--side:linear-gradient(180deg,#EDF3E7,#D3E1CA);--side-ink:#5E6E57;--p:#D07A52;--p2:#EBA887;--p-soft:#FBEAE0;--p-ink:#A95E3D;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#D3E1CA;color:#5E6E57">사이드 #D3E1CA</span><span style="background:#D07A52;color:#fff">주 #D07A52</span><span style="background:#EBA887;color:#fff">#EBA887</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">2 · 세이지 사이드바 + 살구</h3>
+        <p>참고 이미지 왼쪽 위의 <b>연두 트랙 위에 살구 토글</b>이 얹힌 조합을 그대로 옮겼습니다. 이미지와 가장 닮은 안입니다.</p>
+        <ul class="why">
+          <li><b>이미지의 인상이 가장 짙게 납니다.</b> 초록 면과 살구 포인트라는 이미지의 핵심 짝입니다.</li>
+          <li><b>초록이 화면 왼쪽과 위를 감쌉니다.</b> 연두 밴드와 세이지 사이드바가 이어져 한 덩어리가 됩니다.</li>
+          <li><b>살구는 로즈·노랑 칩과 가깝습니다.</b> 에러(로즈)와 헷갈리지 않도록 삭제 확인 같은 곳은 따로 챙겨야 합니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3 블러시 + 딥 민트 -->
+    <div class="case">
+      <div class="pc ps" style="--side:linear-gradient(180deg,#FBF1EC,#EFD9D0);--side-ink:#7A625B;--p:#4E8B7F;--p2:#86BFB0;--p-soft:#E3F1EC;--p-ink:#3C7166;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#EFD9D0;color:#7A625B">사이드 #EFD9D0</span><span style="background:#4E8B7F;color:#fff">주 #4E8B7F</span><span style="background:#86BFB0;color:#fff">#86BFB0</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">3 · 블러시 사이드바 + 딥 민트</h3>
+        <p>이미지 오른쪽의 분홍 패널을 사이드바로 씁니다. 분홍과 민트가 서로 보색이라 강조가 선명합니다.</p>
+        <ul class="why">
+          <li><b>가장 따뜻하고 부드럽습니다.</b> 예전 사이드바(아이보리 → 로즈)와 느낌이 비슷해 익숙합니다.</li>
+          <li><b>민트 알약이 분홍 위에서 튑니다.</b> 현재 메뉴가 확실히 보입니다.</li>
+          <li><b>색이 세 갈래가 됩니다.</b> 연두 밴드, 분홍 사이드바, 민트 버튼이라 1안보다 화면이 조금 들뜹니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4 민트 + 딥 틸 -->
+    <div class="case">
+      <div class="pc ps" style="--side:linear-gradient(180deg,#EAF4EF,#C9E1D6);--side-ink:#4F6E66;--p:#3F6F68;--p2:#6FA59A;--p-soft:#E1EFEA;--p-ink:#2F5751;">
+        <div class="pc-app">
+          <aside class="pc-side"><p class="pc-logo">project<span>.</span>desk</p><span class="pc-nav on">프로젝트 관리</span><span class="pc-nav">이력서</span></aside>
+          <div class="pc-main">
+            <div class="pc-band"><p class="pc-kicker">PROJECT</p><p class="pc-h">프로젝트 관리</p></div>
+            <div class="pc-body">
+              <div class="pc-row">
+                <div class="pc-card pc-stat"><i></i>전체<b>45</b></div>
+                <div class="pc-card pc-days"><span>8</span><span>9</span><span>10</span><span>11</span><span class="on">12</span><span>13</span><span>14</span></div>
+              </div>
+              <div class="pc-acts"><span class="pc-btn">+ 프로젝트 추가</span><span class="pc-ghost">나중에</span><span class="pc-chip" style="background:#b3ccb3">HTML</span><span class="pc-chip" style="background:#efca90">CSS</span><span class="pc-chip" style="background:#e1afac">JS</span></div>
+              <div class="pc-input">2026-09-12</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-sw"><span style="background:#C9E1D6;color:#4F6E66">사이드 #C9E1D6</span><span style="background:#3F6F68;color:#fff">주 #3F6F68</span><span style="background:#6FA59A;color:#fff">#6FA59A</span></div>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">4 · 민트 사이드바 + 딥 틸</h3>
+        <p>한 가지 색(민트~틸)을 밝기만 달리해 사이드바부터 버튼까지 칠합니다.</p>
+        <ul class="why">
+          <li><b>가장 통일돼 보입니다.</b> 밴드, 사이드바, 버튼이 전부 초록 계열의 명암 차이일 뿐입니다.</li>
+          <li><b>흰 글자가 가장 잘 읽힙니다.</b> 버튼 색이 네 안 중 가장 진합니다.</li>
+          <li><b>단조로울 수 있습니다.</b> 따뜻한 색은 카드와 칩에만 남아서, 화면이 조금 차갑게 느껴질 수 있습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case" style="grid-template-columns:1fr;">
+      <div class="case-copy">
+        <h3 class="case-name">고르실 때</h3>
+        <ul class="why">
+          <li><b>1안(크림 + 딥 민트)을 추천합니다.</b> 사이드바가 색을 내지 않아야 밴드, 카드, 칩의 파스텔이 서로 다투지 않습니다. 참고 이미지에서도 큰 면은 대부분 크림입니다.</li>
+          <li><b>이미지와 똑같은 인상을 원하시면 2안.</b> 초록 면에 살구 포인트라는, 이미지가 실제로 쓰는 짝입니다.</li>
+          <li><b>어느 안이든 바꿀 곳은 type1 안에서 끝납니다.</b> 사이드바는 <code>--sidebar-bg</code>, 주 컬러는 <code>--brand</code> · <code>--deep</code> · <code>--soft</code> · <code>--grad</code> · <code>--shadow-brand</code> 계열입니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <hr>
 
   <footer>
