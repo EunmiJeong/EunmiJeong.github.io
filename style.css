@@ -234,7 +234,7 @@
   --grad-peach:linear-gradient(135deg, #f8e9d6 0%, #f7e6d2 52%, #efdac9 100%);
   --grad-green:linear-gradient(135deg, #b6d7c4 0%, #86bba9 100%);
   --grad-green-light:linear-gradient(180deg, #d5e2ce 0%, #afc0ac 100%);
-  --overlay-green:linear-gradient(135deg, rgb(182 215 196) 0%, rgb(86 156 132 / 53%) 100%);
+  --band-overlay:linear-gradient(135deg, rgb(182 215 196) 0%, rgb(86 156 132 / 53%) 100%);
   --grad-sky:linear-gradient(180deg, #dbe7e6 0%, #a9c6d4 100%);
   --grad-blue:linear-gradient(180deg, #88b5ca 0%, #56859f 100%);
   --grad-sage:linear-gradient(135deg, #d5e2ce 0%, #b6c7b1 100%);
@@ -284,6 +284,90 @@
   --shadow-focus-err:0 3px 9px #C4787A00,3px 4px 8px #C4787A2e;
   --scrim:#5C4B3A5c;
   --soft-hover:#DCE7EE;
+}
+
+/* ── type2: 코랄 팔레트 ──────────────────────
+   사이드바 사진(images/bg_side.jpg)의 코랄 #E4A296 하나가 기준이다.
+   나머지 값은 셋 중 하나로 뽑았다 —
+   ① 코랄의 채도·밝기만 옮긴 값(강조 · 칩 · 그림자),
+   ② 코랄의 색상만 남기고 채도를 거의 0 까지 뺀 값(글자 · 선 · 면),
+   ③ 코랄의 보색 쪽에서 들인 값(세이지 · 더스티 블루).
+   ③ 이 필요한 건 통계 카드 넉 장 때문이다 — 코랄 계열만으로는 네 장이 구분되지 않는다. */
+:root.type2{
+  --ink:#4A3B36;
+  --muted:#B6A6A0;
+  --line:#EFE0D9;/* 코랄을 아주 옅게 편 선 */
+  --paper:#FFFCFA;/* 카드 면. 바탕 위에서 떠 보이도록 반 톤 밝다 */
+  --field:#FBF1EC;
+  --field-hover:#F5E5DE;
+  --field-line:#E8D6CE;
+  --head:#F4E3DB;/* 표 머리글. 흰 td 와 벌어지도록 --field 보다 두 단계 진하다 */
+  --placeholder:#BCADA7;
+  --autofill:#EDF4EF;/* 코랄 계열(--red-soft)과 헷갈리지 않게 초록 쪽으로 둔다 */
+  --ink-soft:#6E5F59;
+  --label:#453733;
+  --pink:#E4A296;/* 코랄 원본 */
+  --sage:#9FBFAE;/* 보색 쪽. 칩과 카드에서 한 자리를 맡는다 */
+  --brand:#CE8064;/* 코랄을 버튼이 쓸 수 있을 만큼 진하게 내린 값 */
+  --deep:#A45C42;
+  /* 필수 표시 별표. --brand 보다 붉은 쪽으로 돌렸다 — 주황빛 강조색 옆에서 혼자 붉다 */
+  --req:#C2515B;
+  --soft:#FBEAE4;/* 코랄의 가장 옅은 면 */
+  --peach:#EFBFA4;
+
+  /* 주 그라데이션. 짙은 인디고 #47497A 에서 같은 색상을 밝힌 라벤더 인디고로 흐른다.
+     흰 글자가 얹히므로 밝은 끝도 중간 밝기에서 멈춘다 — 더 밝히면 글자가 날아간다. */
+  --grad:linear-gradient(135deg, #47497A 0%, #6E70A8 100%);
+  --grad-head:linear-gradient(135deg, #E4A29640, #9FBFAE26);
+  --grad-soft:linear-gradient(135deg, #FCEDE7 0%, #FAF2EC 52%, #F2F0EA 100%);
+  --grad-peach:linear-gradient(135deg, #FBEDDD 0%, #F9E7D6 52%, #F1DBCB 100%);
+  --grad-coral:linear-gradient(135deg, #EDB7A7 0%, #D98A72 100%);
+  --grad-coral-light:linear-gradient(180deg, #F6D6C9 0%, #E4A296 100%);
+  --grad-sage:linear-gradient(135deg, #D9E6DE 0%, #B4CCBE 100%);
+  /* 상단 밴드 사진 위에 얹는 막. 사이드바와 같은 코랄이라 화면의 위와 왼쪽이 이어진다. */
+  --band-overlay:linear-gradient(135deg, rgb(228 162 150) 0%, rgb(201 118 90 / 55%) 100%);
+
+  --red:#C2515B;
+  --red-soft:#FBE9EB;
+  --red-deep:#8E3742;
+  /* 경고 · 완료도 팔레트 안에서 뽑는다 — 살구와 세이지를 각각 한 톤 내렸다 */
+  --amber:#C9945A;
+  --green:#7FA189;
+  --chip-yellow:#FAF0DF;--chip-yellow-ink:#A4834F;
+  --chip-sage:#E9F1EC;--chip-sage-ink:#6C907D;
+  --chip-pink:#FBE9E3;--chip-pink-ink:#B2705B;
+
+  /* 바탕은 코랄에서 채도를 거의 다 뺀 크림이다. 코랄을 바탕까지 끌고 오면
+     사이드바가 배경에 녹아 화면 왼쪽의 무게가 사라진다 — 코랄은 강조에만 남긴다. */
+  --bg:linear-gradient(135deg, #fdf5f0 0%, #f0dfd5 100%);
+  --sidebar-bg:linear-gradient(180deg, #f4dbde 0%, #fdc7bb 40%, #E4A296 100%);
+  /* 사진 위 hover 띠. 코랄 면으로 채우면 사진의 밝은 데서는 묻히고 어두운 데서는
+     혼자 뜬다 — 반투명 흰색은 어느 자리에서든 같은 만큼만 밝아진다. */
+  --sidebar-hover:#ffffff8c;
+  --card-bg:#FFFAF6;/* 불투명 크림. 바탕(--bg)보다 밝아야 판이 떠 보인다 */
+
+  --card-blue:#A8C3CE;--card-blue-soft:#EDF3F5;--card-blue-ink:#5B8290;
+  --card-sage:#AEC9B6;--card-sage-soft:#ECF3EE;--card-sage-ink:#63886F;
+  --card-yellow:#EEC594;--card-yellow-soft:#FAF1E3;--card-yellow-ink:#A07C4B;
+  --card-pink:#E4A296;--card-pink-soft:#FBEBE6;--card-pink-ink:#A96353;
+
+  /* 그림자는 코랄을 어둡게 내린 갈색(#7A5347)이다. 회색으로 깔면 따뜻한 면 밑에만
+     찬 기가 돌아 카드가 종이에서 들뜬다. */
+  --shadow:0 18px 40px -24px #7A534759, 0 2px 6px -2px #7A534722;
+  --shadow-lift:0 26px 44px -30px #7A534782, 0 3px 10px -3px #7A534730;
+  --shadow-brand:0 14px 30px -12px #47497A66;
+  --shadow-brand-sm:0 8px 18px -8px #47497A59;
+  --shadow-card:0 8px 32px 0 #7A534724;
+  --shadow-clay:0 20px 36px -20px #7A534747, 0 6px 14px -8px #7A53472e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
+  --shadow-clay-lift:0 28px 48px -22px #7A534759, 0 9px 20px -10px #7A534738, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
+  --shadow-modal:0 8px 32px 0 #7A534736;
+  --shadow-rail:0 0 2rem 0 #7A534730;
+  --shadow-sm:0 2px 6px -3px #7A534773;
+  --shadow-pop:0 22px 45px -18px #7A534759;
+  --shadow-focus:0 3px 9px #CE806400,3px 4px 8px #CE806426;
+  --shadow-focus-err:0 3px 9px #C2515B00,3px 4px 8px #C2515B2e;
+  --scrim:#5C3B305c;
+  --soft-hover:#F6DCD3;
 }
 
 
@@ -373,9 +457,10 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* ── 계정 바 / 알림 ────────────────────── */
 /* 본문 맨 위, 그라데이션 밴드 위에 얹히는 줄. 오른쪽 끝에 이메일과 로그인/로그아웃. */
 .appbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;min-height:42px;margin-bottom:22px;}
-.account-mail{margin:0 8px 0 0;max-width:280px;overflow:hidden;white-space:nowrap;font-family:var(--font-en);color:#ffffffeb;font-size:.8rem;font-weight:600;text-overflow:ellipsis;}
-.appbar button{display:flex;gap:5px;align-items:center;border:0;padding:9px 16px;border-radius:var(--r-pill);color:#fff;background:#ffffff2e;font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;transition:.2s;}
-.appbar button:hover{background:#ffffff47;}
+.account-mail{margin:0 8px 0 0;max-width:280px;overflow:hidden;white-space:nowrap;font-family:var(--font-en);color:var(--ink-soft);font-size:.8rem;font-weight:600;text-overflow:ellipsis;}
+/* 계정 줄은 오른쪽 위의 흐린 빛 위에 놓인다. 바탕이 옅으니 글자는 짙게, 알약은 반투명 흰색. */
+.appbar button{display:flex;gap:5px;align-items:center;border:0;padding:9px 16px;border-radius:var(--r-pill);color:var(--ink);background:#ffffffa6;font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;transition:.2s;}
+.appbar button:hover{background:#fff;}
 .appbar .icon{font-size:17px;}
 .notice{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 20px;padding:15px 20px;border-radius:var(--r-md);background:var(--card-bg);box-shadow:var(--shadow-clay);font-size:.82rem;}
 .notice button{border:0;padding:7px 15px;border-radius:var(--r-pill);background:var(--soft);color:var(--deep);font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;}
@@ -385,6 +470,16 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* 화면 높이만큼 붙어 있고 본문만 스크롤된다(sticky + 100vh).
    계정(이메일·로그아웃)은 여기가 아니라 본문 맨 위 .appbar 에 있다. */
 .sidebar{position:sticky;top:0;z-index:3;flex:0 0 246px;display:flex;flex-direction:column;gap:30px;height:100vh;padding:30px 16px;background:var(--sidebar-bg);/*border-right:1px solid rgba(0,0,0,.05);*/border-radius:0 25px 25px 0;box-shadow:var(--shadow-rail)}
+/* type2 는 사이드바 아래쪽에 사진을 깐다. 배경 한 겹으로 두면 사진 윗변과 코랄 면이
+   만나는 자리에 선이 서고, 배경은 뒤집을 수도 없다. 그래서 사진만 가상 요소로 떼어
+   윗부분을 마스크로 서서히 지우고(코랄 면에 녹는다) scaleX(-1) 로 좌우를 뒤집는다.
+   높이는 사진 비율(768×1360)로 정해진다. 둥근 모서리는 뒤집히기 전 기준이라
+   왼쪽 아래에 준다 — 뒤집히면 사이드바의 오른쪽 아래 모서리에 맞는다.
+   z-index:-1 은 사이드바(z-index:3) 안에 갇히므로 면 위, 메뉴 아래에 깔린다. */
+/* type2 장식 — 화면 오른쪽 아래 모서리에 반투명 도형(images/deco-corner.svg)을 붙박아 둔다.
+   z-index:-1 이라 카드 뒤, 바탕 위에 깔리고 스크롤해도 모서리를 지킨다. 누를 수 없는 그림이다. */
+:root.type2 body::after{content:"";position:fixed;right:0;bottom:0;z-index:-1;width:min(460px, 40vw);aspect-ratio:1;background:url(images/deco-corner.svg) right bottom / contain no-repeat;pointer-events:none;}
+.sidebar::before{content:"";position:absolute;left:0;right:0;bottom:0;z-index:-1;aspect-ratio:768 / 1360;border-radius:0 0 0 25px;background:url(images/bg_side.jpg) bottom center / cover no-repeat;transform:scaleX(-1);-webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 30%);mask-image:linear-gradient(to bottom, transparent 0%, #000 30%);pointer-events:none;}
 .brand{margin:0 0 0 10px;color:var(--deep);font:1.45rem Georgia, serif;letter-spacing:-.03em;}
 .brand span{color:var(--pink);}
 .nav{display:flex;flex-direction:column;gap:2px;}
@@ -417,19 +512,20 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 /* 왼쪽으로 사이드바 라운드(25px)만큼 더 나간다. 그러지 않으면 사이드바 오른쪽 위
    모서리가 파먹은 자리에 밴드가 닿지 않아 그 홈으로 body 바탕이 드러난다.
    삐져나온 나머지는 사이드바가 불투명이라 그대로 가린다(밴드는 z-index:-1). */
-.main::before{content:"";position:absolute;top:0;left:-25px;right:0;height:298px;background:var(--overlay-green), url(images/bg1.jpg) bottom 40% left / cover no-repeat;z-index:-1;}
-/* .main::before{background:url('images/bg.jpg') bottom left/cover no-repeat;} */
-/* 넓은 모니터에서 본문이 화면 끝까지 늘어나지 않게 폭을 묶고 가운데로 모은다.
-   묶는 것은 내용뿐이고 위 밴드는 ::before 라 여기 걸리지 않는다 — 색은 화면의 것,
-   폭 제한은 글의 것이다. 밴드까지 좁히면 화면 양끝에 흰 띠가 생겨 창이 덜 열린 것처럼 보인다.
-   1440px 아래에서는 아무것도 달라지지 않는다. */
+/* 오른쪽 위에 흐린 빛 두 덩이 — 코랄 핑크(사이드바 쪽)와 라벤더(주 그라데이션 쪽).
+   원은 방사형 그라데이션으로 가장자리를 이미 풀어 두었고, blur 로 한 번 더 뭉갠다.
+   카드는 불투명이라 빛은 카드 사이 틈과 제목 줄 오른쪽에서만 번져 보인다. */
+.main::before{content:"";position:absolute;top:0;right:0;z-index:-1;width:min(760px, 65%);aspect-ratio:1.4;background:radial-gradient(circle at 32% 49%, #f7b2b7d4 0, #F3B1AB00 42%), radial-gradient(circle at 70% 19%, #c8b6edd9 0, #C8B1EE00 48%);filter:blur(36px);pointer-events:none;}
+/* 왼쪽 위에도 한 덩이. 코랄 사이드바 바로 옆이라 같은 코랄이면 사이드바에 녹아 버린다 —
+   코랄과 라벤더 사이의 로즈 라일락으로 두 쪽을 잇는다. 오른쪽 것이 주인공이라 한 치수 작다. */
+.main::after{content:"";position:absolute;top:-140px;left:0;z-index:-1;width:min(680px, 58%);aspect-ratio:1.2;background:radial-gradient(circle at 30% 34%, #bcd1eba1 0, #EBBCD900 50%);filter:blur(36px);pointer-events:none;}
 .main > *{max-width:var(--page-max);margin-inline:auto;}
 /* 섹션 기본 간격. .overview / .panel 처럼 자체 여백이 있는 것은 그 값이 이긴다. */
 section{margin-bottom:34px;}
 .topbar{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:36px;}
-.kicker{margin:0 0 6px;color:#ffffffc4;font-family:var(--font-head);font-size:.72rem;font-weight:600;letter-spacing:.13em;}
-h1{margin:0;color:#fff;font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
-.subtext{margin:9px 0 0;color:#ffffffdb;font-size:.88rem;}
+.kicker{margin:0 0 6px;color:var(--deep);font-family:var(--font-head);font-size:.72rem;font-weight:600;letter-spacing:.13em;}
+h1{margin:0;color:var(--ink);font:600 2.2rem var(--font-head);letter-spacing:-.04em;}
+.subtext{margin:9px 0 0;color:var(--ink-soft);font-size:.88rem;}
 /* 추가 버튼. 헤더 밴드가 아니라 각 목록 머리(.content-head)에 놓이므로
    흰 바탕 위에서 눈에 띄도록 그라데이션으로 채운다.
    높이를 정하는 건 글자가 아니라 아이콘이다 — .82rem 글자의 줄 상자는 16px 인데
@@ -915,7 +1011,6 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
 @media (max-width:900px){
   .account-mail{max-width:200px;}
   .main{padding:28px 22px 48px;}
-  .main::before{height:288px;}
   /* 3할이 260px 아래로 내려가는 지점. 여기부터는 옵션을 카드 아래로 내린다. */
   .summary-row{grid-template-columns:1fr;gap:20px;margin-bottom:26px;}
 }
@@ -925,7 +1020,6 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   .appbar{gap:8px;margin-bottom:16px;}
   h1{font-size:1.85rem;}
   .main{padding:24px 18px 40px;}
-  .main::before{height:245px;}
   .topbar{gap:16px;flex-direction:column;margin-bottom:26px;}
   /* auto-fit + minmax(190px) 는 좁은 화면에서 한 줄에 한 칸만 남아 카드가 세로로
      길게 늘어선다. 여기서는 칸 수를 둘로 못박고 최소 폭을 0 으로 풀어 2단을 유지한다. */
