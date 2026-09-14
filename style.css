@@ -339,7 +339,7 @@
 
   /* 바탕은 코랄에서 채도를 거의 다 뺀 크림이다. 코랄을 바탕까지 끌고 오면
      사이드바가 배경에 녹아 화면 왼쪽의 무게가 사라진다 — 코랄은 강조에만 남긴다. */
-  --bg:linear-gradient(135deg, #fdf5f0 0%, #f0dfd5 100%);
+  --bg:linear-gradient(135deg, #feefea 0%, #f0dfd5 100%);
   --sidebar-bg:linear-gradient(180deg, #f4dbde 0%, #fdc7bb 40%, #E4A296 100%);
   /* 사진 위 hover 띠. 코랄 면으로 채우면 사진의 밝은 데서는 묻히고 어두운 데서는
      혼자 뜬다 — 반투명 흰색은 어느 자리에서든 같은 만큼만 밝아진다. */
@@ -467,19 +467,22 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 .notice.error{color:var(--red);background:var(--red-soft);}
 
 /* ── 왼쪽 사이드바 ─────────────────────── */
-/* 화면 높이만큼 붙어 있고 본문만 스크롤된다(sticky + 100vh).
+/* 화면 가장자리에서 20px 떨어져 떠 있는 판이다. 본문만 스크롤되고 판은 제자리를 지킨다
+   (sticky top:20px + 높이에서 위아래 여백을 뺀 값). 네 모서리를 다 굴려야 판으로 읽힌다 —
+   벽에 붙어 있던 때처럼 오른쪽만 굴리면 떨어진 왼쪽 변이 잘린 것처럼 보인다.
+   그림자도 카드와 같은 클레이(--shadow-clay)다 — 떠 있는 판끼리 같은 빛을 받아야 한 벌로 읽힌다.
    계정(이메일·로그아웃)은 여기가 아니라 본문 맨 위 .appbar 에 있다. */
-.sidebar{position:sticky;top:0;z-index:3;flex:0 0 246px;display:flex;flex-direction:column;gap:30px;height:100vh;padding:30px 16px;background:var(--sidebar-bg);/*border-right:1px solid rgba(0,0,0,.05);*/border-radius:0 25px 25px 0;box-shadow:var(--shadow-rail)}
+.sidebar{position:sticky;top:20px;z-index:3;flex:0 0 246px;display:flex;flex-direction:column;gap:30px;height:calc(100vh - 40px);margin:20px 0 20px 20px;padding:30px 16px;background:var(--sidebar-bg);border-radius:25px;box-shadow:var(--shadow-clay)}
 /* type2 는 사이드바 아래쪽에 사진을 깐다. 배경 한 겹으로 두면 사진 윗변과 코랄 면이
    만나는 자리에 선이 서고, 배경은 뒤집을 수도 없다. 그래서 사진만 가상 요소로 떼어
    윗부분을 마스크로 서서히 지우고(코랄 면에 녹는다) scaleX(-1) 로 좌우를 뒤집는다.
-   높이는 사진 비율(768×1360)로 정해진다. 둥근 모서리는 뒤집히기 전 기준이라
-   왼쪽 아래에 준다 — 뒤집히면 사이드바의 오른쪽 아래 모서리에 맞는다.
+   높이는 사진 비율(768×1360)로 정해진다. 떠 있는 판이라 아래 두 모서리를 다 굴린다.
+   서랍(좁은 화면)에서는 뒤집히기 전 기준 왼쪽 아래만 굴린다 — 뒤집히면 오른쪽 아래에 맞는다.
    z-index:-1 은 사이드바(z-index:3) 안에 갇히므로 면 위, 메뉴 아래에 깔린다. */
 /* type2 장식 — 화면 오른쪽 아래 모서리에 반투명 도형(images/deco-corner.svg)을 붙박아 둔다.
    z-index:-1 이라 카드 뒤, 바탕 위에 깔리고 스크롤해도 모서리를 지킨다. 누를 수 없는 그림이다. */
 :root.type2 body::after{content:"";position:fixed;right:0;bottom:0;z-index:-1;width:min(460px, 40vw);aspect-ratio:1;background:url(images/deco-corner.svg) right bottom / contain no-repeat;pointer-events:none;}
-.sidebar::before{content:"";position:absolute;left:0;right:0;bottom:0;z-index:-1;aspect-ratio:768 / 1360;border-radius:0 0 0 25px;background:url(images/bg_side.jpg) bottom center / cover no-repeat;transform:scaleX(-1);-webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 30%);mask-image:linear-gradient(to bottom, transparent 0%, #000 30%);pointer-events:none;}
+.sidebar::before{content:"";position:absolute;left:0;right:0;bottom:0;z-index:-1;aspect-ratio:768 / 1360;border-radius:0 0 25px 25px;background:url(images/bg_side.jpg) bottom center / cover no-repeat;transform:scaleX(-1);-webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 30%);mask-image:linear-gradient(to bottom, transparent 0%, #000 30%);pointer-events:none;}
 .brand{margin:0 0 0 10px;color:var(--deep);font:1.45rem Georgia, serif;letter-spacing:-.03em;}
 .brand span{color:var(--pink);}
 .nav{display:flex;flex-direction:column;gap:2px;}
@@ -994,8 +997,11 @@ form .form-actions{flex:none;margin:0 var(--pad);padding-top:28px;border-top:1px
   .appbar .nav-toggle{display:flex;margin-right:auto;}
   .nav-close{display:grid;}
   /* 닫혀 있는 동안 visibility:hidden 이라 화면 밖 링크로 탭이 넘어가지 않는다. */
-  .sidebar{position:fixed;top:0;left:0;z-index:30;flex:none;width:246px;max-width:80vw;visibility:hidden;transform:translateX(-100%);transition:transform .28s ease, visibility .28s;}
+  /* 서랍은 떠 있는 판이 아니라 화면 왼쪽 벽에서 밀려 나오는 것이라 여백을 걷고 오른쪽만 굴린다.
+     그림자도 벽에 붙은 기둥의 것(--shadow-rail, 사방으로 번지기만 한다)으로 돌린다. */
+  .sidebar{position:fixed;top:0;left:0;z-index:30;flex:none;width:246px;max-width:80vw;height:100vh;margin:0;border-radius:0 25px 25px 0;box-shadow:var(--shadow-rail);visibility:hidden;transform:translateX(-100%);transition:transform .28s ease, visibility .28s;}
   body.nav-open .sidebar{visibility:visible;transform:none;}
+  .sidebar::before{border-radius:0 0 0 25px;}
   /* 모달 뒤(dialog::backdrop)와 같은 색·같은 흐림. */
   .nav-backdrop{display:block;position:fixed;z-index:29;inset:0;background:var(--scrim);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .28s ease, visibility .28s;}
   body.nav-open .nav-backdrop{opacity:1;visibility:visible;}
