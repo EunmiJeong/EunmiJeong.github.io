@@ -2,31 +2,13 @@
   <defs>
     <linearGradient id="coral" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFBFA4"/><stop offset="1" stop-color="#E4A296"/></linearGradient>
     <linearGradient id="lilac" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CDBBEA"/><stop offset="1" stop-color="#A8C3CE"/></linearGradient>
-    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity=".08"/></linearGradient>
   </defs>
 
-  <!-- 겹쳐 비치는 대각선 면. 서로 겹친 자리에서 색이 섞인다 -->
-  <path d="M600 90V600H40Z" fill="url(#coral)" opacity=".38"/>
-  <path d="M600 280V600H250Z" fill="url(#lilac)" opacity=".42"/>
-  <path d="M600 430V600H420Z" fill="#E4A296" opacity=".32"/>
-
-  <!-- 유리 조각 -->
-  <path d="M330 360L470 300L520 440L380 500Z" fill="url(#glass)" stroke="#fff" stroke-opacity=".7" stroke-width="1.5"/>
-
-  <!-- 로우폴리 보석 -->
-  <g stroke="#fff" stroke-opacity=".35" stroke-width=".8">
-    <path d="M150 434L181 452L150 470Z" fill="#FBC9CB"/>
-    <path d="M181 452L181 488L150 470Z" fill="#F29AA6"/>
-    <path d="M181 488L150 506L150 470Z" fill="#E47F93"/>
-    <path d="M150 506L119 488L150 470Z" fill="#EC8FA0"/>
-    <path d="M119 488L119 452L150 470Z" fill="#F5A9B2"/>
-    <path d="M119 452L150 434L150 470Z" fill="#FDDADB"/>
-  </g>
-
-  <!-- 작은 큐브 -->
-  <path d="M470 236L484 244L470 252L456 244Z" fill="#E6D8F8"/>
-  <path d="M456 244L470 252L470 268L456 260Z" fill="#C6B2EE"/>
-  <path d="M470 252L484 244L484 260L470 268Z" fill="#B19BE3"/>
+  <!-- 겹쳐 비치는 대각선 면. 빗변 기울기를 서로 다르게 잡아 가운데서 엇갈리며 겹친다 —
+       코랄은 중간, 라일락은 눕히고, 작은 면은 세웠다. 겹친 자리에서 색이 섞인다 -->
+  <path d="M600 60V600H120Z" fill="url(#coral)" opacity=".38"/>
+  <path d="M600 330V600H0Z" fill="url(#lilac)" opacity=".42"/>
+  <path d="M600 200V600H380Z" fill="#E4A296" opacity=".32"/>
 
   <!-- 반짝이 -->
   <circle cx="540" cy="200" r="3" fill="#fff" opacity=".85"/>

@@ -317,7 +317,7 @@
 
   /* 주 그라데이션. 짙은 인디고 #47497A 에서 같은 색상을 밝힌 라벤더 인디고로 흐른다.
      흰 글자가 얹히므로 밝은 끝도 중간 밝기에서 멈춘다 — 더 밝히면 글자가 날아간다. */
-  --grad:linear-gradient(135deg, #47497A 0%, #6E70A8 100%);
+  --grad:linear-gradient(135deg, #f58d9e 0%, #ff957d 100%);
   --grad-head:linear-gradient(135deg, #E4A29640, #9FBFAE26);
   --grad-soft:linear-gradient(135deg, #FCEDE7 0%, #FAF2EC 52%, #F2F0EA 100%);
   --grad-peach:linear-gradient(135deg, #FBEDDD 0%, #F9E7D6 52%, #F1DBCB 100%);
