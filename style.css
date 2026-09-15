@@ -147,6 +147,9 @@
      더 밝으면 글자가 날아가고, 더 어두우면 밴드 혼자 무거워진다. */
   --band:#aabcd2;
   --card-bg:#fff;
+  /* 팝업(dialog) 면. 카드(--card-bg)와 따로 간다 — 테마마다 카드 크림이 달라져도
+     팝업은 같은 옅은 웜 화이트로 둔다. 테마 블록에서 덮지 않는다. */
+  --modal-bg:#faf9f8;
   --card-blue:#8ec7ee;--card-blue-soft:#edf5fc;--card-blue-ink:#4b8fc2;
   --card-sage:#a6a3e8;--card-sage-soft:#efeefc;--card-sage-ink:#6a66c6;
   --card-yellow:#c08cd8;--card-yellow-soft:#f6ecfa;--card-yellow-ink:#8b57ae;
@@ -300,7 +303,9 @@
   --paper:#FFFCFA;/* 카드 면. 바탕 위에서 떠 보이도록 반 톤 밝다 */
   --field:#FBF1EC;
   --field-hover:#F5E5DE;
-  --field-line:#E8D6CE;
+  /* 인풋 테두리. 베이지로 두면 흰 인풋 둘레가 누렇게 뜬다 — 채도를 거의 걷어 낸
+     웜 그레이로, 크림 바탕과 부딪히지 않을 만큼만 따뜻하다. */
+  --field-line:#DDDAD8;
   --head:#F4E3DB;/* 표 머리글. 흰 td 와 벌어지도록 --field 보다 두 단계 진하다 */
   --placeholder:#BCADA7;
   --autofill:#EDF4EF;/* 코랄 계열(--red-soft)과 헷갈리지 않게 초록 쪽으로 둔다 */
@@ -308,8 +313,8 @@
   --label:#453733;
   --pink:#E4A296;/* 코랄 원본 */
   --sage:#9FBFAE;/* 보색 쪽. 칩과 카드에서 한 자리를 맡는다 */
-  --brand:#CE8064;/* 코랄을 버튼이 쓸 수 있을 만큼 진하게 내린 값 */
-  --deep:#A45C42;
+  --brand:#f88f92;/* 코랄 */
+  --deep:#a44542;
   /* 필수 표시 별표. --brand 보다 붉은 쪽으로 돌렸다 — 주황빛 강조색 옆에서 혼자 붉다 */
   --req:#C2515B;
   --soft:#FBEAE4;/* 코랄의 가장 옅은 면 */
@@ -340,16 +345,29 @@
   /* 바탕은 코랄에서 채도를 거의 다 뺀 크림이다. 코랄을 바탕까지 끌고 오면
      사이드바가 배경에 녹아 화면 왼쪽의 무게가 사라진다 — 코랄은 강조에만 남긴다. */
   --bg:linear-gradient(135deg, #feefea 0%, #f0dfd5 100%);
-  --sidebar-bg:linear-gradient(180deg, #f4dbde 0%, #fdc7bb 40%, #E4A296 100%);
+  --sidebar-bg:linear-gradient(180deg, #ddc6e1 0%, #fdc7bb 40%, #E4A296 100%);
   /* 사진 위 hover 띠. 코랄 면으로 채우면 사진의 밝은 데서는 묻히고 어두운 데서는
      혼자 뜬다 — 반투명 흰색은 어느 자리에서든 같은 만큼만 밝아진다. */
   --sidebar-hover:#ffffff8c;
   --card-bg:#FFFAF6;/* 불투명 크림. 바탕(--bg)보다 밝아야 판이 떠 보인다 */
 
-  --card-blue:#A8C3CE;--card-blue-soft:#EDF3F5;--card-blue-ink:#5B8290;
-  --card-sage:#AEC9B6;--card-sage-soft:#ECF3EE;--card-sage-ink:#63886F;
+  --card-blue:#85bac0;--card-blue-soft:#EDF3F5;--card-blue-ink:#5B8290;
+  --card-sage:#8eae97;--card-sage-soft:#ECF3EE;--card-sage-ink:#63886F;
   --card-yellow:#EEC594;--card-yellow-soft:#FAF1E3;--card-yellow-ink:#A07C4B;
-  --card-pink:#E4A296;--card-pink-soft:#FBEBE6;--card-pink-ink:#A96353;
+  --card-pink:#e7a396;--card-pink-soft:#FBEBE6;--card-pink-ink:#A96353;
+
+  --olive:#929568;
+  --deeprose:#ac6f6e;
+  --lavendar:#ad92b1;
+  --terracotta:#cf6e53;
+  --tangerine:#f7a97b;
+  --mint:#b6d3c1;
+  --dewpaint:#b6d2d6;
+  --lightpink:#f3c7c8;
+  --butter:#eace85;
+  --yellow:#fad994;
+  --purple:#cbbccf;
+  --beige:#d7b2a2;
 
   /* 그림자는 코랄을 어둡게 내린 갈색(#7A5347)이다. 회색으로 깔면 따뜻한 면 밑에만
      찬 기가 돌아 카드가 종이에서 들뜬다. */
@@ -358,8 +376,8 @@
   --shadow-brand:0 14px 30px -12px #47497A66;
   --shadow-brand-sm:0 8px 18px -8px #47497A59;
   --shadow-card:0 8px 32px 0 #7A534724;
-  --shadow-clay:0 20px 36px -20px #7A534747, 0 6px 14px -8px #7A53472e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
-  --shadow-clay-lift:0 28px 48px -22px #7A534759, 0 9px 20px -10px #7A534738, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
+  --shadow-clay:25px 25px 25px -3px #7a53472e, 0 6px 14px -8px #7A53472e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
+  --shadow-clay-lift:30px 32px 38px -3px #7a53473d, 0 9px 20px -10px #7A534738, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
   --shadow-modal:0 8px 32px 0 #7A534736;
   --shadow-rail:0 0 2rem 0 #7A534730;
   --shadow-sm:0 2px 6px -3px #7A534773;
@@ -521,7 +539,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 .main::before{content:"";position:absolute;top:0;right:0;z-index:-1;width:min(760px, 65%);aspect-ratio:1.4;background:radial-gradient(circle at 32% 49%, #f7b2b7d4 0, #F3B1AB00 42%), radial-gradient(circle at 70% 19%, #c8b6edd9 0, #C8B1EE00 48%);filter:blur(36px);pointer-events:none;}
 /* 왼쪽 위에도 한 덩이. 코랄 사이드바 바로 옆이라 같은 코랄이면 사이드바에 녹아 버린다 —
    코랄과 라벤더 사이의 로즈 라일락으로 두 쪽을 잇는다. 오른쪽 것이 주인공이라 한 치수 작다. */
-.main::after{content:"";position:absolute;top:-140px;left:0;z-index:-1;width:min(680px, 58%);aspect-ratio:1.2;background:radial-gradient(circle at 30% 34%, #bcd1eba1 0, #EBBCD900 50%);filter:blur(36px);pointer-events:none;}
+.main::after{content:"";position:absolute;top:-140px;left:0;z-index:-1;width:min(680px, 58%);aspect-ratio:1.2;background:radial-gradient(circle at 30% 34%, #85bac059 0, #EBBCD900 50%);filter:blur(36px);pointer-events:none;}
 .main > *{max-width:var(--page-max);margin-inline:auto;}
 /* 섹션 기본 간격. .overview / .panel 처럼 자체 여백이 있는 것은 그 값이 이긴다. */
 section{margin-bottom:34px;}
@@ -784,7 +802,7 @@ td .row-actions{gap:2px;margin-right:-6px;}
 /* ── 모달 ──────────────────────────────── */
 /* dvh 는 모바일 주소창이 접혔다 펴져도 실제 보이는 높이를 따라간다. vh 는 못 읽는
    브라우저용 예비값이라 순서를 바꾸면 안 된다. */
-dialog{width:min(680px, calc(100% - 32px));max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow:auto;padding:0;border:0;border-radius:var(--r-lg);color:var(--ink);background:var(--card-bg);box-shadow:var(--shadow-modal);}
+dialog{width:min(680px, calc(100% - 32px));max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow:auto;padding:0;border:0;border-radius:var(--r-lg);color:var(--ink);background:var(--modal-bg);box-shadow:var(--shadow-modal);}
 dialog::backdrop{background:rgba(61, 77, 110, 0.3);backdrop-filter:blur(6px);}
 /* 창이 길어지면 다이얼로그 전체가 아니라 가운데(폼)만 스크롤된다. 제목 줄과 버튼 줄은
    자리에 남고 필드만 넘어간다. [open] 을 반드시 함께 준다 — 그냥 dialog 에 display 를
