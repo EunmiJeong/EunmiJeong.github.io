@@ -376,7 +376,7 @@
   --shadow-brand:0 14px 30px -12px #47497A66;
   --shadow-brand-sm:0 8px 18px -8px #47497A59;
   --shadow-card:0 8px 32px 0 #7A534724;
-  --shadow-clay:25px 25px 25px -3px #7a53472e, 0 6px 14px -8px #7A53472e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
+  --shadow-clay:0 20px 36px -20px #7A534747, 0 6px 14px -8px #7A53472e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
   --shadow-clay-lift:30px 32px 38px -3px #7a53473d, 0 9px 20px -10px #7A534738, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
   --shadow-modal:0 8px 32px 0 #7A534736;
   --shadow-rail:0 0 2rem 0 #7A534730;
@@ -490,7 +490,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
    벽에 붙어 있던 때처럼 오른쪽만 굴리면 떨어진 왼쪽 변이 잘린 것처럼 보인다.
    그림자도 카드와 같은 클레이(--shadow-clay)다 — 떠 있는 판끼리 같은 빛을 받아야 한 벌로 읽힌다.
    계정(이메일·로그아웃)은 여기가 아니라 본문 맨 위 .appbar 에 있다. */
-.sidebar{position:sticky;top:20px;z-index:3;flex:0 0 246px;display:flex;flex-direction:column;gap:30px;height:calc(100vh - 40px);margin:20px 0 20px 20px;padding:30px 16px;background:var(--sidebar-bg);border-radius:25px;box-shadow:var(--shadow-clay)}
+.sidebar{position:sticky;top:30px;z-index:3;flex:0 0 246px;display:flex;flex-direction:column;gap:30px;height:calc(100vh - 60px);margin:30px 0 30px 40px;padding:30px 16px;background:var(--sidebar-bg);border-radius:25px;box-shadow:var(--shadow-clay)}
 /* type2 는 사이드바 아래쪽에 사진을 깐다. 배경 한 겹으로 두면 사진 윗변과 코랄 면이
    만나는 자리에 선이 서고, 배경은 뒤집을 수도 없다. 그래서 사진만 가상 요소로 떼어
    윗부분을 마스크로 서서히 지우고(코랄 면에 녹는다) scaleX(-1) 로 좌우를 뒤집는다.

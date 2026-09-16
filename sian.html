@@ -1856,6 +1856,66 @@ window.addEventListener('popstate', pop);</pre>
     </div>
   </section>
 
+  <hr>
+
+  <!-- ── 통계 카드 묶기 (type2) ──────────────── -->
+  <section id="stat-group-coral">
+    <style>
+      #stat-group-coral .sg-frame{display:block;width:100%;height:370px;border:0;border-radius:var(--r-md);}
+    </style>
+    <div class="sian-title">
+      <h2>통계 카드 묶기 — 지금 코랄 화면에서</h2>
+      <p>
+        위 "통계를 한 박스로 묶을까" 는 예전 테마에서 본 것입니다. 지금 화면(type2)은 카드마다 클레이 그림자 · 대각선 그라데이션 ·
+        48px 색 배지를 따로 달고 있어 넉 장이 더 산만해 보입니다. 실제 style.css 를 그대로 쓰는 데모(<code>demo/stats.html</code>)로 셋을 비교합니다.
+      </p>
+    </div>
+
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <iframe class="sg-frame" src="demo/stats.html?v=a" title="A 지금" loading="lazy"></iframe>
+        <p class="stage-note">A · 지금 — 넉 장이 각자 그림자 · 그라데이션 · 큰 배지</p>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">A · 지금 <span class="flag live">현재 화면</span></h3>
+        <ul class="why">
+          <li><b>강한 점이 넷, 떠 있는 덩어리가 넷입니다.</b> 눈이 숫자보다 배지와 그림자에 먼저 갑니다.</li>
+          <li><b>오른쪽 옵션은 판 하나라 무게가 맞지 않습니다.</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <iframe class="sg-frame" src="demo/stats.html?v=b" title="B 판 하나" loading="lazy"></iframe>
+        <p class="stage-note">B · 판 하나 — 타일은 옅은 단색 면, 그림자 없음, 배지는 그대로</p>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">B · 판 하나로 묶기</h3>
+        <ul class="why">
+          <li><b>그림자와 그라데이션만 걷었습니다.</b> 한 줄이 "프로젝트 요약 / 계산 옵션" 패널 둘로 읽힙니다.</li>
+          <li><b>배지는 그대로라 색 점 넷은 남습니다.</b> 바꾸는 양이 가장 적습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case" style="grid-template-columns:1fr;">
+      <div>
+        <iframe class="sg-frame" src="demo/stats.html?v=c" title="C 참고 화면처럼" loading="lazy"></iframe>
+        <p class="stage-note">C · 판 하나 + 오른쪽 위 작은 선 아이콘, 숫자 왼쪽 정렬</p>
+      </div>
+      <div class="case-copy">
+        <h3 class="case-name">C · 참고 화면처럼 <span class="flag live">추천</span></h3>
+        <ul class="why">
+          <li><b>숫자가 주인공이 됩니다.</b> 아이콘은 30px 선 모양으로 물러나고, 색은 타일 면이 맡습니다.</li>
+          <li><b>위에서 아래로 읽힙니다.</b> 숫자 → 이름 순서라 참고 화면과 같은 흐름입니다.</li>
+          <li><b>대신 모바일 규칙도 손봐야 합니다.</b> 지금 모바일은 아이콘을 위에 세우는 배치(style.css 1053~)라 함께 고칩니다.</li>
+        </ul>
+        <p class="when"><b>결정 (2026-09-16).</b> C 로 가되 아이콘은 지금처럼 색 배지 + 흰 글리프(42px)로 존재감을 살리고, 제목 → 값 순서로 읽게 바꿔 style.css 에 반영했습니다. 총 경력(파랑)과 전체 프로젝트(초록) 면이 거의 같아 둘을 벌렸습니다. → 같은 날 다시 원래대로 되돌렸습니다(보류).</p>
+      </div>
+    </div>
+  </section>
+
   <section id="primary">
     <style>
       /* 주 컬러 시안. 둘레(아이보리 바탕 · 하늘 사이드바 · 연두 밴드 · 파스텔 카드)는 지금 type1 값 그대로 두고,
