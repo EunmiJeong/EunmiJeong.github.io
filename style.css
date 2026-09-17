@@ -297,9 +297,11 @@
    ③ 코랄의 보색 쪽에서 들인 값(세이지 · 더스티 블루).
    ③ 이 필요한 건 통계 카드 넉 장 때문이다 — 코랄 계열만으로는 네 장이 구분되지 않는다. */
 :root.type2{
-  --ink:#4A3B36;
-  --muted:#B6A6A0;
-  --line:#EFE0D9;/* 코랄을 아주 옅게 편 선 */
+  /* 글자와 선은 회색이다. 갈색으로 두면 흰 카드 위에서 글이 누렇게 바랜 것처럼 읽힌다 —
+     밝기는 그대로 두고 색기만 걷어, 아이보리 바탕과 부딪히지 않을 만큼만 따뜻함을 남겼다. */
+  --ink:#3F3D3C;
+  --muted:#A9A6A4;
+  --line:#E6E3E0;
   --paper:#FFFCFA;/* 카드 면. 바탕 위에서 떠 보이도록 반 톤 밝다 */
   --field:#FBF1EC;
   --field-hover:#F5E5DE;
@@ -307,10 +309,10 @@
      웜 그레이로, 크림 바탕과 부딪히지 않을 만큼만 따뜻하다. */
   --field-line:#DDDAD8;
   --head:var(--soft-hover);/* 표 머리글. 흰 td 와 벌어지도록 --field 보다 두 단계 진하다 */
-  --placeholder:#BCADA7;
+  --placeholder:#B3B0AE;
   --autofill:#EDF4EF;/* 코랄 계열(--red-soft)과 헷갈리지 않게 초록 쪽으로 둔다 */
-  --ink-soft:#6E5F59;
-  --label:#453733;
+  --ink-soft:#66625F;
+  --label:#3B3938;
   --pink:#E4A296;/* 코랄 원본 */
   --sage:#9FBFAE;/* 보색 쪽. 칩과 카드에서 한 자리를 맡는다 */
   --brand:#f88f92;/* 코랄 */
@@ -342,14 +344,15 @@
   --chip-sage:#E9F1EC;--chip-sage-ink:#6C907D;
   --chip-pink:#FBE9E3;--chip-pink-ink:#B2705B;
 
-  /* 바탕은 코랄에서 채도를 거의 다 뺀 크림이다. 코랄을 바탕까지 끌고 오면
-     사이드바가 배경에 녹아 화면 왼쪽의 무게가 사라진다 — 코랄은 강조에만 남긴다. */
-  --bg:linear-gradient(135deg, #feefea 0%, #f0dfd5 100%);
+  /* 바탕은 분홍기를 걷은 아이보리다. 코랄을 바탕까지 끌고 오면
+     사이드바가 배경에 녹아 화면 왼쪽의 무게가 사라진다 — 코랄은 강조에만 남긴다.
+     카드(--card-bg, 웜 화이트)보다 한 톤 누렇고 어두워야 판이 떠 보인다. */
+  --bg:linear-gradient(135deg, #F6EFE6 0%, #EEE5D9 100%);
   --sidebar-bg:linear-gradient(180deg, #ddc6e1 0%, #fdc7bb 40%, #E4A296 100%);
   /* 사진 위 hover 띠. 코랄 면으로 채우면 사진의 밝은 데서는 묻히고 어두운 데서는
      혼자 뜬다 — 반투명 흰색은 어느 자리에서든 같은 만큼만 밝아진다. */
   --sidebar-hover:#ffffff8c;
-  --card-bg:#FFFAF6;/* 불투명 크림. 바탕(--bg)보다 밝아야 판이 떠 보인다 */
+  --card-bg:#FAF9F8;/* 웜 화이트(팝업 --modal-bg 와 같다). 면이 중립이라 코랄·복숭아 강조가 또렷해진다 */
 
   --card-blue:#85bac0;--card-blue-soft:#EDF3F5;--card-blue-ink:#5B8290;
   --card-sage:#8eae97;--card-sage-soft:#ECF3EE;--card-sage-ink:#63886F;
@@ -369,19 +372,19 @@
   --purple:#cbbccf;
   --beige:#d7b2a2;
 
-  /* 그림자는 코랄을 어둡게 내린 갈색(#7A5347)이다. 회색으로 깔면 따뜻한 면 밑에만
-     찬 기가 돌아 카드가 종이에서 들뜬다. */
-  --shadow:0 18px 40px -24px #7A534759, 0 2px 6px -2px #7A534722;
-  --shadow-lift:0 26px 44px -30px #7A534782, 0 3px 10px -3px #7A534730;
+  /* 그림자는 채도를 낮춘 회갈색(#6E625C)이다. 흰 면 밑에 갈색을 깔면 흙빛으로 뜨고,
+     찬 회색을 깔면 아이보리 바탕 위에서 카드 밑에만 찬 기가 돈다 — 그 사이에 둔다. */
+  --shadow:0 18px 40px -24px #6E625C59, 0 2px 6px -2px #6E625C22;
+  --shadow-lift:0 26px 44px -30px #6E625C82, 0 3px 10px -3px #6E625C30;
   --shadow-brand:0 14px 30px -12px #47497A66;
   --shadow-brand-sm:0 8px 18px -8px #47497A59;
-  --shadow-card:0 8px 32px 0 #7A534724;
-  --shadow-clay:0 20px 36px -20px #7A534747, 0 6px 14px -8px #7A53472e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
-  --shadow-clay-lift:30px 32px 38px -3px #7a53473d, 0 9px 20px -10px #7A534738, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #7A534726;
-  --shadow-modal:0 8px 32px 0 #7A534736;
-  --shadow-rail:0 0 2rem 0 #7A534730;
-  --shadow-sm:0 2px 6px -3px #7A534773;
-  --shadow-pop:0 22px 45px -18px #7A534759;
+  --shadow-card:0 8px 32px 0 #6E625C24;
+  --shadow-clay:0 20px 36px -20px #6E625C47, 0 6px 14px -8px #6E625C2e, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #6E625C26;
+  --shadow-clay-lift:30px 32px 38px -3px #6E625C3d, 0 9px 20px -10px #6E625C38, inset 0 2px 3px #fffffff2, inset 0 -7px 14px -9px #6E625C26;
+  --shadow-modal:0 8px 32px 0 #6E625C36;
+  --shadow-rail:0 0 2rem 0 #6E625C30;
+  --shadow-sm:0 2px 6px -3px #6E625C73;
+  --shadow-pop:0 22px 45px -18px #6E625C59;
   --shadow-focus:0 3px 9px #CE806400,3px 4px 8px #CE806426;
   --shadow-focus-err:0 3px 9px #C2515B00,3px 4px 8px #C2515B2e;
   --scrim:#5C3B305c;
