@@ -256,7 +256,7 @@
   --bg:linear-gradient(135deg, #fcf2e2 0%, #f1e8dd 100%);
   --sidebar-bg:linear-gradient(180deg, #F9F1E6 0%, #F1DCC8 46%, #E5BBAB 100%);
   --sidebar-bg:#faf4e8;
-  --sidebar-bg:var(--grad-green-light);
+  --sidebar-bg:linear-gradient(180deg, #c2d2e0 0%, #ff829f 100%);
   /* 그라데이션 위 hover 띠. 아이보리(--field)로 채우면 위쪽에서는 면과 붙어 안 보이고
      아래쪽에서는 혼자 뜬다 — 반투명 흰색은 어느 높이에서든 같은 만큼만 밝아진다. */
   --sidebar-hover:#ffffff8c;
