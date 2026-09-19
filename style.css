@@ -97,7 +97,7 @@
      읽힌다. --field-hover 를 쓰지 않은 건 이름이 hover 라 뜻이 어긋나서다. */
   --head:#e6e8f4;/* 표 머리글 배경 */
   --placeholder:#aeb3c6;/* 인풋 placeholder */
-  --autofill:#f3f1fb;/* 브라우저가 자동완성한 인풋 배경. 분홍이면 --red-soft(에러)와 헷갈려 보라 쪽으로 둔다 */
+  --autofill:var(--field);/* 브라우저가 자동완성한 인풋 배경. 따로 색을 두지 않고 일반 인풋 면과 같게 둔다 */
   --ink-soft:#78788e;/* 본문보다 한 톤 옅은 글자 */
   --label:#32325d;/* 폼 라벨 */
   --pink:#f89dc8;
@@ -217,7 +217,7 @@
   --field-line:#DED6C5;
   --head:#E6DECC;/* 표 머리글. 흰 td 와 벌어지도록 --field 보다 두 단계 진하다 */
   --placeholder:#AAA697;
-  --autofill:#EEF3F7;/* 로즈 계열(--red-soft)과 헷갈리지 않게 파랑 쪽으로 둔다 */
+  --autofill:var(--field);/* 브라우저가 자동완성한 인풋 배경. 따로 색을 두지 않고 일반 인풋 면과 같게 둔다 */
   --ink-soft:#6E6862;
   --label:#45403B;
   --pink:#D9A7A7;/* 더스티 로즈 */
@@ -303,16 +303,16 @@
   --muted:#A9A6A4;
   --line:#E6E3E0;
   --paper:#FFFCFA;/* 카드 면. 바탕 위에서 떠 보이도록 반 톤 밝다 */
-  --field:#FBF1EC;
+  --field:#edeae6;
   --field-hover:#F5E5DE;
   /* 인풋 테두리. 베이지로 두면 흰 인풋 둘레가 누렇게 뜬다 — 채도를 거의 걷어 낸
      웜 그레이로, 크림 바탕과 부딪히지 않을 만큼만 따뜻하다. */
   --field-line:#DDDAD8;
   --head:var(--soft-hover);/* 표 머리글. 흰 td 와 벌어지도록 --field 보다 두 단계 진하다 */
   --placeholder:#B3B0AE;
-  --autofill:#EDF4EF;/* 코랄 계열(--red-soft)과 헷갈리지 않게 초록 쪽으로 둔다 */
+  --autofill:var(--field);/* 브라우저가 자동완성한 인풋 배경. 따로 색을 두지 않고 일반 인풋 면과 같게 둔다 */
   --ink-soft:#66625F;
-  --label:#3B3938;
+  --label:var(--ink-soft);
   --pink:#E4A296;/* 코랄 원본 */
   --sage:#9FBFAE;/* 보색 쪽. 칩과 카드에서 한 자리를 맡는다 */
   --brand:#f88f92;/* 코랄 */
@@ -347,13 +347,13 @@
   /* 바탕은 분홍기를 걷은 아이보리다. 코랄을 바탕까지 끌고 오면
      사이드바가 배경에 녹아 화면 왼쪽의 무게가 사라진다 — 코랄은 강조에만 남긴다.
      카드(--card-bg, 웜 화이트)보다 한 톤 누렇고 어두워야 판이 떠 보인다. */
-  --bg:linear-gradient(135deg, #F6EFE6 0%, #EEE5D9 100%);
+  --bg:#f0dfd5;
   --sidebar-bg:linear-gradient(180deg, #ddc6e1 0%, #fdc7bb 40%, #E4A296 100%);
   /* 사진 위 hover 띠. 코랄 면으로 채우면 사진의 밝은 데서는 묻히고 어두운 데서는
      혼자 뜬다 — 반투명 흰색은 어느 자리에서든 같은 만큼만 밝아진다. */
   --sidebar-hover:#ffffff8c;
-  --card-bg:#FAF9F8;/* 웜 화이트(팝업 --modal-bg 와 같다). 면이 중립이라 코랄·복숭아 강조가 또렷해진다 */
-
+  --card-bg:#f7f4ef;/* 웜 화이트(팝업 --modal-bg 와 같다). 면이 중립이라 코랄·복숭아 강조가 또렷해진다 */
+  --modal-bg:#f7f4ef;
   --card-blue:#85bac0;--card-blue-soft:#EDF3F5;--card-blue-ink:#5B8290;
   --card-sage:#8eae97;--card-sage-soft:#ECF3EE;--card-sage-ink:#63886F;
   --card-yellow:#EEC594;--card-yellow-soft:#FAF1E3;--card-yellow-ink:#A07C4B;
@@ -542,7 +542,7 @@ body{margin:0;min-height:100vh;font-family:var(--font);font-size:14px;line-heigh
 .main::before{content:"";position:absolute;top:0;right:0;z-index:-1;width:min(760px, 65%);aspect-ratio:1.4;background:radial-gradient(circle at 32% 49%, #f7b2b7d4 0, #F3B1AB00 42%), radial-gradient(circle at 70% 19%, #c8b6edd9 0, #C8B1EE00 48%);filter:blur(36px);pointer-events:none;}
 /* 왼쪽 위에도 한 덩이. 코랄 사이드바 바로 옆이라 같은 코랄이면 사이드바에 녹아 버린다 —
    코랄과 라벤더 사이의 로즈 라일락으로 두 쪽을 잇는다. 오른쪽 것이 주인공이라 한 치수 작다. */
-.main::after{content:"";position:absolute;top:-140px;left:0;z-index:-1;width:min(680px, 58%);aspect-ratio:1.2;background:radial-gradient(circle at 30% 34%, #85bac059 0, #EBBCD900 50%);filter:blur(36px);pointer-events:none;}
+.main::after{content:"";position:absolute;top:-140px;left:0;z-index:-1;width:min(680px, 58%);aspect-ratio:1.2;background:radial-gradient(circle at 30% 34%, #fde2d7 0, #EBBCD900 50%);filter:blur(36px);pointer-events:none;}
 .main > *{max-width:var(--page-max);margin-inline:auto;}
 /* 섹션 기본 간격. .overview / .panel 처럼 자체 여백이 있는 것은 그 값이 이긴다. */
 section{margin-bottom:34px;}
@@ -744,7 +744,7 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 .row-button:hover, .card-button:hover{color:var(--deep);background:var(--soft);}
 .row-button[data-delete]:hover, .card-button[data-delete]:hover{color:var(--red);background:var(--red-soft);}
 .row-actions{display:flex;gap:4px;align-items:center;justify-content:flex-end;}
-.card-button{background:#fff}
+.card-button{background:transparent}
 .card-top .row-actions{position:absolute;top:-3px;right:0;gap:0;}
 .row-button{background:transparent;}
 /* 면이 없으면 32px 상자 안 19px 글리프 둘레의 빈 공간이 그대로 여백으로 남아 안쪽으로
@@ -816,7 +816,7 @@ dialog:has(.modal)[open]{display:flex;flex-direction:column;overflow:hidden;}
    필드 칸이 창 폭을 통째로 쓰고, 스크롤바가 창 오른쪽 끝에 선다. 여백이 스크롤 칸 안쪽에
    있으니, 달력이나 그림자가 내용 바깥으로 44px 까지 나가도 잘리지 않는다.
    (여백을 창에 주면 스크롤 칸의 경계가 곧 내용의 끝이라, 삐져나온 것이 모두 잘렸다.) */
-.modal{--pad:44px;display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 0;}
+.modal{--pad:64px;display:flex;flex-direction:column;flex:1;min-height:0;padding:40px 0;}
 .modal-head{display:flex;flex:none;justify-content:space-between;align-items:center;margin:0 var(--pad) 22px;}
 /* 창이 길어질 때 스크롤되는 것은 필드뿐이고, 제목 줄과 버튼 줄은 자리에 남는다.
    그래서 폼을 위아래 두 칸(.form-body · .form-actions)으로 나누고, 스크롤은 필드 칸에만 준다.
@@ -921,7 +921,7 @@ label{display:block;margin-bottom:9px;color:var(--label);font-size:.85rem;font-w
    인풋을 버튼 높이로 늘려, 그 한 칸만 다른 필드보다 커 보인다. 같은 값으로 맞춰 둔다.
    (textarea 는 여러 줄이라 제외 — min-height 는 아래에서 따로 준다) */
 input:not([type="checkbox"]), select{min-height:var(--btn-h);}
-input, textarea, select{width:100%;border:1px solid var(--field-line);padding:12px 18px;border-radius:var(--r-sm);color:var(--ink);background:#fff;font:inherit;line-height:1.4;outline:0;transition:.2s;}
+input, textarea, select{width:100%;border:1px solid var(--field-line);padding:12px 18px;border-radius:var(--r-sm);color:var(--ink);background:var(--field);font:inherit;line-height:1.4;outline:0;transition:.2s;}
 input:focus, textarea:focus, select:focus{border-color:var(--brand);background-color:#fff;box-shadow:var(--shadow-focus);}
 select{appearance:none;cursor:pointer;background-image:linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);background-position:calc(100% - 20px) 55%, calc(100% - 14px) 55%;background-size:6px 6px;background-repeat:no-repeat;}
 ::placeholder{color:var(--placeholder);opacity:1;}/* 파이어폭스는 기본 opacity 가 .54 라 명시한다 */
@@ -929,8 +929,8 @@ select{appearance:none;cursor:pointer;background-image:linear-gradient(45deg, tr
    inset 그림자로 칠하고, 글자색은 -webkit-text-fill-color 로 되돌린다.
    transition 을 아주 길게 주면 값이 채워지는 순간의 하늘색 깜박임도 안 보인다. */
 input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, select:-webkit-autofill{-webkit-text-fill-color:var(--ink);-webkit-box-shadow:0 0 0 100px var(--autofill) inset;box-shadow:0 0 0 100px var(--autofill) inset;caret-color:var(--ink);transition:background-color 9999s;}
-/* 위 규칙이 포커스 링까지 덮어쓰므로 여기서 그림자를 다시 겹쳐 준다. */
-input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100px var(--autofill) inset,var(--shadow-focus);box-shadow:0 0 0 100px var(--autofill) inset,var(--shadow-focus);}
+/* 위 규칙이 포커스 링까지 덮어쓰므로 여기서 그림자를 다시 겹쳐 준다. 면은 일반 인풋 포커스처럼 흰색이다. */
+input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 100px #fff inset,var(--shadow-focus);box-shadow:0 0 0 100px #fff inset,var(--shadow-focus);}
 input[type="checkbox"]{width:auto;}
 textarea{min-height:50px;border-radius:var(--r-sm);resize:vertical;}
 .helper{margin:9px 0 0;color:var(--muted);font-size:.74rem;}
