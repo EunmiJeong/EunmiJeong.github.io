@@ -9,9 +9,14 @@
 #   · 굵기를 바꾸고 싶을 때 — 아래 $Weight 만 고치고 실행한다.
 #
 # 아이콘 이름은 Material Symbols 의 이름 그대로다. 어떤 이름이 있는지는
-# https://fonts.google.com/icons 에서 찾는다(스타일은 Rounded 로 두고 볼 것).
+# https://fonts.google.com/icons 에서 찾는다(Style 을 Material Icons + Rounded 로 두고 볼 것).
 
-$Weight = 300                      # 100 200 300 400 500 600 700 중 하나
+# 어떤 그림체를 쓸지 고른다.
+#   symbols — Material Symbols Rounded. 굵기($Weight)를 고를 수 있는 새 세대다.
+#   icons   — Material Icons Round. 구글이 오래 쓰던 둥근 그림체로, 획이 굵고 꽉 차 있다.
+#             굵기 선택이 없으므로 $Weight 는 무시된다.
+$Style  = 'icons'                   # symbols 또는 icons
+$Weight = 300                      # 100 200 300 400 500 600 700 중 하나(symbols 일 때만)
 $Pages  = 'index.html', 'sian.html'
 $Scan   = 'index.html', 'sian.html', 'layout.js'
 
@@ -33,15 +38,24 @@ foreach ($file in $Scan) {
   }
 }
 $names = $names | Sort-Object
-Write-Host "아이콘 $($names.Count) 개 · 굵기 $Weight"
+Write-Host "아이콘 $($names.Count) 개 · 그림체 $Style$(if ($Style -eq 'symbols') { " · 굵기 $Weight" })"
 
 # ── 2. 원본 내려받아 path 만 뽑기 ─────────────────────────────
-# 굵기 400 은 파일 이름에 굵기가 안 붙는다(구글 저장소가 그렇게 둔다).
-$base = 'https://raw.githubusercontent.com/google/material-design-icons/master/symbols/web'
+# Symbols 는 구글 저장소에서, Icons(구형 Round)는 이름만으로 바로 찾을 수 있는
+# @material-icons/svg 패키지에서 가져온다(구글 저장소의 구형 아이콘은 경로에 분류명이 끼어 있다).
+$symbolsBase = 'https://raw.githubusercontent.com/google/material-design-icons/master/symbols/web'
+$iconsBase   = 'https://cdn.jsdelivr.net/npm/@material-icons/svg/svg'
+# 두 그림체는 좌표계가 다르다 — 이 값이 symbol 의 viewBox 가 된다.
+$viewBox = if ($Style -eq 'icons') { '0 0 24 24' } else { '0 -960 960 960' }
 $paths = [ordered]@{}
 foreach ($name in $names) {
-  $suffix = if ($Weight -eq 400) { '24px' } else { "wght${Weight}_24px" }
-  $url = "$base/$name/materialsymbolsrounded/${name}_${suffix}.svg"
+  if ($Style -eq 'icons') {
+    $url = "$iconsBase/$name/round.svg"
+  } else {
+    # 굵기 400 은 파일 이름에 굵기가 안 붙는다(구글 저장소가 그렇게 둔다).
+    $suffix = if ($Weight -eq 400) { '24px' } else { "wght${Weight}_24px" }
+    $url = "$symbolsBase/$name/materialsymbolsrounded/${name}_${suffix}.svg"
+  }
   try {
     $svg = (Invoke-WebRequest -Uri $url -UseBasicParsing).Content
   } catch {
@@ -56,12 +70,12 @@ foreach ($name in $names) {
 # ── 3. 모음 만들어 각 페이지의 표시 사이에 끼우기 ─────────────
 $lines = @(
   '<!-- 아이콘 모음. 화면에는 안 보이고, 아래 <use href="#i-이름"> 이 여기서 모양을 가져다 쓴다.'
-  "     Material Symbols Rounded · 굵기 $Weight · 24px 원본을 그대로 뽑아 왔다. 왜 폰트가 아니라"
-  '     그림인지는 style.css 의 .icon 설명을 볼 것. 이 블록은 icons.ps1 이 만든다. -->'
+  $(if ($Style -eq 'icons') { "     Material Icons Round · 24px 원본을 그대로 뽑아 왔다. 왜 폰트가 아니라" } else { "     Material Symbols Rounded · 굵기 $Weight · 24px 원본을 그대로 뽑아 왔다. 왜 폰트가 아니라" })
+  '     그림인지는 style2.css 의 .icon 설명을 볼 것. 이 블록은 icons.ps1 이 만든다. -->'
   '<svg class="icon-sprite" aria-hidden="true"><defs>'
 )
 foreach ($name in $paths.Keys) {
-  $lines += "<symbol id=`"i-$name`" viewBox=`"0 -960 960 960`"><path d=`"$($paths[$name])`"/></symbol>"
+  $lines += "<symbol id=`"i-$name`" viewBox=`"$viewBox`"><path d=`"$($paths[$name])`"/></symbol>"
 }
 $lines += '</defs></svg>'
 $sprite = $lines -join "`n"

@@ -14,13 +14,13 @@ const client = () => (clientPromise ??= import('./supabase.js').then(module => m
 
 const NAV = [
   {
-    key: 'projects', icon: 'dashboard', label: '프로젝트 관리',
-    kicker: 'PROJECT', title: '프로젝트 관리',
+    key: 'projects', icon: 'dashboard', label: 'My Projects',
+    title: 'My Projects',
     subtext: '진행 중인 프로젝트와 주요 정보를 한눈에 관리하세요.',
   },
   {
-    key: 'resume', icon: 'badge', label: '이력서',
-    kicker: 'RESUME', title: '이력서',
+    key: 'resume', icon: 'badge', label: 'Resume',
+    title: 'Resume',
     subtext: '개인이력카드와 학력·경력사항입니다. 전체경력은 경력사항에서 자동으로 계산됩니다.',
   },
 ];
@@ -53,11 +53,11 @@ function sidebarHTML() {
 const HEADER_HTML = `<div class="appbar">
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="메뉴 열기" aria-controls="sidebar" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
     <p class="account-mail" id="account-mail"></p>
-    <button id="sign-in" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-login"/></svg>로그인</button>
-    <button id="sign-out" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>로그아웃</button>
+    <button id="sign-in" type="button" hidden><i class="icon icon-mask icon-login" aria-hidden="true"></i>로그인</button>
+    <button id="sign-out" type="button" hidden><i class="icon icon-mask icon-logout" aria-hidden="true"></i>로그아웃</button>
   </div>
   <header class="topbar">
-    <div><p class="kicker" id="page-kicker"></p><h1 id="page-title"></h1><p class="subtext" id="page-subtext"></p></div>
+    <div><h1 id="page-title"></h1><p class="subtext" id="page-subtext"></p></div>
   </header>`;
 
 /* ── 뷰 전환 ─────────────────────────────── */
@@ -69,7 +69,6 @@ function applyView(key) {
   if (currentKey === view.key) return;
   currentKey = view.key;
 
-  document.getElementById('page-kicker').textContent = view.kicker;
   document.getElementById('page-title').textContent = view.title;
   document.getElementById('page-subtext').textContent = view.subtext;
   document.title = `${view.title} · project.desk`;
@@ -151,15 +150,26 @@ export function confirmAsk({ title = '삭제할까요?', message = '', confirmLa
 }
 
 function authHTML(authLead) {
+  /* 좌우 두 칸이다 — 왼쪽은 그라데이션 면(인사말과 장식 원만 있고 누를 것이 없다),
+     오른쪽이 실제 폼이다. 좁은 화면에서는 왼쪽 칸을 CSS 가 감춘다. */
   return `<dialog id="auth-dialog">
-    <form class="auth-card" id="auth-form">
-      <div class="modal-head"><h2 class="auth-title"><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>Login</h2><button class="close" id="close-auth" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
-      <p class="auth-lead">${esc(authLead)}</p>
-      <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
-      <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
-      <p class="auth-message" id="auth-message" hidden></p>
-      <div class="auth-actions"><button class="save" type="submit">로그인</button></div>
-    </form>
+    <div class="auth-split">
+      <aside class="auth-side" aria-hidden="true">
+        <p class="auth-side-brand">project<span>.</span>desk</p>
+        <div class="auth-side-copy">
+          <h2>기록은 여기서<br>시작합니다</h2>
+          <p>프로젝트와 경력을 한자리에 모아 두고<br>필요할 때 바로 꺼내 씁니다.</p>
+        </div>
+      </aside>
+      <form class="auth-card" id="auth-form">
+        <div class="modal-head"><h2 class="auth-title"><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>Login</h2><button class="close" id="close-auth" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+        <p class="auth-lead">${esc(authLead)}</p>
+        <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
+        <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
+        <p class="auth-message" id="auth-message" hidden></p>
+        <div class="auth-actions"><button class="save" type="submit">로그인</button></div>
+      </form>
+    </div>
   </dialog>`;
 }
 

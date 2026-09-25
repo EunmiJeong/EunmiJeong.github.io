@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko" class="type2">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글래스모피즘 껍데기 시안</title>
+<!-- 글꼴은 앱 것을 그대로 쓴다. style.css 맨 위의 @font-face 와 Lato @import 만 필요한데
+     그 파일 전체를 읽어도 아래 규칙이 뒤에 오므로 껍데기는 여기서 새로 짠다. -->
+<link rel="stylesheet" href="../style.css">
+<style>
+/* ── 글래스모피즘 껍데기 시안 ─────────────────────────────
+   글꼴과 스킬 칩 색은 앱(style.css)에서 그대로 가져오고, 껍데기 규칙만 여기서 새로 짠다.
+   여기서 정해진 값만 나중에 style.css 로 옮긴다. 클래스에 g- 를 붙인 것은 앱 클래스와 부딪히지 않기 위해서다.
+
+   바탕은 색 덩어리 넷을 흐려 만든 메시다. 유리는 뒤가 비쳐야 하므로 바탕에
+   반드시 색이 흘러야 한다 — 단색 위에서는 blur 를 걸어도 아무 일도 일어나지 않는다.
+   ?v=warm|cool 로 바탕 색만 바꿔 본다. */
+*{box-sizing:border-box;}
+/* 색·반지름은 이 시안만의 값이다. 앱 변수(style.css 의 :root.type2)를 덮지 않도록 body 에 건다. */
+body{
+  /* 글자는 색을 뺀 먹빛이다. 바탕이 분홍·보라라 글자까지 물들이면 화면이 탁해진다. */
+  --ink:#3b3a44;
+  --ink-soft:#5f5d6b;
+  --muted:#918fa0;
+  --line:#ffffff73;
+  /* 유리 두 겹 모두 뿌옇게 언 상태로 둔다 — 흰 종이처럼 꽉 채우면 유리가 아니라 그냥
+     흰 카드가 된다. 뒤 색이 젖빛으로 배어 나오되 글은 또렷할 만큼만 띄운다.
+     불투명도가 낮은 만큼 흐림(backdrop-filter)을 세게 줘야 뒤가 어지럽지 않다. */
+  --glass:#ffffff4d;       /* 판 유리 */
+  --glass-strong:#ffffff8c;/* 카드 유리 — 글이 얹히므로 판보다 한 단계 뽀얗다 */
+  --glass-line:#ffffff8c;
+  --shell-shadow:0 30px 70px -36px #5a4a6633;
+  --card-shadow:0 12px 30px -22px #5a4a6633;
+  --r-shell:34px;
+  --r-card:22px;
+  --r-pill:99px;
+  --brand:#e08a9a;
+  --brand-deep:#c2687c;
+}
+html, body{height:100%;}
+body{
+  margin:0;padding:44px 24px;
+  display:flex;align-items:center;justify-content:center;
+  font:400 14px/1.5 var(--font);
+  color:var(--ink);letter-spacing:-.01em;
+  background:#fbd9e0;
+}
+/* 바탕 메시. 덩어리는 크고 느슨해야 한다 — 작은 덩어리를 여럿 흩으면 유리 뒤가 어지러워
+   판 안의 글과 경쟁한다. 참고 화면처럼 덩어리 셋만 큼직하게 놓고 채도를 낮춘다. */
+body::before{
+  content:"";position:fixed;inset:-10%;z-index:-1;
+  background:
+    /* 위 두 모서리의 흰 기운. 색 덩어리보다 앞에 적어 맨 위에 얹힌다 — 진한 분홍이
+       모서리까지 차오르지 않고 하얗게 바래 보이는 자리다. */
+    radial-gradient(52% 56% at 2% 0%, #fffffff2 0, #ffffff00 76%),
+    radial-gradient(54% 58% at 98% 0%, #ffffffe6 0, #ffffff00 76%),
+    /* 위 가운데도 한 번 더 하얗게 뺀다 — 두 모서리만 희면 가운데 분홍이 띠처럼 남는다 */
+    radial-gradient(46% 40% at 50% 0%, #ffffffb3 0, #ffffff00 78%),
+    /* 아래로 갈수록 밝게 빠진다. 바닥 전체에 흰 기운을 옅게 한 겹 깐다. */
+    linear-gradient(180deg, #ffffff00 52%, #ffffff40 82%, #ffffff8c 100%),
+    /* 왼쪽 가운데의 살구빛 — 참고 화면에서 가장 따뜻한 자리다 */
+    radial-gradient(48% 52% at 0% 50%, #ffc4b1 0, #ffc4b100 72%),
+    /* 화면 한복판을 채우는 분홍. 색의 주인이되 유리 뒤에서 글과 싸우지 않을 만큼 눅인다 */
+    radial-gradient(52% 58% at 22% -8%, #ffb8d2 0, #ffb8d200 74%),
+    /* 오른쪽 위 자홍 → 보라 */
+    radial-gradient(40% 46% at 42% -6%, #ff91b2 0, #ff91b200 72%),
+    radial-gradient(50% 56% at 86% 0%, #eaa9e6 0, #eaa9e600 74%),
+    radial-gradient(54% 58% at 100% 42%, #c4a2f2 0, #c4a2f200 74%),
+    /* 오른쪽 아래로 식어 가는 하늘빛 */
+    radial-gradient(56% 60% at 94% 100%, #a8c2f0 0, #a8c2f000 76%),
+    linear-gradient(120deg, #ffd7c4 0%, #ffb8d2 34%, #dfb0ee 66%, #bfcdf4 100%);
+  filter:blur(18px);
+}
+body.v-cool::before{
+  background:
+    radial-gradient(40% 44% at 20% 24%, #c8e6f7 0, #c8e6f700 70%),
+    radial-gradient(42% 46% at 84% 20%, #d9cbf7 0, #d9cbf700 70%),
+    radial-gradient(46% 50% at 72% 86%, #ffd4e2 0, #ffd4e200 70%),
+    linear-gradient(135deg, #e6f1fb 0%, #eee7fb 55%, #fde8ee 100%);
+  filter:blur(10px);
+}
+
+/* ── 큰 판 하나. 사이드바와 본문이 이 안에 갇힌다 ──
+   판 자체가 스크롤을 갖지 않는다(overflow:hidden). 스크롤은 오른쪽 본문에만 준다 —
+   그래야 사이드바와 머리말이 제자리에 남는다. */
+.g-shell{
+  position:relative;display:flex;
+  /* 판은 창을 거의 다 쓴다 — 최대 폭만 묶어 두고(아주 넓은 모니터에서 글줄이 늘어지지
+     않게) 높이는 창에서 바깥 여백만 뺀다. */
+  width:min(1600px, 100%);height:calc(100vh - 88px);
+  border:1px solid var(--glass-line);border-radius:var(--r-shell);
+  /* 면은 한 색이 아니라 위아래로 기운다 — 윗변은 거의 투명해 바탕이 그대로 지나가고,
+     아래로 내려올수록 뽀얘진다. 유리판을 비스듬히 세워 둔 것처럼 보이는 자리다.
+     흐림(backdrop-filter)은 판 전체에 고르게 걸리므로, 기우는 것은 흰 면의 농도뿐이다. */
+  background:linear-gradient(180deg, #ffffff14 0%, #ffffff2e 38%, #ffffff59 100%);
+  box-shadow:var(--shell-shadow);
+  backdrop-filter:blur(34px) saturate(135%);
+  -webkit-backdrop-filter:blur(34px) saturate(135%);
+  overflow:hidden;
+}
+
+/* 사이드바. 참고 화면처럼 거의 흰 유리다 — 코랄 면을 깔면 오른쪽 파스텔 바탕과
+   계열이 달라 화면이 두 동강 난다. 사진은 아래쪽에 옅게만 남긴다. */
+.g-side{
+  position:relative;z-index:1;overflow:hidden;
+  flex:0 0 240px;display:flex;flex-direction:column;gap:30px;
+  padding:30px 20px;
+  border-right:1px solid var(--line);
+  background:#ffffff59;
+}
+/* 사이드바 사진. 앱과 같은 그림(images/bg_side.jpg)을 좌우 뒤집어 아래에 깐다.
+   흰 유리 위이므로 진하게 두면 혼자 튄다 — 불투명도를 내리고 윗변은 마스크로 지운다. */
+.g-side::before{
+  content:"";position:absolute;left:0;right:0;bottom:0;z-index:-1;
+  aspect-ratio:768 / 1360;opacity:.5;
+  background:url(../images/bg_side.jpg) bottom center / cover no-repeat;
+  transform:scaleX(-1);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 45%);
+  mask-image:linear-gradient(to bottom, transparent 0%, #000 45%);
+  pointer-events:none;
+}
+.g-side > *{position:relative;}
+.g-brand{display:flex;gap:10px;align-items:center;padding:0 8px;}
+.g-brand-mark{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;color:#fff;background:linear-gradient(135deg, #f3a7b4, #c98bd8);box-shadow:0 10px 20px -12px #c2687c;font:600 15px/1 var(--font-head);}
+.g-brand-name{font:600 1.05rem/1.2 var(--font-head);letter-spacing:-.02em;}
+.g-brand-sub{margin:2px 0 0;color:var(--muted);font-size:.7rem;}
+.g-nav{display:flex;flex-direction:column;gap:4px;}
+.g-nav a{
+  display:flex;gap:11px;align-items:center;
+  padding:11px 14px;border-radius:14px;
+  color:var(--ink-soft);text-decoration:none;font-size:.88rem;
+  transition:.2s;
+}
+.g-nav a:hover{color:var(--ink);background:#ffffff59;}
+.g-nav a.on{color:var(--brand-deep);background:#ffffffa6;box-shadow:0 8px 18px -14px #6c4455;font-weight:600;}
+.g-nav .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.55;}
+.g-side-foot{margin-top:auto;padding:14px;border-radius:16px;background:#ffffff4d;font-size:.74rem;color:var(--ink-soft);}
+
+/* ── 오른쪽 본문. 스크롤은 여기만 ── */
+.content{flex:1;min-width:0;display:flex;flex-direction:column;}
+.g-top{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:38px 38px 26px;}
+.g-top h1{margin:0;font:600 1.5rem/1.3 var(--font-head);letter-spacing:-.03em;}
+.g-top p{margin:3px 0 0;color:var(--muted);font-size:.78rem;}
+.g-top-tools{display:flex;gap:8px;align-items:center;}
+.g-pill{border:1px solid var(--glass-line);padding:9px 16px;border-radius:var(--r-pill);color:var(--ink-soft);background:#ffffff59;font:inherit;font-size:.78rem;cursor:pointer;transition:.2s;}
+.g-pill:hover{background:#fff;}
+.g-pill.go{border-color:transparent;color:#fff;background:linear-gradient(135deg, #ef9aa8, #c98bd8);box-shadow:0 12px 24px -14px #c2687c;font-weight:600;}
+.g-scroll{flex:1;min-height:0;overflow-y:auto;padding:10px 38px 46px;}
+/* 스크롤 막대도 유리 위에서는 눈에 띈다 — 가늘게 깎고 색을 눅인다. */
+.g-scroll::-webkit-scrollbar{width:8px;}
+.g-scroll::-webkit-scrollbar-thumb{border-radius:99px;background:#ffffff8c;}
+
+.g-stats{display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:28px;margin-bottom:46px;}
+/* 통계 타일만 유리를 걷고 불투명한 색 면으로 채운다 — 판 안에서 여기만 색이 꽉 차므로
+   눈이 맨 먼저 닿는다. 색은 참고한 대시보드의 앰버 · 코랄 · 그린 셋에 중립 회색 하나를
+   더한 것이다. 진한 색으로 꽉 채우지 않고 옅은 면 + 진한 글자로 간다 — 흰 유리 카드
+   옆에서 진한 면 넷이 서면 그쪽이 화면을 다 가져간다.
+   아래 밑줄 한 칸(::after)이 그 타일의 원색이다. 면은 옅어도 계열이 또렷해진다. */
+.g-stat{position:relative;overflow:hidden;padding:20px 22px;border:0;border-radius:var(--r-card);color:var(--ink);background:var(--fill);box-shadow:0 10px 24px -18px var(--tone);}
+.g-stat::after{content:"";position:absolute;left:22px;right:22px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--tone);}
+.g-stat:nth-child(1){--tone:#f0a93c;--fill:#fdeed6;}
+.g-stat:nth-child(2){--tone:#e8637a;--fill:#fce0e3;}
+.g-stat:nth-child(3){--tone:#5aa96f;--fill:#dfeede;}
+.g-stat:nth-child(4){--tone:#8e93a3;--fill:#e9ebef;}
+.g-stat b{display:block;font:600 1.5rem/1.2 var(--font-head);}
+/* 이름은 그 타일의 원색으로 쓴다. 옅은 면 위라 대비가 남고, 색이 숫자를 가리지 않는다. */
+.g-stat span{color:var(--tone);font-size:.75rem;font-weight:600;filter:brightness(.82);}
+
+.g-sec-head{display:flex;gap:10px;align-items:baseline;margin:0 0 18px;}
+.g-sec-head h2{margin:0;font:600 1rem/1.3 var(--font-head);}
+.g-sec-head span{color:var(--muted);font-size:.75rem;}
+
+/* 열 수를 못박지 않는다. 판이 창을 다 쓰므로 모니터마다 폭이 다르다 — 한 칸의 최소
+   폭(320px)만 정하고 몇 열이 될지는 격자가 고르게 한다. 좁으면 2 열, 넓으면 3~4 열이다. */
+.g-cards{display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:36px 28px;}
+.g-card{
+  display:flex;flex-direction:column;gap:9px;
+  padding:26px 28px;border:1px solid var(--glass-line);border-radius:var(--r-card);
+  background:var(--glass-strong);box-shadow:var(--card-shadow);
+  /* 카드도 제 흐림을 갖는다. 판 하나만 흐리면 카드는 판이 만든 뿌연 색을 그대로
+     받기만 해서, 카드와 판 사이에 경계가 서지 않는다. */
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  transition:.25s;
+}
+.g-card:hover{transform:translateY(-3px);background:#ffffffb3;}
+.g-card h3{margin:0;font-size:.95rem;font-weight:600;}
+.g-card p{margin:0;color:var(--muted);font-size:.76rem;}
+.g-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+/* 스킬 칩은 앱에서 초록·노랑·분홍이 번갈아 돈다. 여기서는 색을 걷고 한 톤으로 둔다 —
+   화면에서 색을 쓰는 자리는 통계 타일 넷뿐이어야 나머지가 조용해진다. */
+.g-card .skill{border-color:#0000000f;color:var(--ink-soft);background:#ffffffb3;}
+
+@media (max-width:860px){
+  body{padding:14px;}
+  .g-shell{height:calc(100vh - 28px);}
+  .g-side{position:absolute;inset:0 auto 0 0;z-index:5;transform:translateX(-100%);transition:transform .28s;}
+  .g-shell.nav-open .g-side{transform:none;}
+  .g-stats{grid-template-columns:repeat(2, minmax(0, 1fr));}
+  .g-cards{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="g-shell">
+  <aside class="g-side">
+    <div class="g-brand">
+      <div class="g-brand-mark">pd</div>
+      <div>
+        <p class="g-brand-name" style="margin:0;">project.desk</p>
+        <p class="g-brand-sub">정은미</p>
+      </div>
+    </div>
+    <nav class="g-nav">
+      <a class="on" href="#"><i class="dot"></i>프로젝트</a>
+      <a href="#"><i class="dot"></i>이력서</a>
+      <a href="#"><i class="dot"></i>스킬</a>
+      <a href="#"><i class="dot"></i>통계</a>
+      <a href="#"><i class="dot"></i>설정</a>
+    </nav>
+    <div class="g-side-foot">claude_ux_03@inswave.com<br>로그아웃</div>
+  </aside>
+
+  <div class="content">
+    <header class="g-top">
+      <div>
+        <h1>프로젝트</h1>
+        <p>전체 45건 · 진행 중 1건</p>
+      </div>
+      <div class="g-top-tools">
+        <button class="g-pill" type="button">리스트</button>
+        <button class="g-pill go" type="button">+ 프로젝트 추가</button>
+      </div>
+    </header>
+
+    <div class="g-scroll">
+      <div class="g-stats">
+        <div class="g-stat"><b>14년 6개월</b><span>총 경력</span></div>
+        <div class="g-stat"><b>45</b><span>전체 프로젝트</span></div>
+        <div class="g-stat"><b>136일</b><span>중복 제외된 기간</span></div>
+        <div class="g-stat"><b>1</b><span>진행 중</span></div>
+      </div>
+
+      <div class="g-sec-head"><h2>프로젝트 목록</h2><span>45 projects</span></div>
+      <div class="g-cards" id="cards"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.body.classList.add('v-' + (new URLSearchParams(location.search).get('v') || 'warm'));
+  /* 스크롤이 도는지 보려면 카드가 넉넉해야 한다 — 열둘을 찍어 둔다. */
+  var names = ['하나은행 차세대', '우리카드 앱 개편', '삼성화재 포털', 'KB증권 MTS', '현대해상 청약', '신한은행 업무포털',
+               'LG전자 사내몰', 'SK텔레콤 요금제', '교보문고 리뉴얼', '롯데면세점 글로벌', 'CJ대한통운 트래킹', '카카오뱅크 대출'];
+  document.getElementById('cards').innerHTML = names.map(function (n, i) {
+    return '<article class="g-card"><h3>' + n + '</h3>' +
+      '<p>2025. 0' + (i % 9 + 1) + '. 01 – 2026. 0' + (i % 8 + 2) + '. 28</p>' +
+      '<p>' + ['하나은행','우리카드','삼성화재','KB증권'][i % 4] + '</p>' +
+      '<div class="skill-list g-tags"><span class="skill">HTML</span><span class="skill">CSS</span><span class="skill">JavaScript</span></div>' +
+      '</article>';
+  }).join('');
+</script>
+</body>
+</html>
