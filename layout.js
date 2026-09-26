@@ -149,30 +149,6 @@ export function confirmAsk({ title = '삭제할까요?', message = '', confirmLa
   });
 }
 
-function authHTML(authLead) {
-  /* 좌우 두 칸이다 — 왼쪽은 그라데이션 면(인사말과 장식 원만 있고 누를 것이 없다),
-     오른쪽이 실제 폼이다. 좁은 화면에서는 왼쪽 칸을 CSS 가 감춘다. */
-  return `<dialog id="auth-dialog">
-    <div class="auth-split">
-      <aside class="auth-side" aria-hidden="true">
-        <p class="auth-side-brand">project<span>.</span>desk</p>
-        <div class="auth-side-copy">
-          <h2>기록은 여기서<br>시작합니다</h2>
-          <p>프로젝트와 경력을 한자리에 모아 두고<br>필요할 때 바로 꺼내 씁니다.</p>
-        </div>
-      </aside>
-      <form class="auth-card" id="auth-form">
-        <div class="modal-head"><h2 class="auth-title"><svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>Login</h2><button class="close" id="close-auth" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
-        <p class="auth-lead">${esc(authLead)}</p>
-        <div><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="username" required></div>
-        <div><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
-        <p class="auth-message" id="auth-message" hidden></p>
-        <div class="auth-actions"><button class="save" type="submit">로그인</button></div>
-      </form>
-    </div>
-  </dialog>`;
-}
-
 /* ── 날짜 입력 ──────────────────────────────
    네이티브 date 인풋은 연도 칸이 6자리까지 들어가고(크롬), 4자리를 채워도 월로 넘어가지
    않는다. 세그먼트는 JS 로 손댈 수 없으니 같은 엘리먼트를 text 로 바꾸고 YYYY-MM-DD
@@ -360,7 +336,7 @@ function upgradeDateInput(input) {
    모바일에서도 위로 눕지 않고 같은 서랍을 쓴다. */
 function setupNavDrawer($) {
   const backdrop = $('nav-backdrop'), toggle = $('nav-toggle');
-  const wide = window.matchMedia('(min-width:1280px)');
+  const wide = window.matchMedia('(min-width:861px)');
 
   const setOpen = open => {
     document.body.classList.toggle('nav-open', open);
@@ -465,12 +441,13 @@ function watchValidity(form) {
  *
  * 해시(#projects 등)에 맞춰 첫 뷰까지 여기서 정해진다.
  *
- * @param options.authLead 로그인 모달 안내 문구
  */
-export function mountLayout(options) {
+export function mountLayout() {
   const $ = id => document.getElementById(id);
 
-  document.body.insertAdjacentHTML('afterbegin', authHTML(options.authLead) + CONFIRM_HTML + '<div class="nav-backdrop" id="nav-backdrop"></div>');
+  /* 로그인 팝업은 페이지(index.html)에 그대로 적혀 있다 — 여기서 만들어 넣는 것은
+     확인 모달과 서랍 뒷막뿐이다. */
+  document.body.insertAdjacentHTML('afterbegin', CONFIRM_HTML + '<div class="nav-backdrop" id="nav-backdrop"></div>');
   $('app').insertAdjacentHTML('afterbegin', sidebarHTML());
   document.querySelector('.main').insertAdjacentHTML('afterbegin', HEADER_HTML);
 

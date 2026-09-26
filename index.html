@@ -162,6 +162,33 @@
     </main>
   </div>
 
+  <!-- 로그인 팝업. 예전에는 layout.js 가 만들어 넣었는데, 모양이 굳은 마크업이라
+       여기에 그냥 둔다 — 스크립트가 하는 일은 여닫기와 값 읽기뿐이다.
+       좌우 두 칸이다: 왼쪽은 그라데이션 면(누를 것이 없다), 오른쪽이 폼이다.
+       좁은 화면에서는 왼쪽 칸을 CSS 가 감춘다. -->
+  <dialog id="auth-dialog">
+    <div class="auth-split">
+      <aside class="auth-side" aria-hidden="true">
+        <p class="auth-side-brand">project<span>.</span>desk</p>
+        <div class="auth-side-copy">
+          <h2>Login</h2>
+          <p>내용을 추가하거나 수정하려면 로그인하세요.</p>
+        </div>
+      </aside>
+      <form class="auth-card" id="auth-form">
+        <div class="modal-head">
+          <h2 class="auth-title">
+            <svg class="icon" aria-hidden="true"><use href="#i-account_circle"/></svg>
+            Hello, Welcome Back</h2>
+          <button class="close" id="close-auth" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+        <div><label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="username" required></div>
+        <div><label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></div>
+        <p class="auth-message" id="auth-message" hidden></p>
+        <div class="auth-actions"><button class="save" type="submit">Login</button></div>
+      </form>
+    </div>
+  </dialog>
+
   <dialog id="project-dialog">
     <div class="modal"><div class="modal-head"><h2 id="project-modal-title">새 프로젝트 추가</h2><button class="close" id="project-close" type="button" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
       <form id="project-form">
@@ -200,7 +227,7 @@
   <!-- 헤더 먼저. 이 스크립트는 supabase(CDN)를 기다리지 않으므로 화면이 바로 채워진다. -->
   <script type="module">
     import { mountLayout } from './layout.js';
-    mountLayout({ authLead: '내용을 추가하거나 수정하려면 로그인하세요.' });
+    mountLayout();
   </script>
 
   <script type="module">
