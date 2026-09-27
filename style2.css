@@ -357,7 +357,7 @@ body::before{
    그라데이션 액션 버튼이 서므로 다른 표시를 쓴다). 예전의 inset 막대는 라운드 코너를 따라 휘어서
    초승달처럼 보였다. :hover 규칙과 특이도가 같으므로 반드시 그 뒤에 와야 한다. */
 .nav-link.active, .nav-link.active:hover{color:var(--ink);background:#ffffffa6;box-shadow:0 8px 18px -14px #6c4455;border-top:1px solid #ffffffd9;}
-.nav-link.active .icon{color:#ee936e;}
+.nav-link.active .icon{color:var(--pink);}
 .nav-link .icon{font-size:19px;}
 /* 서랍을 여는 버거 버튼(계정 바 왼쪽 끝)과 서랍 안의 닫기 버튼. 둘 다 좁은 화면 전용이라
    기본은 감춰 두고 아래 반응형 블록에서만 꺼낸다. .appbar button 을 이기려면
