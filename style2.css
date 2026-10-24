@@ -224,6 +224,7 @@
 .icon-mask{background:currentColor;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;}
 .icon-login{-webkit-mask-image:url(images/login.png);mask-image:url(images/login.png);}
 .icon-logout{-webkit-mask-image:url(images/logout.png);mask-image:url(images/logout.png);}
+.icon-company{-webkit-mask-image:url(images/company.svg);mask-image:url(images/company.svg);}
 .icon-sprite{display:none;}
 .icon{
   display:inline-block;vertical-align:middle;
@@ -657,7 +658,7 @@ td .row-actions{gap:2px;margin-right:-6px;}
 @media (prefers-reduced-motion:reduce){.card-tip{transition:none}}
 /* 아래 두 줄은 아이콘 레일이다. 제목 덩어리와 갈라 보이도록 위로 22px 을 띄우고,
    레일 안에서는 14px 로 붙여 둘이 한 묶음으로 읽히게 한다. */
-.card-client{display:flex;gap:10px;align-items:center;margin:22px 0 0;color:var(--ink-soft);font-size:.875rem;}
+.card-client{display:flex;gap:4px;align-items:center;margin:22px 0 0;color:var(--ink-soft);font-size:.875rem;}
 /* 칩이 여러 줄로 접혀도 아이콘은 첫 줄 옆에 그대로 남는다. */
 .card-skills{display:flex;gap:10px;align-items:flex-start;margin-top:12px;}
 .card-skills .skill-list{padding-top:3px;}
@@ -666,7 +667,7 @@ td .row-actions{gap:2px;margin-right:-6px;}
    부풀어 옆의 스킬 칩과 무게를 다툰다. 폭만 22px 로 못박아 두 줄의 값이 같은 x 에서
    시작하게 하고(레일), 색은 --placeholder(#aeb3c6)까지 뺀다 — 아이콘은 눈에 띌 일이
    아니라 자리만 잡아 주면 되고, 값(--ink-soft, #78788e)보다 확실히 연해야 레일로 읽힌다. */
-.card-client .icon, .card-skills .icon{flex:none;width:22px;color:var(--placeholder);font-size:19px;text-align:center;}
+.card-client .icon, .card-skills .icon{flex:none;width:22px;color:var(--ink-soft);font-size:19px;text-align:center;}
 /* 스킬 줄만 align-items:flex-start 라 아이콘이 위로 붙는다. 첫 칩의 세로 가운데에
    맞도록 그만큼 내린다(칩 높이 ≈ 26px, 위 여백 3px → 가운데가 16px 쯤). */
 .card-skills .icon{margin-top:6px;}
