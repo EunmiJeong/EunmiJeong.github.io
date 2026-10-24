@@ -225,6 +225,8 @@
 .icon-login{-webkit-mask-image:url(images/login.png);mask-image:url(images/login.png);}
 .icon-logout{-webkit-mask-image:url(images/logout.png);mask-image:url(images/logout.png);}
 .icon-company{-webkit-mask-image:url(images/company.svg);mask-image:url(images/company.svg);}
+.icon-edit{-webkit-mask-image:url(images/edit.svg);mask-image:url(images/edit.svg);}
+.icon-delete{-webkit-mask-image:url(images/delete.svg);mask-image:url(images/delete.svg);}
 .icon-sprite{display:none;}
 .icon{
   display:inline-block;vertical-align:middle;
@@ -615,6 +617,7 @@ td{padding:18px 22px;border-top:1px solid var(--line);font-size:.86rem;vertical-
 .row-actions{display:flex;gap:4px;align-items:center;justify-content:flex-end;}
 .card-button{background:transparent}
 .card-top .row-actions{position:absolute;top:-3px;right:0;gap:0;}
+.card-top .row-actions .icon-mask{place-items:center;width:20px;height:20px;background:var(--placeholder)}
 .row-button{background:transparent;}
 /* 면이 없으면 32px 상자 안 19px 글리프 둘레의 빈 공간이 그대로 여백으로 남아 안쪽으로
    밀려 보인다. 오른쪽만 그만큼 되밀어 칸의 안쪽선에 맞추고, 사이는 2px 로 좁힌다 —
